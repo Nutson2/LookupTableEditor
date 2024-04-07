@@ -1,0 +1,11 @@
+﻿<RevitAddIns>
+    <AddIn Type="Application">
+        <Name>LookupTableEditor</Name>
+        <Assembly>LookupTableEditor/LookupTableEditor.dll</Assembly>
+        <AddInId>99E4F16B-5CA9-4185-9FBB-0B95B5752AC9</AddInId>
+        <FullClassName>LookupTableEditor.Application</FullClassName>
+        <VendorId>Nutson</VendorId>
+        <VendorDescription></VendorDescription>
+        <VendorEmail></VendorEmail>
+    </AddIn>
+</RevitAddIns>

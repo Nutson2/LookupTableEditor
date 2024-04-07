@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LookupTableEditor" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TelegramUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://t.me/Nutson2</Value>
+    </Setting>
+    <Setting Name="YouTubeChannelUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.youtube.com/channel/UCcBEuUPtAW22nkZKueGD0VQ</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
