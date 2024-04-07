@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="LookupTableEditor.Views.TableContentPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LookupTableEditor.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="TablePresenterPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d" PreviewKeyDown="Page_PreviewKeyDown">
+    
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="BaseStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="35" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="dg_Table"
+            Background="#99F0F0F0"
+            ClipboardCopyMode="ExcludeHeader"
+            ItemsSource="{Binding Path=SizeTableInfo.Table}"
+            MinColumnWidth="30"
+            SelectionUnit="Cell" />
+
+        <StackPanel
+            Grid.Column="1"
+            Margin="0"
+            Orientation="Vertical">
+            <Button
+                Style="{StaticResource iconButton}"
+                Grid.Row="2"
+                Grid.Column="0"
+                Command="{Binding AddRowOnTopCommand}"
+                Content="➕"
+                ToolTip="Добавить строку в начало таблицы" />
+            <Button
+                Style="{StaticResource iconButton}"
+                Grid.Row="2"
+                Grid.Column="0"
+                Command="{Binding SaveSizeTableCommand}"
+                Content="📝"
+                ToolTip="Экспортировать таблицу в CSV" />
+        </StackPanel>
+    </Grid>
+</Page>

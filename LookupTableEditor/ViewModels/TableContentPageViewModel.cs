@@ -6,28 +6,21 @@ using CommunityToolkit.Mvvm.Input;
 using LookupTableEditor.Extentions;
 using LookupTableEditor.Services;
 
-namespace LookupTableEditor
+namespace LookupTableEditor.Views
 {
-    public partial class LookupTableViewModel : ObservableObject
+    public partial class TableContentPageViewModel : ObservableObject
     {
-        private readonly SizeTableService _sizeTableService;
+        private SizeTableService _sizeTableService;
+
         public SizeTableInfo? SizeTableInfo { get; set; }
 
-        [ObservableProperty]
-        private List<string> _sizeTableNames = new();
-
-        [ObservableProperty]
-        private string _curTableName = string.Empty;
-
-        partial void OnCurTableNameChanged(string value) =>
-            SizeTableInfo = _sizeTableService.GetSizeTableInfo(value);
-
-        public LookupTableViewModel(SizeTableService sizeTableService)
+        public TableContentPageViewModel(
+            SizeTableService sizeTableService,
+            SizeTableInfo sizeTableInfo
+        )
         {
             _sizeTableService = sizeTableService.ThrowIfNull();
-
-            SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
-            CurTableName = SizeTableNames.FirstOrDefault();
+            SizeTableInfo = sizeTableInfo;
         }
 
         [RelayCommand]
@@ -35,13 +28,6 @@ namespace LookupTableEditor
         {
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             Process.Start(SizeTableInfo.FilePath);
-        }
-
-        [RelayCommand]
-        private void SetNewTable()
-        {
-            _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
-            _sizeTableService.ImportSizeTable(SizeTableInfo);
         }
 
         [RelayCommand]
@@ -89,11 +75,5 @@ namespace LookupTableEditor
                 tmpRowIndx++;
             }
         }
-
-        [RelayCommand]
-        private void GotoTelegram() => Process.Start(Settings.Default.TelegramUrl);
-
-        [RelayCommand]
-        private void GoToYouTube() => Process.Start(Settings.Default.YouTubeChannelUrl);
     }
 }

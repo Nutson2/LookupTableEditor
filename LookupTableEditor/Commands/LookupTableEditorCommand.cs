@@ -2,6 +2,8 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using LookupTableEditor.Services;
+using LookupTableEditor.ViewModels;
+using LookupTableEditor.Views;
 
 namespace LookupTableEditor.Commands
 {
@@ -23,9 +25,10 @@ namespace LookupTableEditor.Commands
 
             var familiesService = new FamiliesService(doc);
             var sizeTableService = new SizeTableService(doc, uiApp.Application);
-            var vm = new LookupTableViewModel(familiesService, sizeTableService);
-            var lookupTableForm = new LookupTableView(vm);
-            lookupTableForm.ShowDialog();
+            var mainVM = new MainViewModel(sizeTableService);
+            var mainView = new MainWindow(mainVM);
+            mainView.ShowDialog();
+
             return Result.Succeeded;
         }
     }
