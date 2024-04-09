@@ -29,5 +29,7 @@ namespace LookupTableEditor.Views
 
             _vm.PasteFromClipboard(rowIndex, columnIndex);
         }
+
+        private void dg_Table_ColumnReordered(object sender, DataGridColumnEventArgs e) { }
     }
 }

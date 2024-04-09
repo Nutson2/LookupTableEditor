@@ -10,13 +10,14 @@
     Width="600"
     Height="450"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+    SizeToContent="WidthAndHeight"
     mc:Ignorable="d">
 
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="BaseStyles.xaml" />
+                <ResourceDictionary Source="Styles\BaseStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -51,13 +52,16 @@
         <TextBox
             Grid.Row="1"
             Grid.Column="1"
-            d:Text=" New table name" />
+            d:Text=" New table name"
+            Text="{Binding Path=CurTableName, Mode=TwoWay}" />
 
         <Button
             Grid.Row="1"
             Grid.Column="2"
             Command="{Binding CreateNewTableCommand}"
-            Content="Создать" />
+            Content="Создать"
+            IsEnabled="{Binding IsTableNotExist}" />
+
         <Border
             Grid.Row="2"
             BorderBrush="#FFD2AAEA"
@@ -71,7 +75,10 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Button Padding="-20" Command="{Binding SetTablePresenterPageCommand}">
+                <Button
+                    Padding="-20"
+                    Command="{Binding SetTableContentPageCommand}"
+                    IsEnabled="{Binding CanSelectPage}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         RenderTransformOrigin="0.5,0.5"
@@ -85,7 +92,9 @@
                 <Button
                     Grid.Row="1"
                     Padding="-20"
-                    Command="{Binding SetTableDefinitionPageCommand}">
+                    Command="{Binding SetTableDefinitionPageCommand}"
+                    IsEnabled="{Binding CanSelectPage}">
+
                     <TextBlock
                         HorizontalAlignment="Center"
                         RenderTransformOrigin="0.5,0.5"
@@ -100,7 +109,8 @@
                 <Button
                     Grid.Row="2"
                     Padding="-20"
-                    Command="{Binding SetTableFormulasPageCommand}">
+                    Command="{Binding SetTableFormulasPageCommand}"
+                    IsEnabled="{Binding CanSelectPage}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         RenderTransformOrigin="0.5,0.5"
@@ -132,7 +142,8 @@
                 Grid.Row="2"
                 Grid.Column="4"
                 Command="{Binding SetNewTableCommand}"
-                Content="Применить" />
+                Content="Применить"
+                IsEnabled="{Binding CanSelectPage}" />
             <Button
                 Grid.Row="2"
                 Command="{Binding GotoTelegramCommand}"

@@ -20,6 +20,8 @@ namespace LookupTableEditor.ViewModels
 
         [ObservableProperty]
         private string _curTableName = string.Empty;
+        public bool IsTableNotExist => !SizeTableNames.Contains(CurTableName);
+        public bool CanSelectPage => _sizeTableInfo != null;
 
         partial void OnCurTableNameChanged(string value) =>
             _sizeTableInfo = _sizeTableService.GetSizeTableInfo(value);
@@ -31,6 +33,10 @@ namespace LookupTableEditor.ViewModels
             SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
             CurTableName = SizeTableNames.FirstOrDefault();
         }
+
+        [RelayCommand]
+        private void CreateNewTable(string name) =>
+            _sizeTableInfo = _sizeTableService.GetSizeTableInfo(name);
 
         [RelayCommand]
         private void SetTableContentPage() =>

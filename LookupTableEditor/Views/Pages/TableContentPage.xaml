@@ -6,14 +6,16 @@
     xmlns:local="clr-namespace:LookupTableEditor.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="TablePresenterPage"
+    d:DataContext="{d:DesignInstance Type=local:TableContentPageViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    mc:Ignorable="d" PreviewKeyDown="Page_PreviewKeyDown">
-    
+    PreviewKeyDown="Page_PreviewKeyDown"
+    mc:Ignorable="d">
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="BaseStyles.xaml" />
+                <ResourceDictionary Source="..\Styles\BaseStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -24,9 +26,11 @@
             <ColumnDefinition Width="35" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="dg_Table"
+        <DataGrid
+            x:Name="dg_Table"
             Background="#99F0F0F0"
             ClipboardCopyMode="ExcludeHeader"
+            ColumnReordered="dg_Table_ColumnReordered"
             ItemsSource="{Binding Path=SizeTableInfo.Table}"
             MinColumnWidth="30"
             SelectionUnit="Cell" />
@@ -36,18 +40,18 @@
             Margin="0"
             Orientation="Vertical">
             <Button
-                Style="{StaticResource iconButton}"
                 Grid.Row="2"
                 Grid.Column="0"
                 Command="{Binding AddRowOnTopCommand}"
                 Content="➕"
+                Style="{StaticResource iconButton}"
                 ToolTip="Добавить строку в начало таблицы" />
             <Button
-                Style="{StaticResource iconButton}"
                 Grid.Row="2"
                 Grid.Column="0"
                 Command="{Binding SaveSizeTableCommand}"
                 Content="📝"
+                Style="{StaticResource iconButton}"
                 ToolTip="Экспортировать таблицу в CSV" />
         </StackPanel>
     </Grid>
