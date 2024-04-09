@@ -10,8 +10,11 @@ namespace LookupTableEditor.Views
 {
     public partial class TableContentPageViewModel : ObservableObject
     {
-        private SizeTableService _sizeTableService;
+        public string AddNewColumnText { get; } = "Вставить новый столбец";
+        public string AddNewRowText { get; } = "Вставить строку";
 
+        private SizeTableService _sizeTableService;
+        public Action OnAddColumnCommandInvoked { get; set; }
         public SizeTableInfo? SizeTableInfo { get; set; }
 
         public TableContentPageViewModel(
@@ -30,9 +33,15 @@ namespace LookupTableEditor.Views
             Process.Start(SizeTableInfo.FilePath);
         }
 
+        public void AddColumn() => OnAddColumnCommandInvoked?.Invoke();
+
         [RelayCommand]
-        private void AddRowOnTop() =>
-            SizeTableInfo.Table?.Rows.InsertAt(SizeTableInfo.Table.NewRow(), 0);
+        private void AddRowOnTop() => AddRowOnTop(0);
+
+        public void AddRowOnTop(int index)
+        {
+            SizeTableInfo.Table?.Rows.InsertAt(SizeTableInfo.Table.NewRow(), index);
+        }
 
         public void PasteFromClipboard(int rowIndx, int columnIndx)
         {

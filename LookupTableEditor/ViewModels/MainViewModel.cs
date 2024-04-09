@@ -10,6 +10,7 @@ namespace LookupTableEditor.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         private readonly SizeTableService _sizeTableService;
+        private readonly FamiliesService _familiesService;
         private SizeTableInfo _sizeTableInfo;
 
         [ObservableProperty]
@@ -26,10 +27,10 @@ namespace LookupTableEditor.ViewModels
         partial void OnCurTableNameChanged(string value) =>
             _sizeTableInfo = _sizeTableService.GetSizeTableInfo(value);
 
-        public MainViewModel(SizeTableService sizeTableService)
+        public MainViewModel(SizeTableService sizeTableService, FamiliesService familiesService)
         {
             _sizeTableService = sizeTableService;
-
+            _familiesService = familiesService;
             SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
             CurTableName = SizeTableNames.FirstOrDefault();
         }
@@ -39,14 +40,20 @@ namespace LookupTableEditor.ViewModels
             _sizeTableInfo = _sizeTableService.GetSizeTableInfo(name);
 
         [RelayCommand]
-        private void SetTableContentPage() =>
-            CurrentPage = new TableContentPage(
-                new TableContentPageViewModel(_sizeTableService, _sizeTableInfo)
-            );
+        private void SetTableContentPage()
+        {
+            var vm = new TableContentPageViewModel(_sizeTableService, _sizeTableInfo);
+            vm.OnAddColumnCommandInvoked = SetSelectNewColumnPage;
+            CurrentPage = new TableContentPage(vm);
+        }
 
         [RelayCommand]
-        private void SetTableDefinitionPage() =>
-            CurrentPage = new TableDefinitionPage(new TableDefinitionPageViewModel(_sizeTableInfo));
+        private void SetSelectNewColumnPage()
+        {
+            CurrentPage = new SelectNewColumnPage(
+                new SelectNewColumnViewModel(_sizeTableInfo, _familiesService)
+            );
+        }
 
         [RelayCommand]
         private void SetTableFormulasPage() =>

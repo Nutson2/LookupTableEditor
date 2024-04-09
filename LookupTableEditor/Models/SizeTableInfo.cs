@@ -37,13 +37,22 @@ namespace LookupTableEditor
             var headerName = column.Name.Replace(".", "_");
             var dataTableHeaderType = column.GetTypeForDataTable();
 
-#if R22_OR_GREATER
-            var headerType = column.GetSpecTypeId().TypeId.IsValid()
-                ? column.GetSpecTypeId()
-                : SpecTypeId.String.Text;
-#else
-            var headerType = column == null ? UnitType.UT_Undefined : column.UnitType;
-#endif
+            var headerType = column.GetHeaderType();
+
+            AddHeader(headerName, dataTableHeaderType, headerType);
+        }
+
+        public void AddHeader(FamilyParameter parameter)
+        {
+            var headerName = parameter.Definition.Name.Replace(".", "_");
+            var dataTableHeaderType = parameter.GetTypeForDataTable();
+            var headerType = parameter.GetParameterType();
+
+            AddHeader(headerName, dataTableHeaderType, headerType);
+        }
+
+        private void AddHeader(string headerName, Type dataTableHeaderType, ForgeTypeId headerType)
+        {
             Headers.Add(new Header() { Name = headerName, Type = headerType });
             Table.Columns.Add(headerName, dataTableHeaderType);
         }
@@ -52,10 +61,12 @@ namespace LookupTableEditor
         {
             var strBuilder = new StringBuilder();
 
+            Headers.ForEach(h => h.Index = Table.Columns.IndexOf(h.Name));
+
             strBuilder.AppendLine(
                 string.Join(
                     _headerDelimiter,
-                    Headers.Select(h => h.Name + TryGetValue(h.TypeString))
+                    Headers.OrderBy(h => h.Index).Select(h => h.Name + TryGetValue(h.TypeString))
                 )
             );
 

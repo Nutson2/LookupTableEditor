@@ -7,12 +7,12 @@
 
     <Style x:Key="base" TargetType="FrameworkElement">
         <Setter Property="Margin" Value="3" />
-        <Setter Property="VerticalAlignment" Value="Stretch"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
 
     </Style>
 
-    <Style TargetType="Button" BasedOn="{StaticResource base}">
+    <Style BasedOn="{StaticResource base}" TargetType="Button">
         <Style.Resources>
             <Style TargetType="Border">
                 <Setter Property="Padding" Value="2" />
@@ -22,16 +22,14 @@
 
         </Style.Resources>
     </Style>
-    <Style x:Key="verticalButton"
-           TargetType="Button" 
-           >
+    <Style x:Key="verticalButton" TargetType="Button">
         <Style.Resources>
             <Style TargetType="Border">
                 <Setter Property="CornerRadius" Value="2" />
             </Style>
         </Style.Resources>
     </Style>
-        
+
     <Style
         x:Key="iconButton"
         BasedOn="{StaticResource {x:Type Button}}"
@@ -39,14 +37,12 @@
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Foreground" Value="#FF8E0505" />
     </Style>
-    
-    <Style TargetType="TextBox" BasedOn="{StaticResource base}" >
+
+    <Style BasedOn="{StaticResource base}" TargetType="TextBox">
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
 
-    <Style TargetType="ComboBox" BasedOn="{StaticResource base}">
-        
-    </Style>
+    <Style BasedOn="{StaticResource base}" TargetType="ComboBox" />
 
 </ResourceDictionary>

@@ -28,5 +28,16 @@ namespace LookupTableEditor.Extentions
 #endif
             return t;
         }
+
+#if R22_OR_GREATER
+        public static ForgeTypeId GetHeaderType(this FamilySizeTableColumn column) =>
+            column.GetSpecTypeId().TypeId.IsValid()
+                ? column.GetSpecTypeId()
+                : SpecTypeId.String.Text;
+
+#else
+        public static UnitType GetHeaderType(this FamilySizeTableColumn column) =>
+            column == null ? UnitType.UT_Undefined : column.UnitType;
+#endif
     }
 }

@@ -6,11 +6,10 @@
     xmlns:local="clr-namespace:LookupTableEditor.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:LookupTableEditor.ViewModels"
-    Title="MainWindow"
-    Width="600"
-    Height="450"
+    Title="Lookup table editor"
+    MinWidth="600"
+    MinHeight="450"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
-    SizeToContent="WidthAndHeight"
     mc:Ignorable="d">
 
 
@@ -92,7 +91,7 @@
                 <Button
                     Grid.Row="1"
                     Padding="-20"
-                    Command="{Binding SetTableDefinitionPageCommand}"
+                    Command="{Binding SetSelectNewColumnPageCommand}"
                     IsEnabled="{Binding CanSelectPage}">
 
                     <TextBlock
@@ -129,7 +128,8 @@
             Grid.Row="2"
             Grid.Column="1"
             Grid.ColumnSpan="2"
-            Content="{Binding Path=CurrentPage}" />
+            Content="{Binding Path=CurrentPage}"
+            NavigationUIVisibility="Hidden"/>
 
         <Grid Grid.Row="3" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>

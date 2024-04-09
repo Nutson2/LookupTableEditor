@@ -1,16 +1,17 @@
 ﻿using System.Windows.Controls;
+using LookupTableEditor.ViewModels;
 
 namespace LookupTableEditor.Views
 {
     /// <summary>
     /// Логика взаимодействия для TableDefinitionPage.xaml
     /// </summary>
-    public partial class TableDefinitionPage : Page
+    public partial class SelectNewColumnPage : Page
     {
-        public TableDefinitionPage(TableDefinitionPageViewModel tableDefinitionPageViewModel)
+        public SelectNewColumnPage(SelectNewColumnViewModel selectNewColumnViewModel)
         {
             InitializeComponent();
-            DataContext = tableDefinitionPageViewModel;
+            DataContext = selectNewColumnViewModel;
         }
     }
 }

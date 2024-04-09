@@ -25,7 +25,7 @@ namespace LookupTableEditor.Commands
 
             var familiesService = new FamiliesService(doc);
             var sizeTableService = new SizeTableService(doc, uiApp.Application);
-            var mainVM = new MainViewModel(sizeTableService);
+            var mainVM = new MainViewModel(sizeTableService, familiesService);
             var mainView = new MainWindow(mainVM);
             mainView.ShowDialog();
 

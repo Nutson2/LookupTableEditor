@@ -4,7 +4,25 @@ namespace LookupTableEditor.Extentions
 {
     public static class ParameterExtention
     {
-        public static string GetParameterType(this Parameter parameter)
+#if R22_OR_GREATER
+        public static ForgeTypeId GetParameterType(this Parameter parameter)
+        {
+            return parameter.GetTypeId().TypeId.IsValid()
+                ? parameter.GetTypeId()
+                : SpecTypeId.String.Text;
+        }
+
+        public static ForgeTypeId GetParameterType(this FamilyParameter parameter) =>
+            parameter.GetParameterType();
+#else
+        public static UnitType GetParameterType(this Parameter parameter) =>
+            parameter.Definition.UnitType;
+
+        public static UnitType GetParameterType(this FamilyParameter parameter) =>
+            parameter.GetParameter();
+#endif
+
+        public static string GetParameterTypeLabel(this Parameter parameter)
         {
 #if R22_OR_GREATER
             var ut = parameter.Definition.GetDataType().ToSpecLabel();
@@ -14,8 +32,8 @@ namespace LookupTableEditor.Extentions
             return ut;
         }
 
-        public static string GetParameterType(this FamilyParameter parameter) =>
-            parameter.GetParameterType();
+        public static string GetParameterTypeLabel(this FamilyParameter parameter) =>
+            parameter.GetParameterTypeLabel();
 
         public static Type GetTypeForDataTable(this Parameter parameter)
         {

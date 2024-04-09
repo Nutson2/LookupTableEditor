@@ -6,6 +6,7 @@ namespace LookupTableEditor
     public class Header
     {
         public string Name { get; set; } = string.Empty;
+        public int Index { get; set; } = 0;
 #if R22_OR_GREATER
         public ForgeTypeId Type { get; set; } = SpecTypeId.String.Text;
         public string TypeString => Name.IsValid() ? Type.ToSpecLabel() : string.Empty;
