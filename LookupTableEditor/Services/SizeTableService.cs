@@ -45,13 +45,12 @@ namespace LookupTableEditor.Services
             var dataTableInfo = new SizeTableInfo(name, _converter);
             var familySizeTable = Manager.GetSizeTable(name);
 
-            if (familySizeTable == null)
-            {
-                dataTableInfo.InsertFirstColumn();
-                return dataTableInfo;
-            }
+            dataTableInfo.InsertFirstColumn();
 
-            for (int columnIndx = 0; columnIndx < familySizeTable.NumberOfColumns; columnIndx++)
+            if (familySizeTable == null)
+                return dataTableInfo;
+
+            for (int columnIndx = 1; columnIndx < familySizeTable.NumberOfColumns; columnIndx++)
             {
                 var column = familySizeTable.GetColumnHeader(columnIndx);
                 dataTableInfo.AddHeader(column);

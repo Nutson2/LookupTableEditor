@@ -16,6 +16,13 @@ namespace LookupTableEditor.Views
             InitializeComponent();
             DataContext = vm;
             _vm = vm;
+            _vm.OnColumnNameChanged = () =>
+            {
+                for (int i = 0; i < dg_Table.Columns.Count; i++)
+                {
+                    dg_Table.Columns[i].Header = _vm.SizeTableInfo.Table.Columns[i].Caption;
+                }
+            };
         }
 
         private void Page_PreviewKeyDown(object sender, KeyEventArgs e)

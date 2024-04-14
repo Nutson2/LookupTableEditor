@@ -15,17 +15,19 @@ namespace LookupTableEditor.Views
         private SizeTableService _sizeTableService;
         public SizeTableInfo? SizeTableInfo { get; set; }
 
+        public Action? OnColumnNameChanged;
         public int SelectedColumnIndex
         {
             get { return selectedColumnIndex; }
             set
             {
                 selectedColumnIndex = value;
-                SelectedColumnName = SizeTableInfo.Table.Columns[value].ColumnName;
+                SelectedColumnName = SizeTableInfo.Table.Columns[value].Caption;
                 SelectedColumnType = SizeTableInfo.GetColumnType(SelectedColumnName);
                 SelectedColumnSizeTableType = SizeTableInfo.GetColumnSizeTableType(
                     SelectedColumnType
                 );
+                OnPropertyChanged(nameof(SelectedColumnType));
             }
         }
 
@@ -33,13 +35,17 @@ namespace LookupTableEditor.Views
         private string _selectedColumnName;
 
         [ObservableProperty]
-        private AbstractParameterType _selectedColumnType;
+        private AbstractParameterType _selectedColumnType = AbstractParameterType.Empty();
 
         [ObservableProperty]
         private string _selectedColumnSizeTableType;
 
         public List<AbstractParameterType> ParameterTypes { get; } =
-            AbstractParameterType.GetAllTypes();
+            AbstractParameterType
+                .GetAllTypes()
+                .Where(p => p.Label.IsValid())
+                .OrderBy(p => p.Label)
+                .ToList();
 
         public TableContentPageViewModel(
             SizeTableService sizeTableService,
@@ -52,12 +58,21 @@ namespace LookupTableEditor.Views
 
         partial void OnSelectedColumnNameChanged(string? oldValue, string newValue)
         {
-            SizeTableInfo.ChangeColumnName(oldValue, newValue, SelectedColumnType);
+            if (!oldValue.IsValid() || !newValue.IsValid())
+                return;
+            SizeTableInfo.ChangeColumnName(
+                SelectedColumnIndex,
+                oldValue,
+                newValue,
+                SelectedColumnType
+            );
+            OnColumnNameChanged?.Invoke();
         }
 
         partial void OnSelectedColumnTypeChanged(AbstractParameterType value)
         {
             SizeTableInfo.ChangeColumnType(SelectedColumnName, value);
+            SelectedColumnSizeTableType = SizeTableInfo.GetColumnSizeTableType(value);
         }
 
         [RelayCommand]

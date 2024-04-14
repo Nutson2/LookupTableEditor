@@ -25,7 +25,7 @@
 
     <Window.Background>
         <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
-            <GradientStop Offset="0" Color="#FF6AB4F5" />
+            <GradientStop Offset="0" Color="#FF6A99Ff" />
             <GradientStop Offset="1" Color="#FFB99fff" />
         </LinearGradientBrush>
     </Window.Background>

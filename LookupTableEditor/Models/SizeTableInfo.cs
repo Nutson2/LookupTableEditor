@@ -30,8 +30,8 @@ namespace LookupTableEditor
 
         public void InsertFirstColumn()
         {
-            Table.Columns.Add(" ", Type.GetType("System.String"));
-            _headerTypes.Add(" ", AbstractParameterType.Empty());
+            Table.Columns.Add("_", Type.GetType("System.String"));
+            _headerTypes.Add("_", AbstractParameterType.Empty());
         }
 
         public void AddHeader(FamilySizeTableColumn column)
@@ -41,7 +41,8 @@ namespace LookupTableEditor
             var headerName = column.Name;
 
             _headerTypes.Add(headerName, headerType);
-            Table.Columns.Add(headerName, dataTableHeaderType);
+            var tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
+            tableColumn.Caption = headerName;
         }
 
         public void AddHeader(FamilyParameter parameter)
@@ -51,7 +52,8 @@ namespace LookupTableEditor
             var headerName = parameter.Definition.Name;
 
             _headerTypes.Add(headerName, headerType);
-            Table.Columns.Add(headerName, dataTableHeaderType);
+            var tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
+            tableColumn.Caption = headerName;
         }
 
         public string ConvertToString()
@@ -97,12 +99,16 @@ namespace LookupTableEditor
                 : DefaultType;
 
         internal void ChangeColumnName(
+            int selectedColumnIndex,
             string? oldValue,
             string newValue,
             AbstractParameterType selectedColumnType
         )
         {
-            Table.Columns[oldValue].ColumnName = newValue;
+            var column = Table.Columns[selectedColumnIndex];
+            if (column.Caption != oldValue)
+                return;
+            column.Caption = newValue;
             _headerTypes.Remove(oldValue);
             _headerTypes.Add(newValue, selectedColumnType);
         }
