@@ -1,4 +1,5 @@
-﻿using Autodesk.Revit.DB;
+﻿using System.Collections.ObjectModel;
+using Autodesk.Revit.DB;
 using LookupTableEditor.Services;
 
 namespace LookupTableEditor.ViewModels
@@ -8,7 +9,7 @@ namespace LookupTableEditor.ViewModels
         private readonly SizeTableInfo sizeTableInfo;
         private readonly FamiliesService _familiesService;
 
-        public List<FamilyParameter> Parameters { get; set; }
+        public FamParameters Parameters { get; set; } = new FamParameters();
 
         public SelectNewColumnViewModel(
             SizeTableInfo sizeTableInfo,
@@ -17,7 +18,9 @@ namespace LookupTableEditor.ViewModels
         {
             this.sizeTableInfo = sizeTableInfo;
             _familiesService = familiesService;
-            Parameters = _familiesService.GetFamilyParameters().ToList();
+            _familiesService.GetFamilyParameters().ToList().ForEach(x => Parameters.Add(x));
         }
     }
+
+    public class FamParameters : ObservableCollection<FamilyParameter> { }
 }

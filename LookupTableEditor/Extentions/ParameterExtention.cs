@@ -5,14 +5,14 @@ namespace LookupTableEditor.Extentions
     public static class ParameterExtention
     {
 #if R22_OR_GREATER
-        public static ForgeTypeId GetParameterType(this Parameter parameter)
+        public static AbstractParameterType GetParameterType(this Parameter parameter)
         {
             return parameter.GetTypeId().TypeId.IsValid()
-                ? parameter.GetTypeId()
-                : SpecTypeId.String.Text;
+                ? new AbstractParameterType(parameter.GetTypeId())
+                : new AbstractParameterType(SpecTypeId.String.Text);
         }
 
-        public static ForgeTypeId GetParameterType(this FamilyParameter parameter) =>
+        public static AbstractParameterType GetParameterType(this FamilyParameter parameter) =>
             parameter.GetParameterType();
 #else
         public static UnitType GetParameterType(this Parameter parameter) =>

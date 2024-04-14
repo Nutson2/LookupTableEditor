@@ -43,7 +43,6 @@ namespace LookupTableEditor.ViewModels
         private void SetTableContentPage()
         {
             var vm = new TableContentPageViewModel(_sizeTableService, _sizeTableInfo);
-            vm.OnAddColumnCommandInvoked = SetSelectNewColumnPage;
             CurrentPage = new TableContentPage(vm);
         }
 

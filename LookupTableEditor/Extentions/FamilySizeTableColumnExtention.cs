@@ -30,14 +30,16 @@ namespace LookupTableEditor.Extentions
         }
 
 #if R22_OR_GREATER
-        public static ForgeTypeId GetHeaderType(this FamilySizeTableColumn column) =>
+        public static AbstractParameterType GetHeaderType(this FamilySizeTableColumn column) =>
             column.GetSpecTypeId().TypeId.IsValid()
-                ? column.GetSpecTypeId()
-                : SpecTypeId.String.Text;
+                ? new AbstractParameterType(column.GetSpecTypeId())
+                : new AbstractParameterType(SpecTypeId.String.Text);
 
 #else
-        public static UnitType GetHeaderType(this FamilySizeTableColumn column) =>
-            column == null ? UnitType.UT_Undefined : column.UnitType;
+        public static AbstractParameterType GetHeaderType(this FamilySizeTableColumn column) =>
+            column == null
+                ? new AbstractParameterType(UnitType.UT_Undefined)
+                : new AbstractParameterType(column.UnitType);
 #endif
     }
 }

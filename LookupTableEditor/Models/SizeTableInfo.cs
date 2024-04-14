@@ -8,17 +8,19 @@ namespace LookupTableEditor
 {
     public partial class SizeTableInfo
     {
-        private readonly Dictionary<string, string> _headerConverter;
         private readonly string _headerDelimiter = ",";
         private readonly string systemDecimalSeparator = CultureInfo
             .CurrentCulture
             .NumberFormat
             .NumberDecimalSeparator;
+        private const string DefaultType = "##OTHER##";
 
         public string? Name { get; set; }
         public string? FilePath { get; set; }
         public DataTable Table { get; } = new DataTable();
-        public List<Header> Headers { get; } = new();
+
+        private readonly Dictionary<string, string> _headerConverter;
+        private readonly Dictionary<string, AbstractParameterType> _headerTypes = new();
 
         public SizeTableInfo(string? name, Dictionary<string, string> headerConverter)
         {
@@ -28,32 +30,27 @@ namespace LookupTableEditor
 
         public void InsertFirstColumn()
         {
-            Headers.Add(new Header());
             Table.Columns.Add(" ", Type.GetType("System.String"));
+            _headerTypes.Add(" ", AbstractParameterType.Empty());
         }
 
         public void AddHeader(FamilySizeTableColumn column)
         {
-            var headerName = column.Name.Replace(".", "_");
             var dataTableHeaderType = column.GetTypeForDataTable();
-
             var headerType = column.GetHeaderType();
+            var headerName = column.Name;
 
-            AddHeader(headerName, dataTableHeaderType, headerType);
+            _headerTypes.Add(headerName, headerType);
+            Table.Columns.Add(headerName, dataTableHeaderType);
         }
 
         public void AddHeader(FamilyParameter parameter)
         {
-            var headerName = parameter.Definition.Name.Replace(".", "_");
             var dataTableHeaderType = parameter.GetTypeForDataTable();
             var headerType = parameter.GetParameterType();
+            var headerName = parameter.Definition.Name;
 
-            AddHeader(headerName, dataTableHeaderType, headerType);
-        }
-
-        private void AddHeader(string headerName, Type dataTableHeaderType, ForgeTypeId headerType)
-        {
-            Headers.Add(new Header() { Name = headerName, Type = headerType });
+            _headerTypes.Add(headerName, headerType);
             Table.Columns.Add(headerName, dataTableHeaderType);
         }
 
@@ -61,12 +58,10 @@ namespace LookupTableEditor
         {
             var strBuilder = new StringBuilder();
 
-            Headers.ForEach(h => h.Index = Table.Columns.IndexOf(h.Name));
-
             strBuilder.AppendLine(
                 string.Join(
                     _headerDelimiter,
-                    Headers.OrderBy(h => h.Index).Select(h => h.Name + TryGetValue(h.TypeString))
+                    Table.Columns.Cast<DataColumn>().Select(c => c.ColumnName)
                 )
             );
 
@@ -84,14 +79,37 @@ namespace LookupTableEditor
             return strBuilder.ToString();
         }
 
-        private string TryGetValue(string key) =>
-            key.IsValid() ? _headerConverter[key] : string.Empty;
-
         private string Validate(string str, Type columnType) =>
             columnType == typeof(string) ? ValidateAsText(str) : ValidateAsNumber(str);
 
         private string ValidateAsText(string str) => $"\"{str.Replace("\"", "\"\"")}\"";
 
         private string ValidateAsNumber(string str) => str.Replace(systemDecimalSeparator, ".");
+
+        internal AbstractParameterType GetColumnType(string selectedColumnName) =>
+            _headerTypes.ContainsKey(selectedColumnName)
+                ? _headerTypes[selectedColumnName]
+                : AbstractParameterType.Empty();
+
+        internal string GetColumnSizeTableType(AbstractParameterType selectedColumnType) =>
+            _headerConverter.ContainsKey(selectedColumnType.ToString())
+                ? _headerConverter[selectedColumnType.ToString()]
+                : DefaultType;
+
+        internal void ChangeColumnName(
+            string? oldValue,
+            string newValue,
+            AbstractParameterType selectedColumnType
+        )
+        {
+            Table.Columns[oldValue].ColumnName = newValue;
+            _headerTypes.Remove(oldValue);
+            _headerTypes.Add(newValue, selectedColumnType);
+        }
+
+        internal void ChangeColumnType(string selectedColumnName, AbstractParameterType value)
+        {
+            _headerTypes[selectedColumnName] = value;
+        }
     }
 }

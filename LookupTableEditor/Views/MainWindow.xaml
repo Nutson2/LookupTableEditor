@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:LookupTableEditor.ViewModels"
     Title="Lookup table editor"
+    Width="600"
+    Height="450"
     MinWidth="600"
     MinHeight="450"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
@@ -129,7 +131,7 @@
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Content="{Binding Path=CurrentPage}"
-            NavigationUIVisibility="Hidden"/>
+            NavigationUIVisibility="Hidden" />
 
         <Grid Grid.Row="3" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>

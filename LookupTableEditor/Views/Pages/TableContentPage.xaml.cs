@@ -23,23 +23,17 @@ namespace LookupTableEditor.Views
             if (e.Key != Key.V || Keyboard.Modifiers != ModifierKeys.Control)
                 return;
             var columnIndex = dg_Table.CurrentColumn.DisplayIndex;
-            int rowIndex = SelecterRowIndex();
+            int rowIndex = SelectedRowIndex();
 
             _vm.PasteFromClipboard(rowIndex, columnIndex);
         }
 
-        private int SelecterRowIndex() =>
+        private int SelectedRowIndex() =>
             _vm.SizeTableInfo.Table.Rows.IndexOf(((DataRowView)dg_Table.SelectedCells[0].Item).Row);
 
-        private void MenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void dg_Table_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            var menuItem = (MenuItem)sender;
-            string menuHeader = menuItem.Header.ToString();
-
-            if (menuHeader == _vm.AddNewColumnText)
-                _vm.AddColumn();
-            else if (menuHeader == _vm.AddNewRowText)
-                _vm.AddRowOnTop(SelecterRowIndex());
+            _vm.SelectedColumnIndex = dg_Table.CurrentColumn.DisplayIndex;
         }
     }
 }

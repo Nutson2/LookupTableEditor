@@ -25,34 +25,32 @@
             <ColumnDefinition />
             <ColumnDefinition Width="35" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBox Text="{Binding SelectedColumnName}" />
+            <ComboBox 
+                ItemsSource="{Binding ParameterTypes}"
+                SelectedItem="{Binding SelectedColumnType, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding SelectedColumnSizeTableType}" />
+        </StackPanel>
 
         <DataGrid
+            Grid.Row="1"
             x:Name="dg_Table"
             Background="#99F0F0F0"
             ClipboardCopyMode="ExcludeHeader"
             ItemsSource="{Binding Path=SizeTableInfo.Table}"
             MinColumnWidth="30"
-            SelectionUnit="Cell">
-
-            <DataGrid.Resources>
-                <ContextMenu x:Key="columnMenu">
-                    <MenuItem Click="MenuItem_Click" Header="{Binding AddNewColumnText}" />
-                </ContextMenu>
-
-                <ContextMenu x:Key="rowMenu">
-                    <MenuItem Click="MenuItem_Click" Header="{Binding AddNewRowText}" />
-                </ContextMenu>
-
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="ContextMenu" Value="{StaticResource columnMenu}" />
-                </Style>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="ContextMenu" Value="{StaticResource rowMenu}" />
-                </Style>
-            </DataGrid.Resources>
-        </DataGrid>
+            SelectionUnit="Cell" 
+            SelectedCellsChanged="dg_Table_SelectedCellsChanged"
+            />
 
         <StackPanel
+            Grid.RowSpan="2"
             Grid.Column="1"
             Margin="0"
             Orientation="Vertical">

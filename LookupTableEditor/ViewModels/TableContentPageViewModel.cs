@@ -10,12 +10,36 @@ namespace LookupTableEditor.Views
 {
     public partial class TableContentPageViewModel : ObservableObject
     {
-        public string AddNewColumnText { get; } = "Вставить новый столбец";
-        public string AddNewRowText { get; } = "Вставить строку";
+        private int selectedColumnIndex;
 
         private SizeTableService _sizeTableService;
-        public Action OnAddColumnCommandInvoked { get; set; }
         public SizeTableInfo? SizeTableInfo { get; set; }
+
+        public int SelectedColumnIndex
+        {
+            get { return selectedColumnIndex; }
+            set
+            {
+                selectedColumnIndex = value;
+                SelectedColumnName = SizeTableInfo.Table.Columns[value].ColumnName;
+                SelectedColumnType = SizeTableInfo.GetColumnType(SelectedColumnName);
+                SelectedColumnSizeTableType = SizeTableInfo.GetColumnSizeTableType(
+                    SelectedColumnType
+                );
+            }
+        }
+
+        [ObservableProperty]
+        private string _selectedColumnName;
+
+        [ObservableProperty]
+        private AbstractParameterType _selectedColumnType;
+
+        [ObservableProperty]
+        private string _selectedColumnSizeTableType;
+
+        public List<AbstractParameterType> ParameterTypes { get; } =
+            AbstractParameterType.GetAllTypes();
 
         public TableContentPageViewModel(
             SizeTableService sizeTableService,
@@ -26,14 +50,22 @@ namespace LookupTableEditor.Views
             SizeTableInfo = sizeTableInfo;
         }
 
+        partial void OnSelectedColumnNameChanged(string? oldValue, string newValue)
+        {
+            SizeTableInfo.ChangeColumnName(oldValue, newValue, SelectedColumnType);
+        }
+
+        partial void OnSelectedColumnTypeChanged(AbstractParameterType value)
+        {
+            SizeTableInfo.ChangeColumnType(SelectedColumnName, value);
+        }
+
         [RelayCommand]
         private void SaveSizeTable()
         {
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             Process.Start(SizeTableInfo.FilePath);
         }
-
-        public void AddColumn() => OnAddColumnCommandInvoked?.Invoke();
 
         [RelayCommand]
         private void AddRowOnTop() => AddRowOnTop(0);
