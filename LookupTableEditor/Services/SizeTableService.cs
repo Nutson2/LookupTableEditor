@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using LookupTableEditor.Extentions;
@@ -12,13 +13,13 @@ namespace LookupTableEditor.Services
     {
         private readonly Document _doc;
         private readonly RevitApplication _app;
-        private readonly Dictionary<string, string> _converter;
         private readonly string systemDecimalSeparator = CultureInfo
             .CurrentCulture
             .NumberFormat
             .NumberDecimalSeparator;
 
         public FamilySizeTableManager Manager { get; }
+        public List<AbstractParameterType> AbstractParameterTypes { get; }
 
         public SizeTableService(Document doc, RevitApplication application)
         {
@@ -28,21 +29,23 @@ namespace LookupTableEditor.Services
             FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
             Manager = FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
 
-            _converter = _app.VersionNumber switch
-            {
-                "2020"
-                    => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2020(),
-                "2021"
-                    => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2021(),
-                "2023"
-                    => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2023(),
-                _ => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2020()
-            };
+#if R20
+            var json = Resource.ParametersTypes2020;
+#elif R21
+            var json = Resource.ParametersTypes2021;
+#elif R23
+            var json = Resource.ParametersTypes2023;
+#endif
+            var t = JsonSerializer.Deserialize<List<DefinitionOfParameterType>>(json);
+            AbstractParameterTypes = t.Select(def =>
+                    AbstractParameterType.FromDefinitionOfParameterType(def)
+                )
+                .ToList();
         }
 
         public SizeTableInfo GetSizeTableInfo(string name)
         {
-            var dataTableInfo = new SizeTableInfo(name, _converter);
+            var dataTableInfo = new SizeTableInfo(name, AbstractParameterTypes);
             var familySizeTable = Manager.GetSizeTable(name);
 
             dataTableInfo.InsertFirstColumn();

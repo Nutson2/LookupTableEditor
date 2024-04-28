@@ -15,20 +15,18 @@
     <Page.Resources>
         <CollectionViewSource x:Key="cvsParams" Source="{Binding Parameters}">
             <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Definition.ParameterGroup"/>
-                <PropertyGroupDescription PropertyName="StorageType"/>
+                <PropertyGroupDescription PropertyName="Definition.ParameterGroup" />
+                <PropertyGroupDescription PropertyName="StorageType" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Page.Resources>
-    <Grid >
+    <Grid>
 
-        <DataGrid ItemsSource="{Binding Source={StaticResource cvsParams}}"
-                  AutoGenerateColumns="False"
-                  >
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource cvsParams}}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Definition.Name}"/>
-                <DataGridTextColumn Header="ParameterGroup" Binding="{Binding Definition.ParameterGroup}"/>
-                <DataGridTextColumn Header="StorageType" Binding="{Binding StorageType}"/>
+                <DataGridTextColumn Binding="{Binding Definition.Name}" Header="Name" />
+                <DataGridTextColumn Binding="{Binding Definition.ParameterGroup}" Header="ParameterGroup" />
+                <DataGridTextColumn Binding="{Binding StorageType}" Header="StorageType" />
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
                 <GroupStyle>
@@ -40,12 +38,12 @@
                                         <Expander>
                                             <Expander.Header>
                                                 <DockPanel>
-                                                    <TextBlock Text="{Binding Path=Name}"/>
-                                                    <TextBlock Text="{Binding Path=ItemCount}"/>
+                                                    <TextBlock Text="{Binding Path=Name}" />
+                                                    <TextBlock Text="{Binding Path=ItemCount}" />
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>
-                                                <ItemsPresenter/>
+                                                <ItemsPresenter />
                                             </Expander.Content>
                                         </Expander>
                                     </ControlTemplate>
@@ -59,10 +57,12 @@
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
                             <DockPanel Background="LightBlue">
-                                <TextBlock Text="{Binding Path=Name}" 
-                                           Foreground="Blue" Margin="30,0,0,0" Width="100"/>
-                                <TextBlock Text="{Binding Path=ItemCount}" 
-                                           Foreground="Blue"/>
+                                <TextBlock
+                                    Width="100"
+                                    Margin="30,0,0,0"
+                                    Foreground="Blue"
+                                    Text="{Binding Path=Name}" />
+                                <TextBlock Foreground="Blue" Text="{Binding Path=ItemCount}" />
                             </DockPanel>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>

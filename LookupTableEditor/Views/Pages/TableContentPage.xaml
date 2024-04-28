@@ -34,8 +34,8 @@
                     <ComboBox
                         DisplayMemberPath="Label"
                         ItemsSource="{Binding ParameterTypes}"
-                        SelectedValue="{Binding SelectedColumnType , Mode=TwoWay}" />
-                    <TextBlock Text="{Binding SelectedColumnSizeTableType}" />
+                        SelectedValue="{Binding SelectedColumnType, Mode=TwoWay}" />
+                    <TextBlock Text="{Binding SelectedColumnType.SizeTablesTypeName}" />
                 </StackPanel>
             </GroupBox>
 
@@ -46,8 +46,26 @@
                 ClipboardCopyMode="ExcludeHeader"
                 ItemsSource="{Binding Path=SizeTableInfo.Table}"
                 MinColumnWidth="30"
+                ColumnWidth="100"
                 SelectedCellsChanged="dg_Table_SelectedCellsChanged"
-                SelectionUnit="Cell" />
+                SelectionUnit="Cell">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                         <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Text="{Binding}"
+                                        TextAlignment="Center"
+                                        TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+            </DataGrid>
         </StackPanel>
 
         <StackPanel

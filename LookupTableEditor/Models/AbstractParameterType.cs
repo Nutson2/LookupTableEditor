@@ -1,12 +1,31 @@
 ﻿using Autodesk.Revit.DB;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace LookupTableEditor
 {
-    public class AbstractParameterType
+    public class DefinitionOfParameterType(string typeName, string sizeTableType)
+    {
+        public string TypeName { get; } = typeName;
+        public string SizeTableType { get; } = sizeTableType;
+    }
+
+    public partial class AbstractParameterType : ObservableObject
     {
         public static AbstractParameterType Empty() => new(null);
 
+        [ObservableProperty]
+        private string? _sizeTablesTypeName = string.Empty;
+
 #if R22_OR_GREATER
+        public static AbstractParameterType FromDefinitionOfParameterType(
+            DefinitionOfParameterType def
+        )
+        {
+            var param = new AbstractParameterType(new ForgeTypeId(def.TypeName));
+            param.SizeTablesTypeName = def.SizeTableType;
+            return param;
+        }
+
         public static List<AbstractParameterType> GetAllTypes()
         {
             var type = typeof(SpecTypeId);
@@ -19,33 +38,49 @@ namespace LookupTableEditor
         }
 
         public ForgeTypeId? ParameterType { get; }
+        public string Label
+        {
+            get
+            {
+                var discpline = UnitUtils.IsMeasurableSpec(ParameterType)
+                    ? LabelUtils.GetLabelForDiscipline(UnitUtils.GetDiscipline(ParameterType))
+                        + " : "
+                    : string.Empty;
+                return discpline + LabelUtils.GetLabelForSpec(ParameterType);
+            }
+        }
 
         public AbstractParameterType(ForgeTypeId? parameterType)
         {
             ParameterType = parameterType;
         }
 
-        public string Label => GetLabel();
+        public override bool Equals(object obj) => ToString().Equals(obj.ToString());
 
-        private string GetLabel()
-        {
-            var discpline = UnitUtils.IsMeasurableSpec(ParameterType)
-                ? LabelUtils.GetLabelForDiscipline(UnitUtils.GetDiscipline(ParameterType)) + " : "
-                : string.Empty;
-            var t = discpline + LabelUtils.GetLabelForSpec(ParameterType);
-
-            return t;
-        }
-
-        public override bool Equals(object obj) => this.ToString().Equals(obj.ToString());
-
-        public override int GetHashCode() => this.ToString().GetHashCode();
+        public override int GetHashCode() => ToString().GetHashCode();
 
         public override string ToString() =>
-            ParameterType != null
-                ? ParameterType.TypeId.Split('-').First().Replace(':', '_')
-                : string.Empty;
+            ParameterType != null ? ParameterType.TypeId.Split('-').First() : string.Empty;
 #else
+        public static AbstractParameterType FromDefinitionOfParameterType(
+            DefinitionOfParameterType def
+        )
+        {
+            Enum.TryParse<ParameterType>(def.TypeName, out var type);
+            var param = new AbstractParameterType(type);
+            param.SizeTablesTypeName = def.SizeTableType;
+            return param;
+        }
+
+        public static List<AbstractParameterType> GetAllTypes()
+        {
+            var type = typeof(ParameterType);
+            return Enum.GetValues(type)
+                .Cast<ParameterType>()
+                .Select(p => new AbstractParameterType(p))
+                .ToList();
+        }
+
         public ParameterType? ParameterType { get; }
 
         public AbstractParameterType(ParameterType? parameterType)
@@ -58,15 +93,6 @@ namespace LookupTableEditor
 
         public override string ToString() =>
             ParameterType.HasValue ? ParameterType.ToString() : string.Empty;
-
-        public static List<AbstractParameterType> GetAllTypes()
-        {
-            var type = typeof(ParameterType);
-            return Enum.GetValues(type)
-                .Cast<ParameterType>()
-                .Select(p => new AbstractParameterType(p))
-                .ToList();
-        }
 
 #endif
     }

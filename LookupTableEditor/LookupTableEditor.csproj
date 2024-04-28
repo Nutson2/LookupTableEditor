@@ -60,6 +60,26 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R20|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R20</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R21|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R21</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R22|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R22</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R23|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R23</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R24|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R24</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
       <None Remove="Resources\Icons\LookupTableEditorCommand16.png" />
       <None Remove="Resources\Icons\LookupTableEditorCommand32.png" />
@@ -81,6 +101,7 @@
         <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*-*" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
+        <PackageReference Include="System.Text.Json" Version="8.0.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -90,11 +111,23 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Resource.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resource.resx</DependentUpon>
+      </Compile>
       <Compile Update="Settings.Designer.cs">
         <DesignTimeSharedInput>True</DesignTimeSharedInput>
         <AutoGen>True</AutoGen>
         <DependentUpon>Settings.settings</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resource.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

@@ -24,9 +24,6 @@ namespace LookupTableEditor.Views
                 selectedColumnIndex = value;
                 SelectedColumnName = SizeTableInfo.Table.Columns[value].Caption;
                 SelectedColumnType = SizeTableInfo.GetColumnType(SelectedColumnName);
-                SelectedColumnSizeTableType = SizeTableInfo.GetColumnSizeTableType(
-                    SelectedColumnType
-                );
                 OnPropertyChanged(nameof(SelectedColumnType));
             }
         }
@@ -36,16 +33,7 @@ namespace LookupTableEditor.Views
 
         [ObservableProperty]
         private AbstractParameterType _selectedColumnType = AbstractParameterType.Empty();
-
-        [ObservableProperty]
-        private string _selectedColumnSizeTableType;
-
-        public List<AbstractParameterType> ParameterTypes { get; } =
-            AbstractParameterType
-                .GetAllTypes()
-                .Where(p => p.Label.IsValid())
-                .OrderBy(p => p.Label)
-                .ToList();
+        public List<AbstractParameterType> ParameterTypes { get; }
 
         public TableContentPageViewModel(
             SizeTableService sizeTableService,
@@ -54,6 +42,11 @@ namespace LookupTableEditor.Views
         {
             _sizeTableService = sizeTableService.ThrowIfNull();
             SizeTableInfo = sizeTableInfo;
+
+            ParameterTypes = _sizeTableService
+                .AbstractParameterTypes.Where(p => p.Label.IsValid())
+                .OrderBy(p => p.Label)
+                .ToList();
         }
 
         partial void OnSelectedColumnNameChanged(string? oldValue, string newValue)
@@ -72,7 +65,6 @@ namespace LookupTableEditor.Views
         partial void OnSelectedColumnTypeChanged(AbstractParameterType value)
         {
             SizeTableInfo.ChangeColumnType(SelectedColumnName, value);
-            SelectedColumnSizeTableType = SizeTableInfo.GetColumnSizeTableType(value);
         }
 
         [RelayCommand]

@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:LookupTableEditor.ViewModels"
     Title="Lookup table editor"
-    Width="600"
-    Height="450"
+    Width="1000"
+    Height="650"
     MinWidth="600"
     MinHeight="450"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
@@ -42,7 +42,7 @@
             <RowDefinition />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-
+        
         <ComboBox
             Grid.Column="1"
             Grid.ColumnSpan="2"
@@ -73,7 +73,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Button
@@ -92,23 +91,6 @@
                 </Button>
                 <Button
                     Grid.Row="1"
-                    Padding="-20"
-                    Command="{Binding SetSelectNewColumnPageCommand}"
-                    IsEnabled="{Binding CanSelectPage}">
-
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        RenderTransformOrigin="0.5,0.5"
-                        Text="Definition">
-                        <TextBlock.RenderTransform>
-                            <RotateTransform Angle="270" />
-                        </TextBlock.RenderTransform>
-
-                    </TextBlock>
-
-                </Button>
-                <Button
-                    Grid.Row="2"
                     Padding="-20"
                     Command="{Binding SetTableFormulasPageCommand}"
                     IsEnabled="{Binding CanSelectPage}">

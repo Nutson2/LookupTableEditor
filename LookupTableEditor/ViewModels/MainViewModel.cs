@@ -33,6 +33,8 @@ namespace LookupTableEditor.ViewModels
             _familiesService = familiesService;
             SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
             CurTableName = SizeTableNames.FirstOrDefault();
+
+            SetTableContentPage();
         }
 
         [RelayCommand]
@@ -44,14 +46,6 @@ namespace LookupTableEditor.ViewModels
         {
             var vm = new TableContentPageViewModel(_sizeTableService, _sizeTableInfo);
             CurrentPage = new TableContentPage(vm);
-        }
-
-        [RelayCommand]
-        private void SetSelectNewColumnPage()
-        {
-            CurrentPage = new SelectNewColumnPage(
-                new SelectNewColumnViewModel(_sizeTableInfo, _familiesService)
-            );
         }
 
         [RelayCommand]
