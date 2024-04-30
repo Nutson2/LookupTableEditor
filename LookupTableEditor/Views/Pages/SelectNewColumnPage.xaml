@@ -8,25 +8,40 @@
     xmlns:vm="clr-namespace:LookupTableEditor.ViewModels"
     Title="SelectNewColumnPage"
     d:DataContext="{d:DesignInstance Type=vm:SelectNewColumnViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="250"
+    d:DesignWidth="300"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <CollectionViewSource x:Key="cvsParams" Source="{Binding Parameters}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Definition.ParameterGroup" />
-                <PropertyGroupDescription PropertyName="StorageType" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Styles\BaseStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
 
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource cvsParams}}">
+
+        <DataGrid
+            AutoGenerateColumns="False"
+            Background="Transparent"
+            ItemsSource="{Binding CollectionViewSource.View}"
+            SelectionMode="Extended" SelectionChanged="DataGrid_SelectionChanged"
+            >
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="IsSelected" Value="{Binding isSelected}" />
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Definition.Name}" Header="Name" />
-                <DataGridTextColumn Binding="{Binding Definition.ParameterGroup}" Header="ParameterGroup" />
-                <DataGridTextColumn Binding="{Binding StorageType}" Header="StorageType" />
+                <DataGridTextColumn Binding="{Binding Name , Mode=OneWay}" Header="Name" />
+                <DataGridTextColumn Binding="{Binding GroupName, Mode=OneWay}" Header="ParameterGroup" />
+                <DataGridTextColumn Binding="{Binding StorageType, Mode=OneWay}" Header="StorageType" />
+                <DataGridTextColumn Binding="{Binding IsSelected, Mode=OneWay}" Header="IsSelected" />
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
                 <GroupStyle>
@@ -39,7 +54,8 @@
                                             <Expander.Header>
                                                 <DockPanel>
                                                     <TextBlock Text="{Binding Path=Name}" />
-                                                    <TextBlock Text="{Binding Path=ItemCount}" />
+                                                    <TextBlock Foreground="LightGray" Text="  Количество: " />
+                                                    <TextBlock Foreground="LightGray" Text="{Binding Path=ItemCount}" />
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -71,5 +87,18 @@
 
             </DataGrid.GroupStyle>
         </DataGrid>
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Width="60"
+                Command="{Binding CancelCommand}"
+                Content="Отмена" />
+            <Button
+                Width="60"
+                Command="{Binding OKCommand}"
+                Content="OK" />
+        </StackPanel>
     </Grid>
 </Page>

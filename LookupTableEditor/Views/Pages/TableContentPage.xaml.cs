@@ -18,6 +18,8 @@ namespace LookupTableEditor.Views
             _vm = vm;
             _vm.OnColumnNameChanged = () =>
             {
+                if (_vm.SizeTableInfo is null)
+                    return;
                 for (int i = 0; i < dg_Table.Columns.Count; i++)
                 {
                     dg_Table.Columns[i].Header = _vm.SizeTableInfo.Table.Columns[i].Caption;
@@ -30,13 +32,17 @@ namespace LookupTableEditor.Views
             if (e.Key != Key.V || Keyboard.Modifiers != ModifierKeys.Control)
                 return;
             var columnIndex = dg_Table.CurrentColumn.DisplayIndex;
-            int rowIndex = SelectedRowIndex();
+            int? rowIndex = SelectedRowIndex();
+            if (!rowIndex.HasValue)
+                return;
 
-            _vm.PasteFromClipboard(rowIndex, columnIndex);
+            _vm.PasteFromClipboard(rowIndex.Value, columnIndex);
         }
 
-        private int SelectedRowIndex() =>
-            _vm.SizeTableInfo.Table.Rows.IndexOf(((DataRowView)dg_Table.SelectedCells[0].Item).Row);
+        private int? SelectedRowIndex() =>
+            _vm.SizeTableInfo?.Table.Rows.IndexOf(
+                ((DataRowView)dg_Table.SelectedCells[0].Item).Row
+            );
 
         private void dg_Table_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {

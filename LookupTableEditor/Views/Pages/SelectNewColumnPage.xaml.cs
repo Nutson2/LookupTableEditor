@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using LookupTableEditor.Models;
 using LookupTableEditor.ViewModels;
 
 namespace LookupTableEditor.Views
@@ -12,6 +13,18 @@ namespace LookupTableEditor.Views
         {
             InitializeComponent();
             DataContext = selectNewColumnViewModel;
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (FamilyParameterExtended fp in e.AddedItems)
+            {
+                fp.IsSelected = true;
+            }
+            foreach (FamilyParameterExtended fp in e.RemovedItems)
+            {
+                fp.IsSelected = false;
+            }
         }
     }
 }

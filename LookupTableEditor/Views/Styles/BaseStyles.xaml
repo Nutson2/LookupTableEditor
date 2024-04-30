@@ -41,6 +41,7 @@
     <Style BasedOn="{StaticResource base}" TargetType="TextBox">
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
+    <Style BasedOn="{StaticResource base}" TargetType="TextBlock" />
 
 
     <Style BasedOn="{StaticResource base}" TargetType="ComboBox" />

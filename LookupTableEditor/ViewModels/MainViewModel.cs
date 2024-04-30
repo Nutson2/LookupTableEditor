@@ -11,53 +11,39 @@ namespace LookupTableEditor.ViewModels
     {
         private readonly SizeTableService _sizeTableService;
         private readonly FamiliesService _familiesService;
-        private SizeTableInfo _sizeTableInfo;
+        private readonly TableContentPageViewModel tableContentPageVM;
 
         [ObservableProperty]
-        private Page _currentPage;
-
-        [ObservableProperty]
-        private List<string> _sizeTableNames = new();
-
-        [ObservableProperty]
-        private string _curTableName = string.Empty;
-        public bool IsTableNotExist => !SizeTableNames.Contains(CurTableName);
-        public bool CanSelectPage => _sizeTableInfo != null;
-
-        partial void OnCurTableNameChanged(string value) =>
-            _sizeTableInfo = _sizeTableService.GetSizeTableInfo(value);
+        private Page? _currentPage;
 
         public MainViewModel(SizeTableService sizeTableService, FamiliesService familiesService)
         {
             _sizeTableService = sizeTableService;
             _familiesService = familiesService;
-            SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
-            CurTableName = SizeTableNames.FirstOrDefault();
+
+            tableContentPageVM = new TableContentPageViewModel(_sizeTableService);
+            tableContentPageVM.OnAddNewColumn = SetSelectNewColumnPage;
 
             SetTableContentPage();
         }
 
         [RelayCommand]
-        private void CreateNewTable(string name) =>
-            _sizeTableInfo = _sizeTableService.GetSizeTableInfo(name);
-
-        [RelayCommand]
         private void SetTableContentPage()
         {
-            var vm = new TableContentPageViewModel(_sizeTableService, _sizeTableInfo);
-            CurrentPage = new TableContentPage(vm);
+            CurrentPage = new TableContentPage(tableContentPageVM);
+        }
+
+        private void SetSelectNewColumnPage()
+        {
+            var vm = new SelectNewColumnViewModel(tableContentPageVM, _familiesService);
+            vm.OnClosed = SetTableContentPage;
+
+            CurrentPage = new SelectNewColumnPage(vm);
         }
 
         [RelayCommand]
         private void SetTableFormulasPage() =>
-            CurrentPage = new TableFormulasPage(new TableFormulasViewModel(_sizeTableInfo));
-
-        [RelayCommand]
-        private void SetNewTable()
-        {
-            _sizeTableService.SaveSizeTableOnTheDisk(_sizeTableInfo);
-            _sizeTableService.ImportSizeTable(_sizeTableInfo);
-        }
+            CurrentPage = new TableFormulasPage(new TableFormulasViewModel());
 
         [RelayCommand]
         private void GotoTelegram() => Process.Start(Settings.Default.TelegramUrl);

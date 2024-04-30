@@ -37,34 +37,11 @@
             <ColumnDefinition Width="80" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
             <RowDefinition />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        
-        <ComboBox
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            VerticalContentAlignment="Center"
-            Background="#99F0F0F0"
-            ItemsSource="{Binding Path=SizeTableNames}"
-            SelectedValue="{Binding Path=CurTableName, Mode=TwoWay}" />
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="1"
-            d:Text=" New table name"
-            Text="{Binding Path=CurTableName, Mode=TwoWay}" />
-
-        <Button
-            Grid.Row="1"
-            Grid.Column="2"
-            Command="{Binding CreateNewTableCommand}"
-            Content="Создать"
-            IsEnabled="{Binding IsTableNotExist}" />
 
         <Border
-            Grid.Row="2"
             BorderBrush="#FFD2AAEA"
             BorderThickness="6"
             CornerRadius="4">
@@ -107,9 +84,7 @@
             </Grid>
         </Border>
 
-
         <Frame
-            Grid.Row="2"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Content="{Binding Path=CurrentPage}"
@@ -122,12 +97,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="80" />
             </Grid.ColumnDefinitions>
-            <Button
-                Grid.Row="2"
-                Grid.Column="4"
-                Command="{Binding SetNewTableCommand}"
-                Content="Применить"
-                IsEnabled="{Binding CanSelectPage}" />
             <Button
                 Grid.Row="2"
                 Command="{Binding GotoTelegramCommand}"

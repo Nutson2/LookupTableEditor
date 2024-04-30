@@ -1,26 +1,58 @@
 ﻿using System.Collections.ObjectModel;
-using Autodesk.Revit.DB;
+using System.Windows.Data;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using LookupTableEditor.Models;
 using LookupTableEditor.Services;
+using LookupTableEditor.Views;
 
 namespace LookupTableEditor.ViewModels
 {
-    public class SelectNewColumnViewModel
+    public partial class SelectNewColumnViewModel : ObservableObject
     {
-        private readonly SizeTableInfo sizeTableInfo;
+        private readonly TableContentPageViewModel _tableContentPageViewModel;
         private readonly FamiliesService _familiesService;
 
-        public FamParameters Parameters { get; set; } = new FamParameters();
+        public Action? OnClosed { get; set; }
+        public ObservableCollection<FamilyParameterExtended> Parameters { get; set; } = new();
+        public CollectionViewSource CollectionViewSource { get; set; }
 
         public SelectNewColumnViewModel(
-            SizeTableInfo sizeTableInfo,
+            TableContentPageViewModel tableContentPageViewModel,
             FamiliesService familiesService
         )
         {
-            this.sizeTableInfo = sizeTableInfo;
+            _tableContentPageViewModel = tableContentPageViewModel;
             _familiesService = familiesService;
-            _familiesService.GetFamilyParameters().ToList().ForEach(x => Parameters.Add(x));
+
+            _familiesService
+                .GetFamilyParameters()
+                .ToList()
+                .ForEach(fp => Parameters.Add(new FamilyParameterExtended(fp)));
+
+            CollectionViewSource = new CollectionViewSource() { Source = Parameters };
+
+            CollectionViewSource.GroupDescriptions.Add(
+                new PropertyGroupDescription(nameof(FamilyParameterExtended.GroupName))
+            );
+            CollectionViewSource.GroupDescriptions.Add(
+                new PropertyGroupDescription(nameof(FamilyParameterExtended.IsInstance))
+            );
+        }
+
+        [RelayCommand]
+        private void Cancel() => OnClosed?.Invoke();
+
+        [RelayCommand]
+        private void OK()
+        {
+            Parameters
+                .Where(fp => fp.IsSelected)
+                .ToList()
+                .ForEach(fp =>
+                    _tableContentPageViewModel.SizeTableInfo.AddHeader(fp.FamilyParameter)
+                );
+            OnClosed?.Invoke();
         }
     }
-
-    public class FamParameters : ObservableCollection<FamilyParameter> { }
 }

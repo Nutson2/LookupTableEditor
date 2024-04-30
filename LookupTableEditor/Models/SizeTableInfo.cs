@@ -47,7 +47,7 @@ namespace LookupTableEditor
 
         public void AddHeader(FamilyParameter parameter)
         {
-            var dataTableHeaderType = parameter.GetTypeForDataTable();
+            var dataTableHeaderType = parameter.Definition.GetTypeForDataTable();
             var headerType = parameter.GetParameterType();
             headerType = _abstractParameterTypes.Find(p => p.Equals(headerType));
 
