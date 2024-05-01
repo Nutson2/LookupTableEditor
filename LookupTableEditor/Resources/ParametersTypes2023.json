@@ -1,1 +1,634 @@
-[{"TypeName":"autodesk.spec:spec.string","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec:spec.int64","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec:spec.bool","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.string:url","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.measurable:currency","SizeTableType":"##CURRENCY##CURRENCY"},{"TypeName":"autodesk.spec.aec:volume","SizeTableType":"##VOLUME##CUBIC_METERS"},{"TypeName":"autodesk.spec.aec:time","SizeTableType":"##TIMEINTERVAL##SECONDS"},{"TypeName":"autodesk.spec.aec:speed","SizeTableType":"##SPEED##KILOMETERS_PER_HOUR"},{"TypeName":"autodesk.spec.aec:slope","SizeTableType":"##SLOPE##SLOPE_DEGREES"},{"TypeName":"autodesk.spec.aec:siteAngle","SizeTableType":"##SITE_ANGLE##DEGREES"},{"TypeName":"autodesk.spec.aec:sheetLength","SizeTableType":"##PAPER LENGTH##MILLIMETERS"},{"TypeName":"autodesk.spec.aec:rotationAngle","SizeTableType":"##ROTATION_ANGLE##DEGREES"},{"TypeName":"autodesk.spec.aec:numberOfPoles","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.aec:number","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.aec:multilineText","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.aec:material","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.aec:massDensity","SizeTableType":"##MASS_DENSITY##KILOGRAMS_PER_CUBIC_METER"},{"TypeName":"autodesk.spec.aec:length","SizeTableType":"##LENGTH##MILLIMETERS"},{"TypeName":"autodesk.spec.aec:fillPattern","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.aec:distance","SizeTableType":"##DISTANCE##CENTIMETERS"},{"TypeName":"autodesk.spec.aec:decimalSheetLength","SizeTableType":"##PEN SIZE##MILLIMETERS"},{"TypeName":"autodesk.spec.aec:costPerArea","SizeTableType":"##COST_PER_AREA##COST_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec:area","SizeTableType":"##AREA##SQUARE_METERS"},{"TypeName":"autodesk.spec.aec:angle","SizeTableType":"##ANGLE##DEGREES"},{"TypeName":"autodesk.spec.aec.structural:weightPerUnitLength","SizeTableType":"##WEIGHT_PER_UNIT_LENGTH##KILOGRAMS_FORCE_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:weight","SizeTableType":"##WEIGHT##KILONEWTONS"},{"TypeName":"autodesk.spec.aec.structural:warpingConstant","SizeTableType":"##WARPING_CONSTANT##CENTIMETERS_TO_THE_SIXTH_POWER"},{"TypeName":"autodesk.spec.aec.structural:velocity","SizeTableType":"##VELOCITY##METERS_PER_SECOND"},{"TypeName":"autodesk.spec.aec.structural:unitWeight","SizeTableType":"##UNIT_WEIGHT##KILONEWTONS_PER_CUBIC_METER"},{"TypeName":"autodesk.spec.aec.structural:thermalExpansionCoefficient","SizeTableType":"##THERMAL_EXPANSION_COEFFICIENT##INVERSE_DEGREES_CELSIUS"},{"TypeName":"autodesk.spec.aec.structural:surfaceAreaPerUnitLength","SizeTableType":"##SURFACE_AREA##SQUARE_METERS_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:stress","SizeTableType":"##STRESS##MEGAPASCALS"},{"TypeName":"autodesk.spec.aec.structural:sectionProperty","SizeTableType":"##SECTION_PROPERTY##CENTIMETERS"},{"TypeName":"autodesk.spec.aec.structural:sectionModulus","SizeTableType":"##SECTION_MODULUS##CUBIC_CENTIMETERS"},{"TypeName":"autodesk.spec.aec.structural:sectionDimension","SizeTableType":"##SECTION_DIMENSION##CENTIMETERS"},{"TypeName":"autodesk.spec.aec.structural:sectionArea","SizeTableType":"##SECTION_AREA##SQUARE_CENTIMETERS"},{"TypeName":"autodesk.spec.aec.structural:rotationalPointSpringCoefficient","SizeTableType":"##ROTATIONAL_POINT_SPRING_COEFFICIENT##KILONEWTON_METERS_PER_DEGREE"},{"TypeName":"autodesk.spec.aec.structural:rotationalLineSpringCoefficient","SizeTableType":"##ROTATIONAL_LINEAR_SPRING_COEFFICIENT##KILONEWTON_METERS_PER_DEGREE_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:rotation","SizeTableType":"##ROTATION##RADIANS"},{"TypeName":"autodesk.spec.aec.structural:reinforcementVolume","SizeTableType":"##REINFORCEMENT_VOLUME##CUBIC_CENTIMETERS"},{"TypeName":"autodesk.spec.aec.structural:reinforcementSpacing","SizeTableType":"##REINFORCEMENT_SPACING##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.structural:reinforcementLength","SizeTableType":"##REINFORCEMENT_LENGTH##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.structural:reinforcementCover","SizeTableType":"##REINFORCEMENT_COVER##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.structural:reinforcementAreaPerUnitLength","SizeTableType":"##REINFORCEMENT_AREA_PER_UNIT_LENGTH##SQUARE_CENTIMETERS_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:reinforcementArea","SizeTableType":"##REINFORCEMENT_AREA##SQUARE_CENTIMETERS"},{"TypeName":"autodesk.spec.aec.structural:pulsation","SizeTableType":"##PULSATION##RADIANS_PER_SECOND"},{"TypeName":"autodesk.spec.aec.structural:pointSpringCoefficient","SizeTableType":"##POINT_SPRING_COEFFICIENT##KILONEWTONS_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:period","SizeTableType":"##PERIOD##SECONDS"},{"TypeName":"autodesk.spec.aec.structural:momentScale","SizeTableType":"##MOMENT_SCALE##INVERSE_KILONEWTONS"},{"TypeName":"autodesk.spec.aec.structural:momentOfInertia","SizeTableType":"##MOMENT_OF_INERTIA##CENTIMETERS_TO_THE_FOURTH_POWER"},{"TypeName":"autodesk.spec.aec.structural:moment","SizeTableType":"##MOMENT##KILONEWTON_METERS"},{"TypeName":"autodesk.spec.aec.structural:massPerUnitLength","SizeTableType":"##MASS_PER_UNIT_LENGTH##KILOGRAMS_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:massPerUnitArea","SizeTableType":"##MASS_PER_UNIT_AREA##KILOGRAMS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.structural:mass","SizeTableType":"##MASS##KILOGRAMS"},{"TypeName":"autodesk.spec.aec.structural:linearMomentScale","SizeTableType":"##LINEAR_MOMENT_SCALE##METERS_PER_KILONEWTON"},{"TypeName":"autodesk.spec.aec.structural:linearMoment","SizeTableType":"##LINEAR_MOMENT##KILONEWTON_METERS_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:linearForceScale","SizeTableType":"##LINEAR_FORCE_SCALE##SQUARE_METERS_PER_KILONEWTON"},{"TypeName":"autodesk.spec.aec.structural:linearForce","SizeTableType":"##LINEAR_FORCE##KILONEWTONS_PER_METER"},{"TypeName":"autodesk.spec.aec.structural:lineSpringCoefficient","SizeTableType":"##LINEAR_SPRING_COEFFICIENT##KILONEWTONS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.structural:frequency","SizeTableType":"##STRUCTURAL_FREQUENCY##HERTZ"},{"TypeName":"autodesk.spec.aec.structural:forceScale","SizeTableType":"##FORCE_SCALE##METERS_PER_KILONEWTON"},{"TypeName":"autodesk.spec.aec.structural:force","SizeTableType":"##FORCE##KILONEWTONS"},{"TypeName":"autodesk.spec.aec.structural:energy","SizeTableType":"##ENERGY##KILOJOULES"},{"TypeName":"autodesk.spec.aec.structural:displacement","SizeTableType":"##DISPLACEMENT/DEFLECTION##CENTIMETERS"},{"TypeName":"autodesk.spec.aec.structural:crackWidth","SizeTableType":"##CRACK_WIDTH##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.structural:barDiameter","SizeTableType":"##BAR_DIAMETER##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.structural:areaSpringCoefficient","SizeTableType":"##AREA_SPRING_COEFFICIENT##KILONEWTONS_PER_CUBIC_METER"},{"TypeName":"autodesk.spec.aec.structural:areaForceScale","SizeTableType":"##AREA_FORCE_SCALE##CUBIC_METERS_PER_KILONEWTON"},{"TypeName":"autodesk.spec.aec.structural:areaForce","SizeTableType":"##AREA_FORCE##KILONEWTONS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.structural:acceleration","SizeTableType":"##ACCELERATION##METERS_PER_SECOND_SQUARED"},{"TypeName":"autodesk.spec.aec.piping:volume","SizeTableType":"##PIPING_VOLUME##LITERS"},{"TypeName":"autodesk.spec.aec.piping:viscosity","SizeTableType":"##PIPING_VISCOSITY##PASCAL_SECONDS"},{"TypeName":"autodesk.spec.aec.piping:velocity","SizeTableType":"##PIPING_VELOCITY##METERS_PER_SECOND"},{"TypeName":"autodesk.spec.aec.piping:temperatureDifference","SizeTableType":"##PIPING_TEMPERATURE_DIFFERENCE##CELSIUS_INTERVAL"},{"TypeName":"autodesk.spec.aec.piping:temperature","SizeTableType":"##PIPING_TEMPERATURE##CELSIUS"},{"TypeName":"autodesk.spec.aec.piping:slope","SizeTableType":"##PIPING_SLOPE##PERCENTAGE"},{"TypeName":"autodesk.spec.aec.piping:roughness","SizeTableType":"##PIPING_ROUGHNESS##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.piping:pressure","SizeTableType":"##PIPING_PRESSURE##PASCALS"},{"TypeName":"autodesk.spec.aec.piping:pipeSize","SizeTableType":"##PIPE_SIZE##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.piping:pipeMassPerUnitLength","SizeTableType":"##PIPE_MASS_PER_UNIT_LENGTH##KILOGRAMS_PER_METER"},{"TypeName":"autodesk.spec.aec.piping:pipeInsulationThickness","SizeTableType":"##PIPE_INSULATION_THICKNESS##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.piping:pipeDimension","SizeTableType":"##PIPE_DIMENSION##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.piping:massPerTime","SizeTableType":"##PIPING_MASS_PER_TIME##KILOGRAMS_PER_HOUR"},{"TypeName":"autodesk.spec.aec.piping:mass","SizeTableType":"##PIPE_MASS##KILOGRAMS"},{"TypeName":"autodesk.spec.aec.piping:friction","SizeTableType":"##PIPING_FRICTION##PASCALS_PER_METER"},{"TypeName":"autodesk.spec.aec.piping:flow","SizeTableType":"##PIPING_FLOW##LITERS_PER_SECOND"},{"TypeName":"autodesk.spec.aec.piping:density","SizeTableType":"##PIPING_DENSITY##KILOGRAMS_PER_CUBIC_METER"},{"TypeName":"autodesk.spec.aec.infrastructure:stationingInterval","SizeTableType":"##STATIONING_INTERVAL##METERS"},{"TypeName":"autodesk.spec.aec.infrastructure:stationing","SizeTableType":"##STATIONING##METERS"},{"TypeName":"autodesk.spec.aec.hvac:viscosity","SizeTableType":"##HVAC_VISCOSITY##PASCAL_SECONDS"},{"TypeName":"autodesk.spec.aec.hvac:velocity","SizeTableType":"##HVAC_VELOCITY##METERS_PER_SECOND"},{"TypeName":"autodesk.spec.aec.hvac:temperatureDifference","SizeTableType":"##HVAC_TEMPERATURE_DIFFERENCE##CELSIUS_INTERVAL"},{"TypeName":"autodesk.spec.aec.hvac:temperature","SizeTableType":"##HVAC_TEMPERATURE##CELSIUS"},{"TypeName":"autodesk.spec.aec.hvac:slope","SizeTableType":"##HVAC_SLOPE##PERCENTAGE"},{"TypeName":"autodesk.spec.aec.hvac:roughness","SizeTableType":"##HVAC_ROUGHNESS##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.hvac:pressure","SizeTableType":"##HVAC_PRESSURE##PASCALS"},{"TypeName":"autodesk.spec.aec.hvac:powerPerFlow","SizeTableType":"##HVAC_POWER_PER_FLOW##WATTS_PER_CUBIC_METER_PER_SECOND"},{"TypeName":"autodesk.spec.aec.hvac:powerDensity","SizeTableType":"##HVAC_POWER_DENSITY##WATTS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.hvac:power","SizeTableType":"##HVAC_POWER##WATTS"},{"TypeName":"autodesk.spec.aec.hvac:massPerTime","SizeTableType":"##HVAC_MASS_PER_TIME##KILOGRAMS_PER_HOUR"},{"TypeName":"autodesk.spec.aec.hvac:heatingLoadDividedByVolume","SizeTableType":"##HVAC_HEATING_LOAD_DIVIDED_BY_VOLUME##WATTS_PER_CUBIC_METER"},{"TypeName":"autodesk.spec.aec.hvac:heatingLoadDividedByArea","SizeTableType":"##HVAC_HEATING_LOAD_DIVIDED_BY_AREA##WATTS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.hvac:heatingLoad","SizeTableType":"##HVAC_HEATING_LOAD##WATTS"},{"TypeName":"autodesk.spec.aec.hvac:heatGain","SizeTableType":"##HVAC_HEAT_GAIN##WATTS"},{"TypeName":"autodesk.spec.aec.hvac:friction","SizeTableType":"##HVAC_FRICTION##PASCALS_PER_METER"},{"TypeName":"autodesk.spec.aec.hvac:flowPerPower","SizeTableType":"##HVAC_FLOW_PER_POWER##CUBIC_METERS_PER_WATT_SECOND"},{"TypeName":"autodesk.spec.aec.hvac:factor","SizeTableType":"##HVAC_FACTOR##PERCENTAGE"},{"TypeName":"autodesk.spec.aec.hvac:ductSize","SizeTableType":"##HVAC_DUCT_SIZE##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.hvac:ductLiningThickness","SizeTableType":"##HVAC_DUCT_LINING_THICKNESS##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.hvac:ductInsulationThickness","SizeTableType":"##HVAC_DUCT_INSULATION_THICKNESS##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.hvac:diffusivity","SizeTableType":"##HVAC_DIFFUSIVITY##SQUARE_METERS_PER_SECOND"},{"TypeName":"autodesk.spec.aec.hvac:density","SizeTableType":"##HVAC_DENSITY##KILOGRAMS_PER_CUBIC_METER"},{"TypeName":"autodesk.spec.aec.hvac:crossSection","SizeTableType":"##HVAC_CROSS_SECTION##SQUARE_MILLIMETERS"},{"TypeName":"autodesk.spec.aec.hvac:coolingLoadDividedByVolume","SizeTableType":"##HVAC_COOLING_LOAD_DIVIDED_BY_VOLUME##WATTS_PER_CUBIC_METER"},{"TypeName":"autodesk.spec.aec.hvac:coolingLoadDividedByArea","SizeTableType":"##HVAC_COOLING_LOAD_DIVIDED_BY_AREA##WATTS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.hvac:coolingLoad","SizeTableType":"##HVAC_COOLING_LOAD##WATTS"},{"TypeName":"autodesk.spec.aec.hvac:areaDividedByHeatingLoad","SizeTableType":"##HVAC_AREA_DIVIDED_BY_HEATING_LOAD##SQUARE_METERS_PER_KILOWATT"},{"TypeName":"autodesk.spec.aec.hvac:areaDividedByCoolingLoad","SizeTableType":"##HVAC_AREA_DIVIDED_BY_COOLING_LOAD##SQUARE_METERS_PER_KILOWATT"},{"TypeName":"autodesk.spec.aec.hvac:angularSpeed","SizeTableType":"##HVAC_ANGULAR_SPEED##REVOLUTIONS_PER_MINUTE"},{"TypeName":"autodesk.spec.aec.hvac:airFlowDividedByVolume","SizeTableType":"##HVAC_AIRFLOW_DIVIDED_BY_VOLUME##LITERS_PER_SECOND_CUBIC_METER"},{"TypeName":"autodesk.spec.aec.hvac:airFlowDividedByCoolingLoad","SizeTableType":"##HVAC_AIRFLOW_DIVIDED_BY_COOLING_LOAD##LITERS_PER_SECOND_KILOWATT"},{"TypeName":"autodesk.spec.aec.hvac:airFlowDensity","SizeTableType":"##HVAC_AIRFLOW_DENSITY##LITERS_PER_SECOND_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.hvac:airFlow","SizeTableType":"##HVAC_AIR_FLOW##LITERS_PER_SECOND"},{"TypeName":"autodesk.spec.aec.energy:thermalResistance","SizeTableType":"##HVAC_THERMAL_RESISTANCE##SQUARE_METER_KELVINS_PER_WATT"},{"TypeName":"autodesk.spec.aec.energy:thermalMass","SizeTableType":"##HVAC_THERMAL_MASS##KILOJOULES_PER_KELVIN"},{"TypeName":"autodesk.spec.aec.energy:thermalGradientCoefficientForMoistureCapacity","SizeTableType":"##HVAC_THERMAL_GRADIENT_COEFFICIENT_FOR_MOISTURE_CAPACITY##KILOGRAMS_PER_KILOGRAM_KELVIN"},{"TypeName":"autodesk.spec.aec.energy:thermalConductivity","SizeTableType":"##HVAC_THERMAL_CONDUCTIVITY##WATTS_PER_METER_KELVIN"},{"TypeName":"autodesk.spec.aec.energy:specificHeatOfVaporization","SizeTableType":"##HVAC_SPECIFIC_HEAT_OF_VAPORIZATION##JOULES_PER_GRAM"},{"TypeName":"autodesk.spec.aec.energy:specificHeat","SizeTableType":"##HVAC_SPECIFIC_HEAT##JOULES_PER_GRAM_DEGREE_CELSIUS"},{"TypeName":"autodesk.spec.aec.energy:permeability","SizeTableType":"##HVAC_PERMEABILITY##NANOGRAMS_PER_PASCAL_SECOND_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.energy:isothermalMoistureCapacity","SizeTableType":"##HVAC_ISOTHERMAL_MOISTURE_CAPACITY##CUBIC_METERS_PER_KILOGRAM"},{"TypeName":"autodesk.spec.aec.energy:heatTransferCoefficient","SizeTableType":"##HVAC_COEFFICIENT_OF_HEAT_TRANSFER##WATTS_PER_SQUARE_METER_KELVIN"},{"TypeName":"autodesk.spec.aec.energy:heatCapacityPerArea","SizeTableType":"##HVAC_HEAT_CAPACITY_PER_AREA##KILOJOULES_PER_SQUARE_METER_KELVIN"},{"TypeName":"autodesk.spec.aec.energy:energy","SizeTableType":"##HVAC_ENERGY##JOULES"},{"TypeName":"autodesk.spec.aec.electrical:wireDiameter","SizeTableType":"##WIRE_SIZE##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.electrical:wattage","SizeTableType":"##ELECTRICAL_WATTAGE##WATTS"},{"TypeName":"autodesk.spec.aec.electrical:temperatureDifference","SizeTableType":"##ELECTRICAL_TEMPERATURE_DIFFERENCE##CELSIUS_INTERVAL"},{"TypeName":"autodesk.spec.aec.electrical:temperature","SizeTableType":"##ELECTRICAL_TEMPERATURE##CELSIUS"},{"TypeName":"autodesk.spec.aec.electrical:resistivity","SizeTableType":"##ELECTRICAL_RESISTIVITY##OHM_METERS"},{"TypeName":"autodesk.spec.aec.electrical:powerPerLength","SizeTableType":"##ELECTRICAL_POWER_PER_LENGTH##WATTS_PER_METER"},{"TypeName":"autodesk.spec.aec.electrical:powerDensity","SizeTableType":"##ELECTRICAL_POWER_DENSITY##WATTS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.electrical:power","SizeTableType":"##ELECTRICAL_POWER##WATTS"},{"TypeName":"autodesk.spec.aec.electrical:potential","SizeTableType":"##ELECTRICAL_POTENTIAL##VOLTS"},{"TypeName":"autodesk.spec.aec.electrical:luminousIntensity","SizeTableType":"##ELECTRICAL_LUMINOUS_INTENSITY##CANDELAS"},{"TypeName":"autodesk.spec.aec.electrical:luminousFlux","SizeTableType":"##ELECTRICAL_LUMINOUS_FLUX##LUMENS"},{"TypeName":"autodesk.spec.aec.electrical:luminance","SizeTableType":"##ELECTRICAL_LUMINANCE##CANDELAS_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.electrical:loadClassification","SizeTableType":"##OTHER##"},{"TypeName":"autodesk.spec.aec.electrical:illuminance","SizeTableType":"##ELECTRICAL_ILLUMINANCE##LUX"},{"TypeName":"autodesk.spec.aec.electrical:frequency","SizeTableType":"##ELECTRICAL_FREQUENCY##HERTZ"},{"TypeName":"autodesk.spec.aec.electrical:efficacy","SizeTableType":"##ELECTRICAL_EFFICACY##LUMENS_PER_WATT"},{"TypeName":"autodesk.spec.aec.electrical:demandFactor","SizeTableType":"##ELECTRICAL_DEMAND_FACTOR##PERCENTAGE"},{"TypeName":"autodesk.spec.aec.electrical:current","SizeTableType":"##ELECTRICAL_CURRENT##AMPERES"},{"TypeName":"autodesk.spec.aec.electrical:costRatePower","SizeTableType":"##ELECTRICAL_COST_RATE_POWER##COST_PER_WATT"},{"TypeName":"autodesk.spec.aec.electrical:costRateEnergy","SizeTableType":"##ELECTRICAL_COST_RATE_ENERGY##COST_PER_WATT_HOUR"},{"TypeName":"autodesk.spec.aec.electrical:conduitSize","SizeTableType":"##CONDUIT_SIZE##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.electrical:colorTemperature","SizeTableType":"##COLOR_TEMPERATURE##KELVIN"},{"TypeName":"autodesk.spec.aec.electrical:cableTraySize","SizeTableType":"##CABLETRAY_SIZE##MILLIMETERS"},{"TypeName":"autodesk.spec.aec.electrical:apparentPowerDensity","SizeTableType":"##ELECTRICAL_APPARENT_POWER_DENSITY##VOLT_AMPERES_PER_SQUARE_METER"},{"TypeName":"autodesk.spec.aec.electrical:apparentPower","SizeTableType":"##ELECTRICAL_APPARENT_POWER##VOLT_AMPERES"}]
+[
+  {
+    "TypeName": "autodesk.spec:spec.string",
+    "SizeTableType": "##OTHER##"
+  },
+  {
+    "TypeName": "autodesk.spec:spec.int64",
+    "SizeTableType": "##NUMBER##GENERAL"
+  },
+  {
+    "TypeName": "autodesk.spec:spec.bool",
+    "SizeTableType": "##NUMBER##GENERAL"
+  },
+  {
+    "TypeName": "autodesk.spec.string:url",
+    "SizeTableType": "##OTHER##"
+  },
+  {
+    "TypeName": "autodesk.spec.measurable:currency",
+    "SizeTableType": "##CURRENCY##CURRENCY"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:volume",
+    "SizeTableType": "##VOLUME##CUBIC_METERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:time",
+    "SizeTableType": "##TIMEINTERVAL##SECONDS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:speed",
+    "SizeTableType": "##SPEED##KILOMETERS_PER_HOUR"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:slope",
+    "SizeTableType": "##SLOPE##SLOPE_DEGREES"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:siteAngle",
+    "SizeTableType": "##SITE_ANGLE##DEGREES"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:sheetLength",
+    "SizeTableType": "##PAPER LENGTH##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:rotationAngle",
+    "SizeTableType": "##ROTATION_ANGLE##DEGREES"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:numberOfPoles",
+    "SizeTableType": "##NUMBER##GENERAL"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:number",
+    "SizeTableType": "##NUMBER##GENERAL"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:multilineText",
+    "SizeTableType": "##OTHER##"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:material",
+    "SizeTableType": "##OTHER##"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:massDensity",
+    "SizeTableType": "##MASS_DENSITY##KILOGRAMS_PER_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:length",
+    "SizeTableType": "##LENGTH##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:distance",
+    "SizeTableType": "##DISTANCE##CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:decimalSheetLength",
+    "SizeTableType": "##PEN SIZE##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:costPerArea",
+    "SizeTableType": "##COST_PER_AREA##COST_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:area",
+    "SizeTableType": "##AREA##SQUARE_METERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec:angle",
+    "SizeTableType": "##ANGLE##DEGREES"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:weightPerUnitLength",
+    "SizeTableType": "##WEIGHT_PER_UNIT_LENGTH##KILOGRAMS_FORCE_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:weight",
+    "SizeTableType": "##WEIGHT##KILONEWTONS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:warpingConstant",
+    "SizeTableType": "##WARPING_CONSTANT##CENTIMETERS_TO_THE_SIXTH_POWER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:velocity",
+    "SizeTableType": "##VELOCITY##METERS_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:unitWeight",
+    "SizeTableType": "##UNIT_WEIGHT##KILONEWTONS_PER_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:thermalExpansionCoefficient",
+    "SizeTableType": "##THERMAL_EXPANSION_COEFFICIENT##INVERSE_DEGREES_CELSIUS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:surfaceAreaPerUnitLength",
+    "SizeTableType": "##SURFACE_AREA##SQUARE_METERS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:stress",
+    "SizeTableType": "##STRESS##MEGAPASCALS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:sectionProperty",
+    "SizeTableType": "##SECTION_PROPERTY##CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:sectionModulus",
+    "SizeTableType": "##SECTION_MODULUS##CUBIC_CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:sectionDimension",
+    "SizeTableType": "##SECTION_DIMENSION##CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:sectionArea",
+    "SizeTableType": "##SECTION_AREA##SQUARE_CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:rotationalPointSpringCoefficient",
+    "SizeTableType": "##ROTATIONAL_POINT_SPRING_COEFFICIENT##KILONEWTON_METERS_PER_DEGREE"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:rotationalLineSpringCoefficient",
+    "SizeTableType": "##ROTATIONAL_LINEAR_SPRING_COEFFICIENT##KILONEWTON_METERS_PER_DEGREE_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:rotation",
+    "SizeTableType": "##ROTATION##RADIANS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:reinforcementVolume",
+    "SizeTableType": "##REINFORCEMENT_VOLUME##CUBIC_CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:reinforcementSpacing",
+    "SizeTableType": "##REINFORCEMENT_SPACING##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:reinforcementLength",
+    "SizeTableType": "##REINFORCEMENT_LENGTH##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:reinforcementCover",
+    "SizeTableType": "##REINFORCEMENT_COVER##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:reinforcementAreaPerUnitLength",
+    "SizeTableType": "##REINFORCEMENT_AREA_PER_UNIT_LENGTH##SQUARE_CENTIMETERS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:reinforcementArea",
+    "SizeTableType": "##REINFORCEMENT_AREA##SQUARE_CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:pulsation",
+    "SizeTableType": "##PULSATION##RADIANS_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:pointSpringCoefficient",
+    "SizeTableType": "##POINT_SPRING_COEFFICIENT##KILONEWTONS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:period",
+    "SizeTableType": "##PERIOD##SECONDS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:momentScale",
+    "SizeTableType": "##MOMENT_SCALE##INVERSE_KILONEWTONS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:momentOfInertia",
+    "SizeTableType": "##MOMENT_OF_INERTIA##CENTIMETERS_TO_THE_FOURTH_POWER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:moment",
+    "SizeTableType": "##MOMENT##KILONEWTON_METERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:massPerUnitLength",
+    "SizeTableType": "##MASS_PER_UNIT_LENGTH##KILOGRAMS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:massPerUnitArea",
+    "SizeTableType": "##MASS_PER_UNIT_AREA##KILOGRAMS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:mass",
+    "SizeTableType": "##MASS##KILOGRAMS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:linearMomentScale",
+    "SizeTableType": "##LINEAR_MOMENT_SCALE##METERS_PER_KILONEWTON"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:linearMoment",
+    "SizeTableType": "##LINEAR_MOMENT##KILONEWTON_METERS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:linearForceScale",
+    "SizeTableType": "##LINEAR_FORCE_SCALE##SQUARE_METERS_PER_KILONEWTON"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:linearForce",
+    "SizeTableType": "##LINEAR_FORCE##KILONEWTONS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:lineSpringCoefficient",
+    "SizeTableType": "##LINEAR_SPRING_COEFFICIENT##KILONEWTONS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:frequency",
+    "SizeTableType": "##STRUCTURAL_FREQUENCY##HERTZ"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:forceScale",
+    "SizeTableType": "##FORCE_SCALE##METERS_PER_KILONEWTON"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:force",
+    "SizeTableType": "##FORCE##KILONEWTONS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:energy",
+    "SizeTableType": "##ENERGY##KILOJOULES"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:displacement",
+    "SizeTableType": "##DISPLACEMENT/DEFLECTION##CENTIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:crackWidth",
+    "SizeTableType": "##CRACK_WIDTH##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:barDiameter",
+    "SizeTableType": "##BAR_DIAMETER##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:areaSpringCoefficient",
+    "SizeTableType": "##AREA_SPRING_COEFFICIENT##KILONEWTONS_PER_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:areaForceScale",
+    "SizeTableType": "##AREA_FORCE_SCALE##CUBIC_METERS_PER_KILONEWTON"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:areaForce",
+    "SizeTableType": "##AREA_FORCE##KILONEWTONS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.structural:acceleration",
+    "SizeTableType": "##ACCELERATION##METERS_PER_SECOND_SQUARED"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:volume",
+    "SizeTableType": "##PIPING_VOLUME##LITERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:viscosity",
+    "SizeTableType": "##PIPING_VISCOSITY##PASCAL_SECONDS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:velocity",
+    "SizeTableType": "##PIPING_VELOCITY##METERS_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:temperatureDifference",
+    "SizeTableType": "##PIPING_TEMPERATURE_DIFFERENCE##CELSIUS_INTERVAL"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:temperature",
+    "SizeTableType": "##PIPING_TEMPERATURE##CELSIUS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:slope",
+    "SizeTableType": "##PIPING_SLOPE##PERCENTAGE"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:roughness",
+    "SizeTableType": "##PIPING_ROUGHNESS##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:pressure",
+    "SizeTableType": "##PIPING_PRESSURE##PASCALS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:pipeSize",
+    "SizeTableType": "##PIPE_SIZE##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:pipeMassPerUnitLength",
+    "SizeTableType": "##PIPE_MASS_PER_UNIT_LENGTH##KILOGRAMS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:pipeInsulationThickness",
+    "SizeTableType": "##PIPE_INSULATION_THICKNESS##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:pipeDimension",
+    "SizeTableType": "##PIPE_DIMENSION##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:massPerTime",
+    "SizeTableType": "##PIPING_MASS_PER_TIME##KILOGRAMS_PER_HOUR"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:mass",
+    "SizeTableType": "##PIPE_MASS##KILOGRAMS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:friction",
+    "SizeTableType": "##PIPING_FRICTION##PASCALS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:flow",
+    "SizeTableType": "##PIPING_FLOW##LITERS_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.piping:density",
+    "SizeTableType": "##PIPING_DENSITY##KILOGRAMS_PER_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.infrastructure:stationingInterval",
+    "SizeTableType": "##STATIONING_INTERVAL##METERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.infrastructure:stationing",
+    "SizeTableType": "##STATIONING##METERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:viscosity",
+    "SizeTableType": "##HVAC_VISCOSITY##PASCAL_SECONDS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:velocity",
+    "SizeTableType": "##HVAC_VELOCITY##METERS_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:temperatureDifference",
+    "SizeTableType": "##HVAC_TEMPERATURE_DIFFERENCE##CELSIUS_INTERVAL"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:temperature",
+    "SizeTableType": "##HVAC_TEMPERATURE##CELSIUS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:slope",
+    "SizeTableType": "##HVAC_SLOPE##PERCENTAGE"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:roughness",
+    "SizeTableType": "##HVAC_ROUGHNESS##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:pressure",
+    "SizeTableType": "##HVAC_PRESSURE##PASCALS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:powerPerFlow",
+    "SizeTableType": "##HVAC_POWER_PER_FLOW##WATTS_PER_CUBIC_METER_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:powerDensity",
+    "SizeTableType": "##HVAC_POWER_DENSITY##WATTS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:power",
+    "SizeTableType": "##HVAC_POWER##WATTS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:massPerTime",
+    "SizeTableType": "##HVAC_MASS_PER_TIME##KILOGRAMS_PER_HOUR"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:heatingLoadDividedByVolume",
+    "SizeTableType": "##HVAC_HEATING_LOAD_DIVIDED_BY_VOLUME##WATTS_PER_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:heatingLoadDividedByArea",
+    "SizeTableType": "##HVAC_HEATING_LOAD_DIVIDED_BY_AREA##WATTS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:heatingLoad",
+    "SizeTableType": "##HVAC_HEATING_LOAD##WATTS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:heatGain",
+    "SizeTableType": "##HVAC_HEAT_GAIN##WATTS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:friction",
+    "SizeTableType": "##HVAC_FRICTION##PASCALS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:flowPerPower",
+    "SizeTableType": "##HVAC_FLOW_PER_POWER##CUBIC_METERS_PER_WATT_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:factor",
+    "SizeTableType": "##HVAC_FACTOR##PERCENTAGE"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:ductSize",
+    "SizeTableType": "##HVAC_DUCT_SIZE##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:ductLiningThickness",
+    "SizeTableType": "##HVAC_DUCT_LINING_THICKNESS##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:ductInsulationThickness",
+    "SizeTableType": "##HVAC_DUCT_INSULATION_THICKNESS##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:diffusivity",
+    "SizeTableType": "##HVAC_DIFFUSIVITY##SQUARE_METERS_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:density",
+    "SizeTableType": "##HVAC_DENSITY##KILOGRAMS_PER_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:crossSection",
+    "SizeTableType": "##HVAC_CROSS_SECTION##SQUARE_MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:coolingLoadDividedByVolume",
+    "SizeTableType": "##HVAC_COOLING_LOAD_DIVIDED_BY_VOLUME##WATTS_PER_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:coolingLoadDividedByArea",
+    "SizeTableType": "##HVAC_COOLING_LOAD_DIVIDED_BY_AREA##WATTS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:coolingLoad",
+    "SizeTableType": "##HVAC_COOLING_LOAD##WATTS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:areaDividedByHeatingLoad",
+    "SizeTableType": "##HVAC_AREA_DIVIDED_BY_HEATING_LOAD##SQUARE_METERS_PER_KILOWATT"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:areaDividedByCoolingLoad",
+    "SizeTableType": "##HVAC_AREA_DIVIDED_BY_COOLING_LOAD##SQUARE_METERS_PER_KILOWATT"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:angularSpeed",
+    "SizeTableType": "##HVAC_ANGULAR_SPEED##REVOLUTIONS_PER_MINUTE"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:airFlowDividedByVolume",
+    "SizeTableType": "##HVAC_AIRFLOW_DIVIDED_BY_VOLUME##LITERS_PER_SECOND_CUBIC_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:airFlowDividedByCoolingLoad",
+    "SizeTableType": "##HVAC_AIRFLOW_DIVIDED_BY_COOLING_LOAD##LITERS_PER_SECOND_KILOWATT"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:airFlowDensity",
+    "SizeTableType": "##HVAC_AIRFLOW_DENSITY##LITERS_PER_SECOND_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.hvac:airFlow",
+    "SizeTableType": "##HVAC_AIR_FLOW##LITERS_PER_SECOND"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:thermalResistance",
+    "SizeTableType": "##HVAC_THERMAL_RESISTANCE##SQUARE_METER_KELVINS_PER_WATT"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:thermalMass",
+    "SizeTableType": "##HVAC_THERMAL_MASS##KILOJOULES_PER_KELVIN"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:thermalGradientCoefficientForMoistureCapacity",
+    "SizeTableType": "##HVAC_THERMAL_GRADIENT_COEFFICIENT_FOR_MOISTURE_CAPACITY##KILOGRAMS_PER_KILOGRAM_KELVIN"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:thermalConductivity",
+    "SizeTableType": "##HVAC_THERMAL_CONDUCTIVITY##WATTS_PER_METER_KELVIN"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:specificHeatOfVaporization",
+    "SizeTableType": "##HVAC_SPECIFIC_HEAT_OF_VAPORIZATION##JOULES_PER_GRAM"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:specificHeat",
+    "SizeTableType": "##HVAC_SPECIFIC_HEAT##JOULES_PER_GRAM_DEGREE_CELSIUS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:permeability",
+    "SizeTableType": "##HVAC_PERMEABILITY##NANOGRAMS_PER_PASCAL_SECOND_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:isothermalMoistureCapacity",
+    "SizeTableType": "##HVAC_ISOTHERMAL_MOISTURE_CAPACITY##CUBIC_METERS_PER_KILOGRAM"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:heatTransferCoefficient",
+    "SizeTableType": "##HVAC_COEFFICIENT_OF_HEAT_TRANSFER##WATTS_PER_SQUARE_METER_KELVIN"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:heatCapacityPerArea",
+    "SizeTableType": "##HVAC_HEAT_CAPACITY_PER_AREA##KILOJOULES_PER_SQUARE_METER_KELVIN"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.energy:energy",
+    "SizeTableType": "##HVAC_ENERGY##JOULES"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:wireDiameter",
+    "SizeTableType": "##WIRE_SIZE##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:wattage",
+    "SizeTableType": "##ELECTRICAL_WATTAGE##WATTS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:temperatureDifference",
+    "SizeTableType": "##ELECTRICAL_TEMPERATURE_DIFFERENCE##CELSIUS_INTERVAL"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:temperature",
+    "SizeTableType": "##ELECTRICAL_TEMPERATURE##CELSIUS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:resistivity",
+    "SizeTableType": "##ELECTRICAL_RESISTIVITY##OHM_METERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:powerPerLength",
+    "SizeTableType": "##ELECTRICAL_POWER_PER_LENGTH##WATTS_PER_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:powerDensity",
+    "SizeTableType": "##ELECTRICAL_POWER_DENSITY##WATTS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:power",
+    "SizeTableType": "##ELECTRICAL_POWER##WATTS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:potential",
+    "SizeTableType": "##ELECTRICAL_POTENTIAL##VOLTS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:luminousIntensity",
+    "SizeTableType": "##ELECTRICAL_LUMINOUS_INTENSITY##CANDELAS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:luminousFlux",
+    "SizeTableType": "##ELECTRICAL_LUMINOUS_FLUX##LUMENS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:luminance",
+    "SizeTableType": "##ELECTRICAL_LUMINANCE##CANDELAS_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:loadClassification",
+    "SizeTableType": "##OTHER##"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:illuminance",
+    "SizeTableType": "##ELECTRICAL_ILLUMINANCE##LUX"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:frequency",
+    "SizeTableType": "##ELECTRICAL_FREQUENCY##HERTZ"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:efficacy",
+    "SizeTableType": "##ELECTRICAL_EFFICACY##LUMENS_PER_WATT"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:demandFactor",
+    "SizeTableType": "##ELECTRICAL_DEMAND_FACTOR##PERCENTAGE"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:current",
+    "SizeTableType": "##ELECTRICAL_CURRENT##AMPERES"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:costRatePower",
+    "SizeTableType": "##ELECTRICAL_COST_RATE_POWER##COST_PER_WATT"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:costRateEnergy",
+    "SizeTableType": "##ELECTRICAL_COST_RATE_ENERGY##COST_PER_WATT_HOUR"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:conduitSize",
+    "SizeTableType": "##CONDUIT_SIZE##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:colorTemperature",
+    "SizeTableType": "##COLOR_TEMPERATURE##KELVIN"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:cableTraySize",
+    "SizeTableType": "##CABLETRAY_SIZE##MILLIMETERS"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:apparentPowerDensity",
+    "SizeTableType": "##ELECTRICAL_APPARENT_POWER_DENSITY##VOLT_AMPERES_PER_SQUARE_METER"
+  },
+  {
+    "TypeName": "autodesk.spec.aec.electrical:apparentPower",
+    "SizeTableType": "##ELECTRICAL_APPARENT_POWER##VOLT_AMPERES"
+  }
+]
