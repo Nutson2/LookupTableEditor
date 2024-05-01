@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Text.Json;
+using System.Xml.Serialization;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using LookupTableEditor.Extentions;
@@ -30,14 +30,16 @@ namespace LookupTableEditor.Services
             Manager = FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
 
 #if R20
-            var json = Resource.ParametersTypes2020;
+            using var stream = new MemoryStream(Resource.ParametersTypes2020);
 #elif R21
-            var json = Resource.ParametersTypes2021;
+            using var stream = new MemoryStream(Resource.ParametersTypes2021);
 #elif R23
-            var json = Resource.ParametersTypes2023;
+            using var stream = new MemoryStream(Resource.ParametersTypes2023);
 #endif
-            var t = JsonSerializer.Deserialize<List<DefinitionOfParameterType>>(json);
-            AbstractParameterTypes = t.Select(def =>
+            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
+            var list = (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
+
+            AbstractParameterTypes = list.Select(def =>
                     AbstractParameterType.FromDefinitionOfParameterType(def)
                 )
                 .ToList();

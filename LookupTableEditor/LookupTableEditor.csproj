@@ -83,7 +83,16 @@
     <ItemGroup>
       <None Remove="Resources\Icons\LookupTableEditorCommand16.png" />
       <None Remove="Resources\Icons\LookupTableEditorCommand32.png" />
+      <None Remove="Resources\ParametersTypes2020.xml" />
+      <None Remove="Resources\ParametersTypes2021.xml" />
+      <None Remove="Resources\ParametersTypes2023.xml" />
       <None Remove="Текстовый документ.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Resources\ParametersTypes2020.xml" />
+      <Resource Include="Resources\ParametersTypes2021.xml" />
+      <Resource Include="Resources\ParametersTypes2023.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -96,12 +105,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Costura.Fody" Version="5.7.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*-*" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
-        <PackageReference Include="System.Text.Json" Version="8.0.3" />
     </ItemGroup>
 
     <ItemGroup>

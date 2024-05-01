@@ -1,4 +1,5 @@
-﻿using Autodesk.Revit.Attributes;
+﻿using System.Xml.Serialization;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
@@ -15,14 +16,8 @@ namespace LookupTableEditor.Commands
         {
             Document doc = commandData.Application.ActiveUIDocument.Document;
 
-            var dict =
-                ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2023();
-
-            var pair = dict.First();
-            var fType = new ForgeTypeId(pair.Key);
-            var absParam = new AbstractParameterType(fType);
-            var label = absParam.Label;
-
+            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
+            #region MyRegion
             //doc.Run(
             //    "Add param",
             //    () =>
@@ -45,6 +40,8 @@ namespace LookupTableEditor.Commands
             //        }
             //    }
             //);
+
+            #endregion
 
             return Result.Succeeded;
         }

@@ -3,10 +3,18 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace LookupTableEditor
 {
-    public class DefinitionOfParameterType(string typeName, string sizeTableType)
+    public class DefinitionOfParameterType
     {
-        public string TypeName { get; } = typeName;
-        public string SizeTableType { get; } = sizeTableType;
+        public string TypeName { get; set; }
+        public string SizeTableType { get; set; }
+
+        public DefinitionOfParameterType() { }
+
+        public DefinitionOfParameterType(string typeName, string sizeTableType)
+        {
+            TypeName = typeName;
+            SizeTableType = sizeTableType;
+        }
     }
 
     public partial class AbstractParameterType : ObservableObject
