@@ -1,0 +1,116 @@
+﻿<Window
+    x:Class="LookupTableEditor.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LookupTableEditor.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:LookupTableEditor.ViewModels"
+    Title="Lookup table editor"
+    Width="1000"
+    Height="650"
+    MinWidth="600"
+    MinHeight="450"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+    mc:Ignorable="d">
+
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\BaseStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
+            <GradientStop Offset="0" Color="#FF6A99Ff" />
+            <GradientStop Offset="1" Color="#FFB99fff" />
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="80" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <Border
+            BorderBrush="#FFD2AAEA"
+            BorderThickness="6"
+            CornerRadius="4">
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Button
+                    Padding="-20"
+                    Command="{Binding SetTableContentPageCommand}"
+                    IsEnabled="{Binding CanSelectPage}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        RenderTransformOrigin="0.5,0.5"
+                        Text="Content">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="270" />
+                        </TextBlock.RenderTransform>
+
+                    </TextBlock>
+                </Button>
+                <Button
+                    Grid.Row="1"
+                    Padding="-20"
+                    Command="{Binding SetTableFormulasPageCommand}"
+                    IsEnabled="{Binding CanSelectPage}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        RenderTransformOrigin="0.5,0.5"
+                        Text="Formulas">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="270" />
+                        </TextBlock.RenderTransform>
+
+                    </TextBlock>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Frame
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Content="{Binding Path=CurrentPage}"
+            NavigationUIVisibility="Hidden" />
+
+        <Grid Grid.Row="3" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Row="2"
+                Command="{Binding GotoTelegramCommand}"
+                Content="💬"
+                Style="{StaticResource iconButton}"
+                ToolTip="Написать в Telegram" />
+            <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Command="{Binding GoToYouTubeCommand}"
+                Content="📺"
+                Style="{StaticResource iconButton}"
+                ToolTip="Посмотреть инструкцию на YouTube" />
+        </Grid>
+
+    </Grid>
+</Window>

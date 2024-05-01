@@ -8,44 +8,54 @@ namespace LookupTableEditor
 {
     public partial class SizeTableInfo
     {
-        private readonly Dictionary<string, string> _headerConverter;
         private readonly string _headerDelimiter = ",";
         private readonly string systemDecimalSeparator = CultureInfo
             .CurrentCulture
             .NumberFormat
             .NumberDecimalSeparator;
 
+        private readonly Dictionary<string, AbstractParameterType> _headerTypes = new();
+        private readonly List<AbstractParameterType> _abstractParameterTypes;
+
         public string? Name { get; set; }
         public string? FilePath { get; set; }
         public DataTable Table { get; } = new DataTable();
-        public List<Header> Headers { get; } = new();
 
-        public SizeTableInfo(string? name, Dictionary<string, string> headerConverter)
+        public SizeTableInfo(string? name, List<AbstractParameterType> abstractParameterTypes)
         {
             Name = name;
-            _headerConverter = headerConverter;
+            _abstractParameterTypes = abstractParameterTypes;
         }
 
         public void InsertFirstColumn()
         {
-            Headers.Add(new Header());
-            Table.Columns.Add(" ", Type.GetType("System.String"));
+            Table.Columns.Add("_", Type.GetType("System.String"));
+            _headerTypes.Add("_", AbstractParameterType.Empty());
         }
 
         public void AddHeader(FamilySizeTableColumn column)
         {
-            var headerName = column.Name.Replace(".", "_");
             var dataTableHeaderType = column.GetTypeForDataTable();
+            var headerType = column.GetHeaderType();
+            headerType = _abstractParameterTypes.Find(p => p.Equals(headerType));
+            var headerName = column.Name;
 
-#if R22_OR_GREATER
-            var headerType = column.GetSpecTypeId().TypeId.IsValid()
-                ? column.GetSpecTypeId()
-                : SpecTypeId.String.Text;
-#else
-            var headerType = column == null ? UnitType.UT_Undefined : column.UnitType;
-#endif
-            Headers.Add(new Header() { Name = headerName, Type = headerType });
-            Table.Columns.Add(headerName, dataTableHeaderType);
+            _headerTypes.Add(headerName, headerType);
+            var tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
+            tableColumn.Caption = headerName;
+        }
+
+        public void AddHeader(FamilyParameter parameter)
+        {
+            var dataTableHeaderType = parameter.Definition.GetTypeForDataTable();
+            var headerType = parameter.GetParameterType();
+            headerType = _abstractParameterTypes.Find(p => p.Equals(headerType));
+
+            var headerName = parameter.Definition.Name;
+
+            _headerTypes.Add(headerName, headerType);
+            var tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
+            tableColumn.Caption = headerName;
         }
 
         public string ConvertToString()
@@ -55,7 +65,13 @@ namespace LookupTableEditor
             strBuilder.AppendLine(
                 string.Join(
                     _headerDelimiter,
-                    Headers.Select(h => h.Name + TryGetValue(h.TypeString))
+                    Table
+                        .Columns.Cast<DataColumn>()
+                        .Select(c => (c, _headerTypes[c.Caption]))
+                        .Select(pair =>
+                            $"{GetHeaderForFirstColumn(pair.c)}"
+                            + $"{pair.Item2.SizeTablesTypeName}"
+                        )
                 )
             );
 
@@ -73,8 +89,8 @@ namespace LookupTableEditor
             return strBuilder.ToString();
         }
 
-        private string TryGetValue(string key) =>
-            key.IsValid() ? _headerConverter[key] : string.Empty;
+        private string GetHeaderForFirstColumn(DataColumn c) =>
+            c.Caption == "_" ? string.Empty : c.Caption;
 
         private string Validate(string str, Type columnType) =>
             columnType == typeof(string) ? ValidateAsText(str) : ValidateAsNumber(str);
@@ -82,5 +98,30 @@ namespace LookupTableEditor
         private string ValidateAsText(string str) => $"\"{str.Replace("\"", "\"\"")}\"";
 
         private string ValidateAsNumber(string str) => str.Replace(systemDecimalSeparator, ".");
+
+        internal AbstractParameterType GetColumnType(string selectedColumnName) =>
+            _headerTypes.ContainsKey(selectedColumnName)
+                ? _headerTypes[selectedColumnName]
+                : AbstractParameterType.Empty();
+
+        internal void ChangeColumnName(
+            int selectedColumnIndex,
+            string? oldValue,
+            string newValue,
+            AbstractParameterType selectedColumnType
+        )
+        {
+            var column = Table.Columns[selectedColumnIndex];
+            if (column.Caption != oldValue)
+                return;
+            column.Caption = newValue;
+            _headerTypes.Remove(oldValue);
+            _headerTypes.Add(newValue, selectedColumnType);
+        }
+
+        internal void ChangeColumnType(string selectedColumnName, AbstractParameterType value)
+        {
+            _headerTypes[selectedColumnName] = value;
+        }
     }
 }

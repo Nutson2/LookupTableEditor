@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Xml.Serialization;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using LookupTableEditor.Extentions;
@@ -12,13 +13,13 @@ namespace LookupTableEditor.Services
     {
         private readonly Document _doc;
         private readonly RevitApplication _app;
-        private readonly Dictionary<string, string> _converter;
         private readonly string systemDecimalSeparator = CultureInfo
             .CurrentCulture
             .NumberFormat
             .NumberDecimalSeparator;
 
         public FamilySizeTableManager Manager { get; }
+        public List<AbstractParameterType> AbstractParameterTypes { get; }
 
         public SizeTableService(Document doc, RevitApplication application)
         {
@@ -28,30 +29,33 @@ namespace LookupTableEditor.Services
             FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
             Manager = FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
 
-            _converter = _app.VersionNumber switch
-            {
-                "2020"
-                    => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2020(),
-                "2021"
-                    => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2021(),
-                "2023"
-                    => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2023(),
-                _ => ParametersUnitType.GetDictionaryToConvertParamTypeInSizeTableHeaderString2020()
-            };
+#if R20
+            using var stream = new MemoryStream(Resource.ParametersTypes2020);
+#elif R21
+            using var stream = new MemoryStream(Resource.ParametersTypes2021);
+#elif R23
+            using var stream = new MemoryStream(Resource.ParametersTypes2023);
+#endif
+            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
+            var list = (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
+
+            AbstractParameterTypes = list.Select(def =>
+                    AbstractParameterType.FromDefinitionOfParameterType(def)
+                )
+                .ToList();
         }
 
         public SizeTableInfo GetSizeTableInfo(string name)
         {
-            var dataTableInfo = new SizeTableInfo(name, _converter);
+            var dataTableInfo = new SizeTableInfo(name, AbstractParameterTypes);
             var familySizeTable = Manager.GetSizeTable(name);
 
-            if (familySizeTable == null)
-            {
-                dataTableInfo.InsertFirstColumn();
-                return dataTableInfo;
-            }
+            dataTableInfo.InsertFirstColumn();
 
-            for (int columnIndx = 0; columnIndx < familySizeTable.NumberOfColumns; columnIndx++)
+            if (familySizeTable == null)
+                return dataTableInfo;
+
+            for (int columnIndx = 1; columnIndx < familySizeTable.NumberOfColumns; columnIndx++)
             {
                 var column = familySizeTable.GetColumnHeader(columnIndx);
                 dataTableInfo.AddHeader(column);

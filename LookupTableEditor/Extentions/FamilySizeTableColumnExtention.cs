@@ -28,5 +28,18 @@ namespace LookupTableEditor.Extentions
 #endif
             return t;
         }
+
+#if R22_OR_GREATER
+        public static AbstractParameterType GetHeaderType(this FamilySizeTableColumn column) =>
+            column.GetSpecTypeId().TypeId.IsValid()
+                ? new AbstractParameterType(column.GetSpecTypeId())
+                : new AbstractParameterType(SpecTypeId.String.Text);
+
+#else
+        public static AbstractParameterType GetHeaderType(this FamilySizeTableColumn column) =>
+            column == null
+                ? new AbstractParameterType(UnitType.UT_Undefined)
+                : new AbstractParameterType(column.UnitType);
+#endif
     }
 }

@@ -1,0 +1,104 @@
+﻿<Page
+    x:Class="LookupTableEditor.Views.SelectNewColumnPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LookupTableEditor.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:LookupTableEditor.ViewModels"
+    Title="SelectNewColumnPage"
+    d:DataContext="{d:DesignInstance Type=vm:SelectNewColumnViewModel}"
+    d:DesignHeight="250"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Styles\BaseStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+
+        <DataGrid
+            AutoGenerateColumns="False"
+            Background="Transparent"
+            ItemsSource="{Binding CollectionViewSource.View}"
+            SelectionMode="Extended" SelectionChanged="DataGrid_SelectionChanged"
+            >
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="IsSelected" Value="{Binding isSelected}" />
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name , Mode=OneWay}" Header="Name" />
+                <DataGridTextColumn Binding="{Binding GroupName, Mode=OneWay}" Header="ParameterGroup" />
+                <DataGridTextColumn Binding="{Binding StorageType, Mode=OneWay}" Header="StorageType" />
+                <DataGridTextColumn Binding="{Binding IsSelected, Mode=OneWay}" Header="IsSelected" />
+            </DataGrid.Columns>
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander>
+                                            <Expander.Header>
+                                                <DockPanel>
+                                                    <TextBlock Text="{Binding Path=Name}" />
+                                                    <TextBlock Foreground="LightGray" Text="  Количество: " />
+                                                    <TextBlock Foreground="LightGray" Text="{Binding Path=ItemCount}" />
+                                                </DockPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <DockPanel Background="LightBlue">
+                                <TextBlock
+                                    Width="100"
+                                    Margin="30,0,0,0"
+                                    Foreground="Blue"
+                                    Text="{Binding Path=Name}" />
+                                <TextBlock Foreground="Blue" Text="{Binding Path=ItemCount}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+
+
+            </DataGrid.GroupStyle>
+        </DataGrid>
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Width="60"
+                Command="{Binding CancelCommand}"
+                Content="Отмена" />
+            <Button
+                Width="60"
+                Command="{Binding OKCommand}"
+                Content="OK" />
+        </StackPanel>
+    </Grid>
+</Page>

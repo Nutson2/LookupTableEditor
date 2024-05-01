@@ -60,9 +60,39 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R20|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R20</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R21|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R21</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R22|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R22</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R23|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R23</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R24|AnyCPU'">
+      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R24</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
       <None Remove="Resources\Icons\LookupTableEditorCommand16.png" />
       <None Remove="Resources\Icons\LookupTableEditorCommand32.png" />
+      <None Remove="Resources\ParametersTypes2020.xml" />
+      <None Remove="Resources\ParametersTypes2021.xml" />
+      <None Remove="Resources\ParametersTypes2023.xml" />
+      <None Remove="Текстовый документ.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Resources\ParametersTypes2020.xml" />
+      <Resource Include="Resources\ParametersTypes2021.xml" />
+      <Resource Include="Resources\ParametersTypes2023.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -75,6 +105,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Costura.Fody" Version="5.7.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
         <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
@@ -89,6 +123,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Resource.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resource.resx</DependentUpon>
+      </Compile>
       <Compile Update="Settings.Designer.cs">
         <DesignTimeSharedInput>True</DesignTimeSharedInput>
         <AutoGen>True</AutoGen>
@@ -97,36 +136,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Update="Resource.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
       <None Update="Settings.settings">
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>
     </ItemGroup>
-
-    <Target Name="CopyFiles" AfterTargets="CoreBuild">
-        <ItemGroup>
-            <RootItem Include="$(ProjectDir)*.addin" />
-            <AddinItem Include="$(TargetDir)**\*" />
-        </ItemGroup>
-
-        <PropertyGroup>
-            <RootDir>bin\$(RevitVersion) $(Configuration)\</RootDir>
-            <AddinDir>$(RootDir)$(AssemblyName)\</AddinDir>
-        </PropertyGroup>
-
-        <Copy SourceFiles="@(RootItem)" DestinationFolder="$(RootDir)" />
-        <Copy SourceFiles="@(AddinItem)" DestinationFolder="$(AddinDir)\%(RecursiveDir)" />
-
-        <ItemGroup>
-            <AddinFiles Include="$(RootDir)**\*" />
-        </ItemGroup>
-
-        <Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" />
-    </Target>
-
-    <Target Name="DeleteFiles" AfterTargets="Clean">
-        <RemoveDir Directories="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\$(ProjectName)" />
-        <Delete Files="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\$(ProjectName).addin" />
-    </Target>
 
 </Project>
