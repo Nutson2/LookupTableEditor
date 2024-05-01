@@ -35,26 +35,30 @@ namespace LookupTableEditor
 
         public void AddHeader(FamilySizeTableColumn column)
         {
-            var dataTableHeaderType = column.GetTypeForDataTable();
-            var headerType = column.GetHeaderType();
-            headerType = _abstractParameterTypes.Find(p => p.Equals(headerType));
+            Type dataTableHeaderType = column.GetTypeForDataTable();
+            AbstractParameterType headerType = column.GetHeaderType();
+            headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
+            if (headerType is null)
+                return;
+
             var headerName = column.Name;
 
             _headerTypes.Add(headerName, headerType);
-            var tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
+            DataColumn tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
             tableColumn.Caption = headerName;
         }
 
         public void AddHeader(FamilyParameter parameter)
         {
-            var dataTableHeaderType = parameter.Definition.GetTypeForDataTable();
-            var headerType = parameter.GetParameterType();
-            headerType = _abstractParameterTypes.Find(p => p.Equals(headerType));
-
+            Type dataTableHeaderType = parameter.Definition.GetTypeForDataTable();
+            AbstractParameterType headerType = parameter.GetParameterType();
+            headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
+            if (headerType is null)
+                return;
             var headerName = parameter.Definition.Name;
 
             _headerTypes.Add(headerName, headerType);
-            var tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
+            DataColumn tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
             tableColumn.Caption = headerName;
         }
 

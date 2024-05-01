@@ -74,7 +74,7 @@ namespace LookupTableEditor
             DefinitionOfParameterType def
         )
         {
-            Enum.TryParse<ParameterType>(def.TypeName, out var type);
+            Enum.TryParse<UnitType>(def.TypeName, out var type);
             var param = new AbstractParameterType(type);
             param.SizeTablesTypeName = def.SizeTableType;
             return param;
@@ -82,25 +82,24 @@ namespace LookupTableEditor
 
         public static List<AbstractParameterType> GetAllTypes()
         {
-            var type = typeof(ParameterType);
+            var type = typeof(UnitType);
             return Enum.GetValues(type)
-                .Cast<ParameterType>()
+                .Cast<UnitType>()
                 .Select(p => new AbstractParameterType(p))
                 .ToList();
         }
 
-        public ParameterType? ParameterType { get; }
+        public UnitType? UnitType { get; }
 
-        public AbstractParameterType(ParameterType? parameterType)
+        public AbstractParameterType(UnitType? unitType)
         {
-            ParameterType = parameterType;
+            UnitType = unitType;
         }
 
         public string Label =>
-            ParameterType.HasValue ? LabelUtils.GetLabelFor((ParameterType)ParameterType) : " - ";
+            UnitType.HasValue ? LabelUtils.GetLabelFor((ParameterType)UnitType) : " - ";
 
-        public override string ToString() =>
-            ParameterType.HasValue ? ParameterType.ToString() : string.Empty;
+        public override string ToString() => UnitType.HasValue ? UnitType.ToString() : string.Empty;
 
 #endif
     }

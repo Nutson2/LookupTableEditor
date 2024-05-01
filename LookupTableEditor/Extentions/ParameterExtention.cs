@@ -33,11 +33,11 @@ namespace LookupTableEditor.Extentions
         }
 
 #else
-        public static UnitType GetParameterType(this Parameter parameter) =>
-            parameter.Definition.UnitType;
+        public static AbstractParameterType GetParameterType(this Parameter parameter) =>
+            new AbstractParameterType(parameter.Definition.UnitType);
 
-        public static UnitType GetParameterType(this FamilyParameter parameter) =>
-            parameter.GetParameter();
+        public static AbstractParameterType GetParameterType(this FamilyParameter parameter) =>
+            new AbstractParameterType(parameter.Definition.UnitType);
 
         public static string GetParameterTypeLabel(this Parameter parameter) =>
             parameter.Definition.ParameterType.ToString();
