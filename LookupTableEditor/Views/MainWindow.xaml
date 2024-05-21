@@ -11,6 +11,7 @@
     Height="650"
     MinWidth="600"
     MinHeight="450"
+    Topmost="True"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
     mc:Ignorable="d">
 

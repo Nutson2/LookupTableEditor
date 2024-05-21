@@ -120,6 +120,7 @@ namespace LookupTableEditor.Views
         {
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             _sizeTableService.ImportSizeTable(SizeTableInfo);
+            SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
         }
 
         [RelayCommand]

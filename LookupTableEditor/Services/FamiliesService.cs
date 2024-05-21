@@ -12,9 +12,10 @@ namespace LookupTableEditor.Services
         {
             _doc = doc.ThrowIfNull();
             _familyManager = _doc.FamilyManager;
+            CheckFamilyType();
         }
 
-        public void CheckFamilyType()
+        private void CheckFamilyType()
         {
             var currentType = _familyManager.CurrentType;
             var types = _familyManager.Types;
@@ -34,5 +35,15 @@ namespace LookupTableEditor.Services
 
         public IEnumerable<FamilyParameter> GetFamilyParameters() =>
             _doc.FamilyManager.Parameters.Cast<FamilyParameter>();
+
+        public string GetValueAsString(FamilyParameter parameter)
+        {
+            var famType = _familyManager.CurrentType;
+            return parameter.StorageType switch
+            {
+                StorageType.String => famType.AsString(parameter),
+                _ => famType.AsValueString(parameter)
+            };
+        }
     }
 }

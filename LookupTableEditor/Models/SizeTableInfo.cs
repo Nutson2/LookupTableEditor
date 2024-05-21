@@ -99,7 +99,12 @@ namespace LookupTableEditor
         private string Validate(string str, Type columnType) =>
             columnType == typeof(string) ? ValidateAsText(str) : ValidateAsNumber(str);
 
-        private string ValidateAsText(string str) => $"\"{str.Replace("\"", "\"\"")}\"";
+        private string ValidateAsText(string str)
+        {
+            if (!str.IsValid())
+                return str;
+            return $"\"{str.Replace("\"", "\"\"")}\"";
+        }
 
         private string ValidateAsNumber(string str) => str.Replace(systemDecimalSeparator, ".");
 

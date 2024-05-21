@@ -3,23 +3,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace LookupTableEditor
 {
-    public class DefinitionOfParameterType
-    {
-        public string TypeName { get; set; }
-        public string SizeTableType { get; set; }
-
-        public DefinitionOfParameterType() { }
-
-        public DefinitionOfParameterType(string typeName, string sizeTableType)
-        {
-            TypeName = typeName;
-            SizeTableType = sizeTableType;
-        }
-    }
-
     public partial class AbstractParameterType : ObservableObject
     {
-        public static AbstractParameterType Empty() => new(null);
+        public static AbstractParameterType Empty() => new((FamilyParameter)null);
 
         [ObservableProperty]
         private string? _sizeTablesTypeName = string.Empty;
@@ -63,6 +49,11 @@ namespace LookupTableEditor
             ParameterType = parameterType;
         }
 
+        public AbstractParameterType(FamilyParameter? parameter)
+        {
+            ParameterType = parameter?.Definition.GetDataType();
+        }
+
         public override bool Equals(object obj) => ToString().Equals(obj.ToString());
 
         public override int GetHashCode() => ToString().GetHashCode();
@@ -94,6 +85,11 @@ namespace LookupTableEditor
         public AbstractParameterType(UnitType? unitType)
         {
             UnitType = unitType;
+        }
+
+        public AbstractParameterType(FamilyParameter? parameter)
+        {
+            UnitType = parameter?.Definition.UnitType;
         }
 
         public string Label =>

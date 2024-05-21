@@ -36,6 +36,9 @@ namespace LookupTableEditor.Views
 
         private int? SelectedRowIndex()
         {
+            if (dg_Table.SelectedCells.Count == 0)
+                return 0;
+
             if (dg_Table.SelectedCells[0].Item is DataRowView rowView)
             {
                 return _vm.SizeTableInfo?.Table.Rows.IndexOf(rowView.Row);
@@ -48,6 +51,8 @@ namespace LookupTableEditor.Views
 
         private void dg_Table_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
+            if (dg_Table.CurrentColumn is null)
+                return;
             var indx = _vm.SizeTableInfo?.Table.Columns.IndexOf(
                 _vm.SizeTableInfo.Table.Columns[dg_Table.CurrentColumn.Header.ToString()]
             );

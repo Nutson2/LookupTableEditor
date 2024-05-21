@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -28,7 +29,16 @@ namespace LookupTableEditor.ViewModels
             _familiesService
                 .GetFamilyParameters()
                 .ToList()
-                .ForEach(fp => Parameters.Add(new FamilyParameterExtended(fp)));
+                .ForEach(fp =>
+                {
+                    Parameters.Add(
+                        new FamilyParameterExtended(fp)
+                        {
+                            Value = _familiesService.GetValueAsString(fp)
+                        }
+                    );
+                    ;
+                });
 
             CollectionViewSource = new CollectionViewSource() { Source = Parameters };
 
@@ -37,6 +47,12 @@ namespace LookupTableEditor.ViewModels
             );
             CollectionViewSource.GroupDescriptions.Add(
                 new PropertyGroupDescription(nameof(FamilyParameterExtended.IsInstance))
+            );
+            CollectionViewSource.SortDescriptions.Add(
+                new SortDescription(
+                    nameof(FamilyParameterExtended.GroupName),
+                    ListSortDirection.Ascending
+                )
             );
         }
 
