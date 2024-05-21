@@ -30,18 +30,18 @@
             AutoGenerateColumns="False"
             Background="Transparent"
             ItemsSource="{Binding CollectionViewSource.View}"
-            SelectionMode="Extended" SelectionChanged="DataGrid_SelectionChanged"
-            >
+            SelectionChanged="DataGrid_SelectionChanged"
+            SelectionMode="Extended">
             <DataGrid.Resources>
                 <Style TargetType="DataGridRow">
                     <Setter Property="IsSelected" Value="{Binding isSelected}" />
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name , Mode=OneWay}" Header="Name" />
-                <DataGridTextColumn Binding="{Binding GroupName, Mode=OneWay}" Header="ParameterGroup" />
-                <DataGridTextColumn Binding="{Binding StorageType, Mode=OneWay}" Header="StorageType" />
-                <DataGridTextColumn Binding="{Binding IsSelected, Mode=OneWay}" Header="IsSelected" />
+                <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}" Header="Параметр" />
+                <DataGridTextColumn Binding="{Binding ParameterType.Label, Mode=OneWay}" Header="Тип параметра" />
+                <DataGridTextColumn Binding="{Binding Value, Mode=OneWay}" Header="Значение" />
+                <DataGridTextColumn Binding="{Binding Formula, Mode=OneWay}" Header="Формула" />
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
                 <GroupStyle>
@@ -50,12 +50,13 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander>
+                                        <Expander IsExpanded="True">
                                             <Expander.Header>
                                                 <DockPanel>
-                                                    <TextBlock Text="{Binding Path=Name}" />
-                                                    <TextBlock Foreground="LightGray" Text="  Количество: " />
-                                                    <TextBlock Foreground="LightGray" Text="{Binding Path=ItemCount}" />
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        FontWeight="Bold"
+                                                        Text="{Binding Path=Name}" />
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -72,13 +73,12 @@
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <DockPanel Background="LightBlue">
+                            <DockPanel>
                                 <TextBlock
-                                    Width="100"
-                                    Margin="30,0,0,0"
-                                    Foreground="Blue"
+                                    Margin="50,0,0,0"
+                                    FontSize="14"
+                                    FontStyle="Italic"
                                     Text="{Binding Path=Name}" />
-                                <TextBlock Foreground="Blue" Text="{Binding Path=ItemCount}" />
                             </DockPanel>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>

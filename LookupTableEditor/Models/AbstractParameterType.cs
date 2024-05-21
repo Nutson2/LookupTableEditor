@@ -3,23 +3,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace LookupTableEditor
 {
-    public class DefinitionOfParameterType
-    {
-        public string TypeName { get; set; }
-        public string SizeTableType { get; set; }
-
-        public DefinitionOfParameterType() { }
-
-        public DefinitionOfParameterType(string typeName, string sizeTableType)
-        {
-            TypeName = typeName;
-            SizeTableType = sizeTableType;
-        }
-    }
-
     public partial class AbstractParameterType : ObservableObject
     {
-        public static AbstractParameterType Empty() => new(null);
+        public static AbstractParameterType Empty() => new((FamilyParameter)null);
 
         [ObservableProperty]
         private string? _sizeTablesTypeName = string.Empty;
@@ -63,6 +49,11 @@ namespace LookupTableEditor
             ParameterType = parameterType;
         }
 
+        public AbstractParameterType(FamilyParameter? parameter)
+        {
+            ParameterType = parameter?.Definition.GetDataType();
+        }
+
         public override bool Equals(object obj) => ToString().Equals(obj.ToString());
 
         public override int GetHashCode() => ToString().GetHashCode();
@@ -74,7 +65,7 @@ namespace LookupTableEditor
             DefinitionOfParameterType def
         )
         {
-            Enum.TryParse<ParameterType>(def.TypeName, out var type);
+            Enum.TryParse<UnitType>(def.TypeName, out var type);
             var param = new AbstractParameterType(type);
             param.SizeTablesTypeName = def.SizeTableType;
             return param;
@@ -82,25 +73,29 @@ namespace LookupTableEditor
 
         public static List<AbstractParameterType> GetAllTypes()
         {
-            var type = typeof(ParameterType);
+            var type = typeof(UnitType);
             return Enum.GetValues(type)
-                .Cast<ParameterType>()
+                .Cast<UnitType>()
                 .Select(p => new AbstractParameterType(p))
                 .ToList();
         }
 
-        public ParameterType? ParameterType { get; }
+        public UnitType? UnitType { get; }
 
-        public AbstractParameterType(ParameterType? parameterType)
+        public AbstractParameterType(UnitType? unitType)
         {
-            ParameterType = parameterType;
+            UnitType = unitType;
+        }
+
+        public AbstractParameterType(FamilyParameter? parameter)
+        {
+            UnitType = parameter?.Definition.UnitType;
         }
 
         public string Label =>
-            ParameterType.HasValue ? LabelUtils.GetLabelFor((ParameterType)ParameterType) : " - ";
+            UnitType.HasValue ? LabelUtils.GetLabelFor((ParameterType)UnitType) : " - ";
 
-        public override string ToString() =>
-            ParameterType.HasValue ? ParameterType.ToString() : string.Empty;
+        public override string ToString() => UnitType.HasValue ? UnitType.ToString() : string.Empty;
 
 #endif
     }

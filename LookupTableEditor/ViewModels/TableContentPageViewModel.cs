@@ -12,7 +12,7 @@ namespace LookupTableEditor.Views
     {
         private readonly SizeTableService _sizeTableService;
         private int selectedColumnIndex;
-
+        public int? SelectedRowIndex { get; set; }
         public Action? OnColumnNameChanged { get; set; }
         public Action? OnAddNewColumn { get; set; }
 
@@ -29,8 +29,11 @@ namespace LookupTableEditor.Views
                 OnPropertyChanged(nameof(SelectedColumnType));
             }
         }
-        public SizeTableInfo? SizeTableInfo { get; set; }
+
         public List<AbstractParameterType> ParameterTypes { get; }
+
+        [ObservableProperty]
+        private SizeTableInfo? _sizeTableInfo;
 
         [ObservableProperty]
         private string _selectedColumnName;
@@ -42,6 +45,7 @@ namespace LookupTableEditor.Views
         private List<string> _sizeTableNames = new();
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsTableNotExist))]
         private string _curTableName = string.Empty;
 
         public TableContentPageViewModel(SizeTableService sizeTableService)
@@ -57,8 +61,21 @@ namespace LookupTableEditor.Views
         }
 
         #region Handlers
-        partial void OnCurTableNameChanged(string value) =>
-            SizeTableInfo = _sizeTableService.GetSizeTableInfo(value);
+        partial void OnCurTableNameChanged(string value)
+        {
+            if (!value.IsValid())
+            {
+                return;
+            }
+            if (SizeTableInfo is null)
+            {
+                SizeTableInfo = _sizeTableService.GetSizeTableInfo(value);
+            }
+            else
+            {
+                SizeTableInfo.Name = value;
+            }
+        }
 
         partial void OnSelectedColumnNameChanged(string? oldValue, string newValue)
         {
@@ -81,8 +98,12 @@ namespace LookupTableEditor.Views
         #region Commands
 
         [RelayCommand]
-        private void CreateNewTable(string name) =>
-            SizeTableInfo = _sizeTableService.GetSizeTableInfo(name);
+        private void CreateNewTable()
+        {
+            if (!CurTableName.IsValid())
+                return;
+            SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
+        }
 
         [RelayCommand]
         private void SaveSizeTable()
@@ -92,13 +113,14 @@ namespace LookupTableEditor.Views
         }
 
         [RelayCommand]
-        private void AddRowOnTop() => AddRowOnTop(0);
+        private void AddRowOnTop() => AddRowOnTop(SelectedRowIndex.Value);
 
         [RelayCommand]
         private void SetNewTable()
         {
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             _sizeTableService.ImportSizeTable(SizeTableInfo);
+            SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
         }
 
         [RelayCommand]
@@ -113,10 +135,13 @@ namespace LookupTableEditor.Views
             SizeTableInfo.Table?.Rows.InsertAt(SizeTableInfo.Table.NewRow(), index);
         }
 
-        public void PasteFromClipboard(int rowIndx, int columnIndx)
+        public void PasteFromClipboard()
         {
             if (SizeTableInfo?.Table == null || !Clipboard.ContainsText())
                 return;
+
+            int rowIndx = SelectedRowIndex.Value;
+            int columnIndx = SelectedColumnIndex;
 
             int tmpColIndx = 0;
             int tmpRowIndx = 0;

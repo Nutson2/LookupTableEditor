@@ -31,22 +31,46 @@ namespace LookupTableEditor.Views
         {
             if (e.Key != Key.V || Keyboard.Modifiers != ModifierKeys.Control)
                 return;
-            var columnIndex = dg_Table.CurrentColumn.DisplayIndex;
-            int? rowIndex = SelectedRowIndex();
-            if (!rowIndex.HasValue)
-                return;
-
-            _vm.PasteFromClipboard(rowIndex.Value, columnIndex);
+            _vm.PasteFromClipboard();
         }
 
-        private int? SelectedRowIndex() =>
-            _vm.SizeTableInfo?.Table.Rows.IndexOf(
-                ((DataRowView)dg_Table.SelectedCells[0].Item).Row
-            );
+        private int? SelectedRowIndex()
+        {
+            if (dg_Table.SelectedCells.Count == 0)
+                return 0;
+
+            if (dg_Table.SelectedCells[0].Item is DataRowView rowView)
+            {
+                return _vm.SizeTableInfo?.Table.Rows.IndexOf(rowView.Row);
+            }
+            else
+            {
+                return _vm.SizeTableInfo?.Table.Rows.Count;
+            }
+        }
 
         private void dg_Table_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            _vm.SelectedColumnIndex = dg_Table.CurrentColumn.DisplayIndex;
+            if (dg_Table.CurrentColumn is null)
+                return;
+            var indx = _vm.SizeTableInfo?.Table.Columns.IndexOf(
+                _vm.SizeTableInfo.Table.Columns[dg_Table.CurrentColumn.Header.ToString()]
+            );
+            _vm.SelectedColumnIndex = indx ?? 0;
+
+            _vm.SelectedRowIndex = SelectedRowIndex();
+        }
+
+        private void dg_Table_ColumnReordering(object sender, DataGridColumnReorderingEventArgs e)
+        {
+            if (e.Column.Header.ToString() == "_")
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            _vm.SizeTableInfo.Table.Columns[e.Column.Header.ToString()]
+                .SetOrdinal(e.Column.DisplayIndex);
         }
     }
 }

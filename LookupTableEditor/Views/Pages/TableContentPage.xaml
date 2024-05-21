@@ -50,7 +50,7 @@
                 <TextBox
                     Grid.Row="1"
                     d:Text=" New table name"
-                    Text="{Binding Path=CurTableName, Mode=TwoWay}" />
+                    Text="{Binding Path=CurTableName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                 <Button
                     Grid.Row="1"
@@ -70,7 +70,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBox Text="{Binding SelectedColumnName}" />
@@ -102,6 +102,7 @@
                 x:Name="dg_Table"
                 Background="#99F0F0F0"
                 ClipboardCopyMode="ExcludeHeader"
+                ColumnReordering="dg_Table_ColumnReordering"
                 ColumnWidth="100"
                 ItemsSource="{Binding Path=SizeTableInfo.Table}"
                 MinColumnWidth="30"

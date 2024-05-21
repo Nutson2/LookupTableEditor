@@ -26,7 +26,10 @@ namespace LookupTableEditor.Services
             _doc = doc;
             _app = application;
 
-            FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
+            _doc.Run(
+                "Create manager",
+                () => FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
+            );
             Manager = FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
 
 #if R20
