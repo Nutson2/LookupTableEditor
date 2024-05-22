@@ -32,13 +32,8 @@ namespace LookupTableEditor.Services
             );
             Manager = FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
 
-#if R20
-            using var stream = new MemoryStream(Resource.ParametersTypes2020);
-#elif R21
-            using var stream = new MemoryStream(Resource.ParametersTypes2021);
-#elif R23
-            using var stream = new MemoryStream(Resource.ParametersTypes2023);
-#endif
+            byte[] parametersTypes = GetDefinitionsByAppVersion(_app);
+            using var stream = new MemoryStream(parametersTypes);
             var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
             var list = (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
 
@@ -46,6 +41,27 @@ namespace LookupTableEditor.Services
                     AbstractParameterType.FromDefinitionOfParameterType(def)
                 )
                 .ToList();
+        }
+
+        private byte[] GetDefinitionsByAppVersion(RevitApplication _app)
+        {
+            var revitAppVersion = _app.VersionNumber.ToInt();
+            byte[] parametersTypes = default;
+
+            if (revitAppVersion < 2021)
+            {
+                parametersTypes = Resource.ParametersTypes2020;
+            }
+            else if (revitAppVersion == 2021)
+            {
+                parametersTypes = Resource.ParametersTypes2021;
+            }
+            else
+            {
+                parametersTypes = Resource.ParametersTypes2023;
+            }
+
+            return parametersTypes;
         }
 
         public SizeTableInfo GetSizeTableInfo(string name)
