@@ -1,7 +1,9 @@
-﻿using System.Xml.Serialization;
+﻿#if DEBUG && R22_OR_GREATER
+
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using LookupTableEditor.Extentions;
 
 namespace LookupTableEditor.Commands
 {
@@ -14,36 +16,33 @@ namespace LookupTableEditor.Commands
             ElementSet elements
         )
         {
-            Document doc = commandData.Application.ActiveUIDocument.Document;
+            var doc = commandData.Application.ActiveUIDocument.Document;
 
-            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
-            #region MyRegion
-            //doc.Run(
-            //    "Add param",
-            //    () =>
-            //    {
-            //        var group = ParameterUtils.GetParameterGroupTypeId(
-            //            BuiltInParameterGroup.PG_TEXT
-            //        );
-            //        foreach (var item in AbstractParameterType.GetAllTypes())
-            //        {
-            //            try
-            //            {
-            //                var name = item.ToString().Replace(':', '_');
+            doc.Run(
+                "Add param",
+                () =>
+                {
+                    var group = ParameterUtils.GetParameterGroupTypeId(
+                        BuiltInParameterGroup.PG_TEXT
+                    );
+                    foreach (var item in AbstractParameterType.GetAllTypes())
+                    {
+                        try
+                        {
+                            var name = item.ToString().Replace(':', '_');
 
-            //                doc.FamilyManager.AddParameter(name, group, item.ParameterType, true);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                var m = ex.Message;
-            //            }
-            //        }
-            //    }
-            //);
-
-            #endregion
+                            doc.FamilyManager.AddParameter(name, group, item.ParameterType, true);
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+                }
+            );
 
             return Result.Succeeded;
         }
     }
 }
+#endif
