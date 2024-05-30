@@ -43,25 +43,19 @@ namespace LookupTableEditor.Services
                 .ToList();
         }
 
-        private byte[] GetDefinitionsByAppVersion(RevitApplication _app)
+        private byte[] GetDefinitionsByAppVersion(RevitApplication app)
         {
-            var revitAppVersion = _app.VersionNumber.ToInt();
-            byte[] parametersTypes = default;
+            var revitAppVersion = app.VersionNumber.ToInt();
 
-            if (revitAppVersion < 2021)
+            return revitAppVersion switch
             {
-                parametersTypes = Resource.ParametersTypes2020;
-            }
-            else if (revitAppVersion == 2021)
-            {
-                parametersTypes = Resource.ParametersTypes2021;
-            }
-            else
-            {
-                parametersTypes = Resource.ParametersTypes2023;
-            }
-
-            return parametersTypes;
+                2020 => Resource.ParametersTypes2020,
+                2021 => Resource.ParametersTypes2021,
+                2022 => Resource.ParametersTypes2022,
+                2023 => Resource.ParametersTypes2023,
+                2024 => Resource.ParametersTypes2024,
+                _ => Resource.ParametersTypes2024
+            };
         }
 
         public SizeTableInfo GetSizeTableInfo(string name)

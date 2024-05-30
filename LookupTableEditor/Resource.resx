@@ -124,7 +124,13 @@
   <data name="ParametersTypes2021" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ParametersTypes2021.xml;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="ParametersTypes2022" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ParametersTypes2022.xml;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ParametersTypes2023" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ParametersTypes2023.xml;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ParametersTypes2024" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ParametersTypes2024.xml;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

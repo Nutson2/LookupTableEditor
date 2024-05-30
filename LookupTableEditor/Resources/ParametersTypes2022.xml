@@ -625,10 +625,6 @@
     <SizeTableType>##CABLETRAY_SIZE##MILLIMETERS</SizeTableType>
   </DefinitionOfParameterType>
   <DefinitionOfParameterType>
-    <TypeName>autodesk.spec.aec.electrical:apparentPowerDensity</TypeName>
-    <SizeTableType>##ELECTRICAL_APPARENT_POWER_DENSITY##VOLT_AMPERES_PER_SQUARE_METER</SizeTableType>
-  </DefinitionOfParameterType>
-  <DefinitionOfParameterType>
     <TypeName>autodesk.spec.aec.electrical:apparentPower</TypeName>
     <SizeTableType>##ELECTRICAL_APPARENT_POWER##VOLT_AMPERES</SizeTableType>
   </DefinitionOfParameterType>

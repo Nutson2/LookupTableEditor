@@ -47,7 +47,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>$(RevitVersion)</Version>
+        <Version>$(RevitVersion).1.0.1</Version>
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -85,14 +85,18 @@
       <None Remove="Resources\Icons\LookupTableEditorCommand32.png" />
       <None Remove="Resources\ParametersTypes2020.xml" />
       <None Remove="Resources\ParametersTypes2021.xml" />
+      <None Remove="Resources\ParametersTypes2022.xml" />
       <None Remove="Resources\ParametersTypes2023.xml" />
+      <None Remove="Resources\ParametersTypes2024.xml" />
       <None Remove="Текстовый документ.txt" />
     </ItemGroup>
 
     <ItemGroup>
       <Resource Include="Resources\ParametersTypes2020.xml" />
       <Resource Include="Resources\ParametersTypes2021.xml" />
+      <Resource Include="Resources\ParametersTypes2022.xml" />
       <Resource Include="Resources\ParametersTypes2023.xml" />
+      <Resource Include="Resources\ParametersTypes2024.xml" />
     </ItemGroup>
 
     <ItemGroup>
