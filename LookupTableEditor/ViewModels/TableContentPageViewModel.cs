@@ -67,7 +67,7 @@ namespace LookupTableEditor.Views
             {
                 return;
             }
-            if (SizeTableInfo is null)
+            if (SizeTableInfo is null || _sizeTableService.Manager.HasSizeTable(value))
             {
                 SizeTableInfo = _sizeTableService.GetSizeTableInfo(value);
             }
