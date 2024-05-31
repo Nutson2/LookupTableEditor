@@ -66,11 +66,20 @@ namespace LookupTableEditor.Views
             if (e.Column.Header.ToString() == "_")
             {
                 e.Cancel = true;
-                return;
+            }
+        }
+
+        private void dg_Table_ColumnReordered(object sender, DataGridColumnEventArgs e)
+        {
+            int newPosition = e.Column.DisplayIndex;
+
+            if (newPosition == 0)
+            {
+                newPosition += 1;
+                e.Column.DisplayIndex = newPosition;
             }
 
-            _vm.SizeTableInfo.Table.Columns[e.Column.Header.ToString()]
-                .SetOrdinal(e.Column.DisplayIndex);
+            _vm.SizeTableInfo.Table.Columns[e.Column.Header.ToString()].SetOrdinal(newPosition);
         }
     }
 }
