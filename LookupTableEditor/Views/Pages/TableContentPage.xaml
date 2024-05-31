@@ -103,10 +103,12 @@
                 Background="#99F0F0F0"
                 ClipboardCopyMode="ExcludeHeader"
                 ColumnReordering="dg_Table_ColumnReordering"
+                ColumnReordered="dg_Table_ColumnReordered"
                 ColumnWidth="100"
                 ItemsSource="{Binding Path=SizeTableInfo.Table}"
                 MinColumnWidth="30"
                 SelectedCellsChanged="dg_Table_SelectedCellsChanged"
+                
                 SelectionUnit="Cell">
 
                 <DataGrid.ColumnHeaderStyle>
