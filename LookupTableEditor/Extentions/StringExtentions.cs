@@ -16,7 +16,7 @@
 
         public static bool IsValid(this string str)
         {
-            return !string.IsNullOrWhiteSpace(str) && !string.IsNullOrEmpty(str);
+            return !string.IsNullOrWhiteSpace(str) & !string.IsNullOrEmpty(str);
         }
     }
 }

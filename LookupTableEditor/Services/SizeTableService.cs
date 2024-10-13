@@ -9,7 +9,7 @@ using RevitApplication = Autodesk.Revit.ApplicationServices.Application;
 
 namespace LookupTableEditor.Services
 {
-    public class SizeTableService
+    public class SizeTableService : IDisposable
     {
         private readonly Document _doc;
         private readonly RevitApplication _app;
@@ -28,31 +28,24 @@ namespace LookupTableEditor.Services
             AbstractParameterTypesProvider parameterTypesProvider
         )
         {
-            _doc = doc;
-            _app = application;
-            _parameterTypesProvider = parameterTypesProvider;
-            _doc.Run(
-                "Create manager",
-                () => FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
+            _doc = doc ?? throw new ArgumentNullException(nameof(doc));
+            _app = application ?? throw new ArgumentNullException(nameof(application));
+            _parameterTypesProvider =
+                parameterTypesProvider
+                ?? throw new ArgumentNullException(nameof(parameterTypesProvider));
+
+            Manager = GetOrCreateSizeTableManager();
+
+            var defs = GetDefenitionsOfParameterType();
+
+            AbstractParameterTypes = defs.ConvertAll(def =>
+                _parameterTypesProvider.FromDefinitionOfParameterType(def)
             );
-            Manager = FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
-
-            byte[] parametersTypes = GetDefinitionsByAppVersion(_app);
-            using var stream = new MemoryStream(parametersTypes);
-            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
-            var list = (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
-
-            AbstractParameterTypes = list.Select(def =>
-                    _parameterTypesProvider.FromDefinitionOfParameterType(def)
-                )
-                .ToList();
         }
 
-        private byte[] GetDefinitionsByAppVersion(RevitApplication app)
+        private List<DefinitionOfParameterType> GetDefenitionsOfParameterType()
         {
-            var revitAppVersion = app.VersionNumber.ToInt();
-
-            return revitAppVersion switch
+            byte[] parametersTypes = _app.VersionNumber.ToInt() switch
             {
                 2020 => Resource.ParametersTypes2020,
                 2021 => Resource.ParametersTypes2021,
@@ -61,6 +54,22 @@ namespace LookupTableEditor.Services
                 2024 => Resource.ParametersTypes2024,
                 _ => Resource.ParametersTypes2024,
             };
+            using var stream = new MemoryStream(parametersTypes);
+            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
+            return ((List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream))
+                ?? throw new Exception("Deserialize return null");
+        }
+
+        private FamilySizeTableManager GetOrCreateSizeTableManager()
+        {
+            _doc.Run(
+                "Create manager",
+                () => FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
+            );
+            return FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
+                ?? throw new NullReferenceException(
+                    $"{nameof(FamilySizeTableManager.GetFamilySizeTableManager)} return null\n"
+                );
         }
 
         public SizeTableInfo GetSizeTableInfo(string name)
@@ -176,6 +185,11 @@ namespace LookupTableEditor.Services
 
             var res = $"size_lookup({tableName}, \"{columnName}\", \"{defaultValue}\" {keys})";
             return res;
+        }
+
+        public void Dispose()
+        {
+            Manager?.Dispose();
         }
     }
 }

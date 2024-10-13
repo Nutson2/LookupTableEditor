@@ -79,6 +79,7 @@ namespace LookupTableEditor
                     _headerDelimiter,
                     Table
                         .Columns.Cast<DataColumn>()
+                        .Where(c => c is not null)
                         .Select(c => (c, _headerTypes[c.Caption]))
                         .Select(pair =>
                             $"{GetHeaderForFirstColumn(pair.c)}"

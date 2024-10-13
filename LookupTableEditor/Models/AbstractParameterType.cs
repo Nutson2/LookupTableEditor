@@ -27,7 +27,10 @@ namespace LookupTableEditor
             ParameterType = parameterType;
         }
 
-        public override bool Equals(object obj) => ToString().Equals(obj.ToString());
+        public override bool Equals(object obj)
+        {
+            return obj is null ? false : ToString() == obj?.ToString();
+        }
 
         public override int GetHashCode() => ToString().GetHashCode();
 

@@ -28,23 +28,21 @@ namespace LookupTableEditor.Services
         }
 
         public AbstractParameterType FromSizeTableColumn(FamilySizeTableColumn column) =>
-            column.GetSpecTypeId().TypeId.IsValid()
-                ? new AbstractParameterType(column.GetSpecTypeId())
-                : new AbstractParameterType(SpecTypeId.String.Text);
+            FromForgeType(column.GetSpecTypeId());
 
         public AbstractParameterType FromFamilyParameter(FamilyParameter parameter) =>
-            parameter.Definition.GetDataType().TypeId.IsValid()
-                ? new AbstractParameterType(parameter.Definition.GetDataType())
-                : new AbstractParameterType(SpecTypeId.String.Text);
+            FromForgeType(parameter.Definition.GetDataType());
 
         public AbstractParameterType FromParameter(Parameter parameter) =>
-            parameter.Definition.GetDataType().TypeId.IsValid()
-                ? new AbstractParameterType(parameter.Definition.GetDataType())
-                : new AbstractParameterType(SpecTypeId.String.Text);
+            FromForgeType(parameter.Definition.GetDataType());
 
+        private AbstractParameterType FromForgeType(ForgeTypeId type) =>
+            type.TypeId.IsValid()
+                ? new AbstractParameterType(type)
+                : new AbstractParameterType(SpecTypeId.String.Text);
 #else
 
-        public static List<AbstractParameterType> GetAllTypes()
+        public List<AbstractParameterType> GetAllTypes()
         {
             var type = typeof(UnitType);
             return Enum.GetValues(type)
@@ -53,9 +51,7 @@ namespace LookupTableEditor.Services
                 .ToList();
         }
 
-        public static AbstractParameterType FromDefinitionOfParameterType(
-            DefinitionOfParameterType def
-        )
+        public AbstractParameterType FromDefinitionOfParameterType(DefinitionOfParameterType def)
         {
             Enum.TryParse<UnitType>(def.TypeName, out var type);
             var param = new AbstractParameterType(type);
@@ -64,9 +60,7 @@ namespace LookupTableEditor.Services
         }
 
         public AbstractParameterType FromSizeTableColumn(FamilySizeTableColumn column) =>
-            column == null
-                ? new AbstractParameterType(UnitType.UT_Undefined)
-                : new AbstractParameterType(column.UnitType);
+            new AbstractParameterType(column.UnitType);
 
         public AbstractParameterType FromParameter(Parameter parameter) =>
             new AbstractParameterType(parameter.Definition.UnitType);
