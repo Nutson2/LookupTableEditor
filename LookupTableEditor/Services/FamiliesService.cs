@@ -10,7 +10,7 @@ namespace LookupTableEditor.Services
 
         public FamiliesService(Document doc)
         {
-            _doc = doc.ThrowIfNull();
+            _doc = doc ?? throw new ArgumentException(nameof(doc));
             _familyManager = _doc.FamilyManager;
             CheckFamilyType();
         }
@@ -42,7 +42,7 @@ namespace LookupTableEditor.Services
             return parameter.StorageType switch
             {
                 StorageType.String => famType.AsString(parameter),
-                _ => famType.AsValueString(parameter)
+                _ => famType.AsValueString(parameter),
             };
         }
     }
