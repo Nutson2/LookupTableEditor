@@ -13,6 +13,7 @@ namespace LookupTableEditor.Services
     {
         private readonly Document _doc;
         private readonly RevitApplication _app;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
         private readonly string systemDecimalSeparator = CultureInfo
             .CurrentCulture
             .NumberFormat
@@ -21,11 +22,15 @@ namespace LookupTableEditor.Services
         public FamilySizeTableManager Manager { get; }
         public List<AbstractParameterType> AbstractParameterTypes { get; }
 
-        public SizeTableService(Document doc, RevitApplication application)
+        public SizeTableService(
+            Document doc,
+            RevitApplication application,
+            AbstractParameterTypesProvider parameterTypesProvider
+        )
         {
             _doc = doc;
             _app = application;
-
+            _parameterTypesProvider = parameterTypesProvider;
             _doc.Run(
                 "Create manager",
                 () => FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
@@ -38,7 +43,7 @@ namespace LookupTableEditor.Services
             var list = (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
 
             AbstractParameterTypes = list.Select(def =>
-                    AbstractParameterType.FromDefinitionOfParameterType(def)
+                    _parameterTypesProvider.FromDefinitionOfParameterType(def)
                 )
                 .ToList();
         }
@@ -54,13 +59,17 @@ namespace LookupTableEditor.Services
                 2022 => Resource.ParametersTypes2022,
                 2023 => Resource.ParametersTypes2023,
                 2024 => Resource.ParametersTypes2024,
-                _ => Resource.ParametersTypes2024
+                _ => Resource.ParametersTypes2024,
             };
         }
 
         public SizeTableInfo GetSizeTableInfo(string name)
         {
-            var dataTableInfo = new SizeTableInfo(name, AbstractParameterTypes);
+            var dataTableInfo = new SizeTableInfo(
+                name,
+                AbstractParameterTypes,
+                _parameterTypesProvider
+            );
             var familySizeTable = Manager.GetSizeTable(name);
 
             dataTableInfo.InsertFirstColumn();
