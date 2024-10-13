@@ -11,6 +11,7 @@ namespace LookupTableEditor.Views
     public partial class TableContentPageViewModel : ObservableObject
     {
         private readonly SizeTableService _sizeTableService;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
         private int selectedColumnIndex;
         public int? SelectedRowIndex { get; set; }
         public Action? OnColumnNameChanged { get; set; }
@@ -39,7 +40,7 @@ namespace LookupTableEditor.Views
         private string _selectedColumnName;
 
         [ObservableProperty]
-        private AbstractParameterType _selectedColumnType = AbstractParameterType.Empty();
+        private AbstractParameterType _selectedColumnType;
 
         [ObservableProperty]
         private List<string> _sizeTableNames = new();
@@ -48,9 +49,16 @@ namespace LookupTableEditor.Views
         [NotifyPropertyChangedFor(nameof(IsTableNotExist))]
         private string _curTableName = string.Empty;
 
-        public TableContentPageViewModel(SizeTableService sizeTableService)
+        public TableContentPageViewModel(
+            SizeTableService sizeTableService,
+            AbstractParameterTypesProvider parameterTypesProvider
+        )
         {
             _sizeTableService = sizeTableService;
+            _parameterTypesProvider = parameterTypesProvider;
+
+            SelectedColumnType = _parameterTypesProvider.Empty();
+
             SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
             CurTableName = SizeTableNames.FirstOrDefault();
 

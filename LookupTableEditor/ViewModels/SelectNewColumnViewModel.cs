@@ -13,44 +13,44 @@ namespace LookupTableEditor.ViewModels
     {
         private readonly TableContentPageViewModel _tableContentPageViewModel;
         private readonly FamiliesService _familiesService;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
 
         public Action? OnClosed { get; set; }
-        public ObservableCollection<FamilyParameterExtended> Parameters { get; set; } = new();
+        public ObservableCollection<FamilyParameterModel> Parameters { get; set; } = new();
         public CollectionViewSource CollectionViewSource { get; set; }
 
         public SelectNewColumnViewModel(
             TableContentPageViewModel tableContentPageViewModel,
-            FamiliesService familiesService
+            FamiliesService familiesService,
+            AbstractParameterTypesProvider parameterTypesProvider
         )
         {
             _tableContentPageViewModel = tableContentPageViewModel;
             _familiesService = familiesService;
+            _parameterTypesProvider = parameterTypesProvider;
 
-            _familiesService
-                .GetFamilyParameters()
-                .ToList()
-                .ForEach(fp =>
+            foreach (var fp in _familiesService.GetFamilyParameters())
+            {
+                var famParamType = _parameterTypesProvider.FromFamilyParameter(fp);
+                var famParamModel = new FamilyParameterModel(fp, famParamType)
                 {
-                    Parameters.Add(
-                        new FamilyParameterExtended(fp)
-                        {
-                            Value = _familiesService.GetValueAsString(fp)
-                        }
-                    );
-                    ;
-                });
+                    Value = _familiesService.GetValueAsString(fp),
+                };
+
+                Parameters.Add(famParamModel);
+            }
 
             CollectionViewSource = new CollectionViewSource() { Source = Parameters };
 
             CollectionViewSource.GroupDescriptions.Add(
-                new PropertyGroupDescription(nameof(FamilyParameterExtended.GroupName))
+                new PropertyGroupDescription(nameof(FamilyParameterModel.GroupName))
             );
             CollectionViewSource.GroupDescriptions.Add(
-                new PropertyGroupDescription(nameof(FamilyParameterExtended.IsInstance))
+                new PropertyGroupDescription(nameof(FamilyParameterModel.IsInstance))
             );
             CollectionViewSource.SortDescriptions.Add(
                 new SortDescription(
-                    nameof(FamilyParameterExtended.GroupName),
+                    nameof(FamilyParameterModel.GroupName),
                     ListSortDirection.Ascending
                 )
             );
