@@ -17,11 +17,11 @@ namespace LookupTableEditor.Views
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            foreach (FamilyParameterExtended fp in e.AddedItems)
+            foreach (FamilyParameterModel fp in e.AddedItems)
             {
                 fp.IsSelected = true;
             }
-            foreach (FamilyParameterExtended fp in e.RemovedItems)
+            foreach (FamilyParameterModel fp in e.RemovedItems)
             {
                 fp.IsSelected = false;
             }
