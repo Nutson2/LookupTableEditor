@@ -6,50 +6,24 @@ namespace LookupTableEditor.Extentions
     {
 #if R22_OR_GREATER
 
-        public static AbstractParameterType GetParameterType(this Parameter parameter)
-        {
-            return parameter.GetTypeId().TypeId.IsValid()
-                ? new AbstractParameterType(parameter.GetTypeId())
-                : new AbstractParameterType(SpecTypeId.String.Text);
-        }
-
-        public static AbstractParameterType GetParameterType(this FamilyParameter parameter)
-        {
-            return parameter.Definition.GetDataType().TypeId.IsValid()
-                ? new AbstractParameterType(parameter.Definition.GetDataType())
-                : new AbstractParameterType(SpecTypeId.String.Text);
-        }
 
         public static string GetParameterTypeLabel(this Definition definition) =>
             definition.GetDataType().ToSpecLabel();
 
-        public static Type GetTypeForDataTable(this Definition definition)
-        {
-            Type ColumnType =
-                definition.GetDataType() == SpecTypeId.String.Text
-                    ? Type.GetType("System.String")
-                    : Type.GetType("System.Double");
-            return ColumnType;
-        }
+        public static Type GetTypeForDataTable(this Definition definition) =>
+            definition.GetDataType() == SpecTypeId.String.Text
+                ? Type.GetType("System.String")
+                : Type.GetType("System.Double");
 
 #else
-        public static AbstractParameterType GetParameterType(this Parameter parameter) =>
-            new AbstractParameterType(parameter.Definition.UnitType);
-
-        public static AbstractParameterType GetParameterType(this FamilyParameter parameter) =>
-            new AbstractParameterType(parameter.Definition.UnitType);
 
         public static string GetParameterTypeLabel(this Parameter parameter) =>
             parameter.Definition.ParameterType.ToString();
 
-        public static Type GetTypeForDataTable(this Definition definition)
-        {
-            Type ColumnType =
-                definition.ParameterType == ParameterType.Text
-                    ? Type.GetType("System.String")
-                    : Type.GetType("System.Double");
-            return ColumnType;
-        }
+        public static Type GetTypeForDataTable(this Definition definition) =>
+            definition.ParameterType == ParameterType.Text
+                ? Type.GetType("System.String")
+                : Type.GetType("System.Double");
 #endif
     }
 }
