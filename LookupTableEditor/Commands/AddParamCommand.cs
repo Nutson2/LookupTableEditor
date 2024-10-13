@@ -4,6 +4,7 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using LookupTableEditor.Extentions;
+using LookupTableEditor.Services;
 
 namespace LookupTableEditor.Commands
 {
@@ -17,6 +18,7 @@ namespace LookupTableEditor.Commands
         )
         {
             var doc = commandData.Application.ActiveUIDocument.Document;
+            var parameterTypesProvider = new AbstractParameterTypesProvider();
 
             doc.Run(
                 "Add param",
@@ -25,7 +27,8 @@ namespace LookupTableEditor.Commands
                     var group = ParameterUtils.GetParameterGroupTypeId(
                         BuiltInParameterGroup.PG_TEXT
                     );
-                    foreach (var item in AbstractParameterType.GetAllTypes())
+
+                    foreach (var item in parameterTypesProvider.GetAllTypes())
                     {
                         try
                         {
