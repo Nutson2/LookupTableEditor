@@ -3,12 +3,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace LookupTableEditor.Models
 {
-    public partial class FamilyParameterExtended : ObservableObject
+    public partial class FamilyParameterModel : ObservableObject
     {
         public FamilyParameter FamilyParameter { get; }
         public string Name => FamilyParameter.Definition.Name;
         public string StorageType => FamilyParameter.StorageType.ToString();
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
         public string Formula => FamilyParameter.Formula;
         public AbstractParameterType ParameterType { get; }
         public string GroupName =>
@@ -19,10 +19,13 @@ namespace LookupTableEditor.Models
         [ObservableProperty]
         private bool _isSelected;
 
-        public FamilyParameterExtended(FamilyParameter familyParameter)
+        public FamilyParameterModel(
+            FamilyParameter familyParameter,
+            AbstractParameterType parameterType
+        )
         {
             FamilyParameter = familyParameter;
-            ParameterType = new AbstractParameterType(familyParameter);
+            ParameterType = parameterType;
         }
     }
 }
