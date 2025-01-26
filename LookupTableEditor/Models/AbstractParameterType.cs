@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using Autodesk.Revit.DB;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Autodesk.Revit.DB;
+#if R22_OR_GREATER
+using System.Linq;
+#endif
 
-namespace LookupTableEditor
+namespace LookupTableEditor.Models
 {
-    public partial class AbstractParameterType : ObservableObject
+    public class AbstractParameterType
     {
-        [ObservableProperty]
-        private string? _sizeTablesTypeName = string.Empty;
+        public string SizeTablesTypeName { get; }
 
 #if R22_OR_GREATER
         public ForgeTypeId? ParameterType { get; }
@@ -23,15 +23,16 @@ namespace LookupTableEditor
             }
         }
 
-        public AbstractParameterType(ForgeTypeId? parameterType)
+        public AbstractParameterType(ForgeTypeId? parameterType, string sizeTablesTypeName)
         {
             ParameterType = parameterType;
+            SizeTablesTypeName = sizeTablesTypeName;
         }
 
-        public override bool Equals(object obj)
-        {
-            return obj is not null && ToString() == obj?.ToString();
-        }
+        public AbstractParameterType(ForgeTypeId? parameterType)
+            : this(parameterType, string.Empty) { }
+
+        public override bool Equals(object obj) => ToString() == obj?.ToString();
 
         public override int GetHashCode() => ToString().GetHashCode();
 
@@ -42,10 +43,14 @@ namespace LookupTableEditor
 
         public UnitType? UnitType { get; }
 
-        public AbstractParameterType(UnitType? unitType)
+        public AbstractParameterType(UnitType? unitType, string sizeTablesTypeName)
         {
+            SizeTablesTypeName = sizeTablesTypeName;
             UnitType = unitType;
         }
+
+        public AbstractParameterType(UnitType? unitType)
+            : this(unitType, string.Empty) { }
 
         public string Label =>
             UnitType.HasValue ? LabelUtils.GetLabelFor((ParameterType)UnitType) : " - ";
