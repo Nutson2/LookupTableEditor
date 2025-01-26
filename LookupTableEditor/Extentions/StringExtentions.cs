@@ -1,4 +1,6 @@
-﻿namespace LookupTableEditor.Extentions
+﻿using System.Globalization;
+
+namespace LookupTableEditor.Extentions
 {
     public static class StringExtentions
     {
@@ -10,11 +12,15 @@
 
         public static double ToDouble(this string str)
         {
-            double.TryParse(str, out double result);
+            var systemDecimalSeparator = CultureInfo
+                .CurrentCulture
+                .NumberFormat
+                .NumberDecimalSeparator;
+            double.TryParse(str.Replace(".", systemDecimalSeparator), out double result);
             return result;
         }
 
-        public static bool IsValid(this string str)
+        public static bool IsValid(this string? str)
         {
             return !string.IsNullOrWhiteSpace(str) & !string.IsNullOrEmpty(str);
         }

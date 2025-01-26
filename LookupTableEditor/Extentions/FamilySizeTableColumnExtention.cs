@@ -10,9 +10,7 @@ namespace LookupTableEditor.Extentions
             column.GetSpecTypeId().ToString();
 
         public static Type GetTypeForDataTable(this FamilySizeTableColumn column) =>
-            column.GetSpecTypeId().TypeId.IsValid()
-                ? Type.GetType("System.Double")
-                : Type.GetType("System.String");
+            column.GetSpecTypeId().TypeId.IsValid() ? typeof(string) : typeof(double);
 
 #else
         public static string GetUnitTypeString(this FamilySizeTableColumn column) =>
@@ -20,8 +18,8 @@ namespace LookupTableEditor.Extentions
 
         public static Type GetTypeForDataTable(this FamilySizeTableColumn column) =>
             column.DisplayUnitType == DisplayUnitType.DUT_UNDEFINED
-                ? Type.GetType("System.String")
-                : Type.GetType("System.Double");
+                ? typeof(string)
+                : typeof(double);
 
 #endif
     }
