@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using LookupTableEditor.Models;
 using Microsoft.Win32;
 
 namespace LookupTableEditor.Commands
@@ -14,7 +15,7 @@ namespace LookupTableEditor.Commands
     class CreateParameterDefinitionsXmlCommand : IExternalCommand
     {
         private const string NumberGeneralSizeTableType = "##NUMBER##GENERAL";
-        private FileInfo? _definitionsFile;
+        private FileInfo? _definitionsFileInfo;
 
         public Result Execute(
             ExternalCommandData commandData,
@@ -37,8 +38,10 @@ namespace LookupTableEditor.Commands
             string versionNumber
         )
         {
+            if (_definitionsFileInfo is null)
+                return;
             var xmlFilePath = Path.Combine(
-                _definitionsFile?.DirectoryName,
+                _definitionsFileInfo.DirectoryName,
                 $"ParametersTypes{versionNumber}.xml"
             );
 
@@ -87,9 +90,9 @@ namespace LookupTableEditor.Commands
             if (openDialog.ShowDialog() == false)
                 return [];
 
-            _definitionsFile = new FileInfo(openDialog.FileName);
+            _definitionsFileInfo = new FileInfo(openDialog.FileName);
 
-            var header = File.ReadAllLines(_definitionsFile.FullName)[0];
+            var header = File.ReadAllLines(_definitionsFileInfo.FullName)[0];
 
             return header.Split(',');
         }

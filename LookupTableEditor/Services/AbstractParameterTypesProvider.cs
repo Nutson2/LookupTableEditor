@@ -3,6 +3,7 @@ using System.Linq;
 using Autodesk.Revit.DB;
 #if R22_OR_GREATER
 using LookupTableEditor.Extentions;
+using LookupTableEditor.Models;
 #else
 using System;
 #endif
@@ -28,9 +29,7 @@ namespace LookupTableEditor.Services
 
         public AbstractParameterType FromDefinitionOfParameterType(DefinitionOfParameterType def)
         {
-            var param = new AbstractParameterType(new ForgeTypeId(def.TypeName));
-            param.SizeTablesTypeName = def.SizeTableType;
-            return param;
+            return new AbstractParameterType(new ForgeTypeId(def.TypeName), def.SizeTableType);
         }
 
         public AbstractParameterType FromSizeTableColumn(FamilySizeTableColumn column) =>
@@ -60,19 +59,17 @@ namespace LookupTableEditor.Services
         public AbstractParameterType FromDefinitionOfParameterType(DefinitionOfParameterType def)
         {
             Enum.TryParse<UnitType>(def.TypeName, out var type);
-            var param = new AbstractParameterType(type);
-            param.SizeTablesTypeName = def.SizeTableType;
-            return param;
+            return new(type, def.SizeTableType);
         }
 
         public AbstractParameterType FromSizeTableColumn(FamilySizeTableColumn column) =>
-            new AbstractParameterType(column.UnitType);
+            new(column.UnitType);
 
         public AbstractParameterType FromParameter(Parameter parameter) =>
-            new AbstractParameterType(parameter.Definition.UnitType);
+            new(parameter.Definition.UnitType);
 
         public AbstractParameterType FromFamilyParameter(FamilyParameter parameter) =>
-            new AbstractParameterType(parameter.Definition.UnitType);
+            new(parameter.Definition.UnitType);
 
 #endif
     }

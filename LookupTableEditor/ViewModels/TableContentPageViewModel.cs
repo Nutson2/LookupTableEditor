@@ -10,7 +10,7 @@ using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
 
-namespace LookupTableEditor.Views
+namespace LookupTableEditor.ViewModels
 {
     public partial class TableContentPageViewModel : ObservableObject
     {
@@ -18,9 +18,6 @@ namespace LookupTableEditor.Views
         private readonly AbstractParameterTypesProvider _parameterTypesProvider;
         private int selectedColumnIndex;
         public int? SelectedRowIndex { get; set; }
-        public Action? OnColumnNameChanged { get; set; }
-        public Action? OnAddNewColumn { get; set; }
-
         public bool IsTableNotExist => !SizeTableNames.Contains(CurTableName);
         public bool IsSizeTableInfoExist => SizeTableInfo is not null;
         public int SelectedColumnIndex
@@ -54,6 +51,9 @@ namespace LookupTableEditor.Views
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsTableNotExist))]
         private string _curTableName = string.Empty;
+
+        public event Action? OnColumnNameChanged;
+        public event Action<SizeTableInfo>? OnAddNewColumn;
 
         public TableContentPageViewModel(
             SizeTableService sizeTableService,
@@ -93,16 +93,12 @@ namespace LookupTableEditor.Views
 
         partial void OnSelectedColumnNameChanged(string? oldValue, string? newValue)
         {
-            if (
-                oldValue?.IsValid() == false
-                || newValue?.IsValid() == false
-                || SelectedColumnType is null
-            )
+            if (!oldValue.IsValid() || !newValue.IsValid() || SelectedColumnType is null)
                 return;
 
             SizeTableInfo?.ChangeColumnName(
                 SelectedColumnIndex,
-                oldValue,
+                oldValue!,
                 newValue!,
                 SelectedColumnType
             );
@@ -158,7 +154,9 @@ namespace LookupTableEditor.Views
         [RelayCommand]
         private void AddNewColumn()
         {
-            OnAddNewColumn?.Invoke();
+            if (SizeTableInfo is null)
+                return;
+            OnAddNewColumn?.Invoke(SizeTableInfo);
         }
 
         #endregion

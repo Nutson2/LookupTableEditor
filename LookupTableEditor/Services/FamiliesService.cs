@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autodesk.Revit.DB;
 using LookupTableEditor.Extentions;
+using LookupTableEditor.Models;
 
 namespace LookupTableEditor.Services
 {
@@ -10,10 +11,12 @@ namespace LookupTableEditor.Services
     {
         private readonly Document _doc;
         private readonly FamilyManager _familyManager;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
 
-        public FamiliesService(Document doc)
+        public FamiliesService(Document doc, AbstractParameterTypesProvider parameterTypesProvider)
         {
             _doc = doc ?? throw new ArgumentException(nameof(doc));
+            _parameterTypesProvider = parameterTypesProvider;
             _familyManager = _doc.FamilyManager;
             CheckFamilyType();
         }
@@ -28,18 +31,22 @@ namespace LookupTableEditor.Services
 
             _doc.Run(
                 "Создание типоразмера",
-                () =>
-                {
-                    FamilyType currentType2 = _familyManager.NewType(_doc.Title);
-                    _familyManager.CurrentType = currentType2;
-                }
+                () => _familyManager.CurrentType = _familyManager.NewType(_doc.Title)
             );
         }
 
-        public IEnumerable<FamilyParameter> GetFamilyParameters() =>
-            _doc.FamilyManager.Parameters.Cast<FamilyParameter>();
+        public IEnumerable<FamilyParameterModel> GetFamilyParameters()
+        {
+            return _doc
+                .FamilyManager.Parameters.Cast<FamilyParameter>()
+                .Select(fp => new FamilyParameterModel(
+                    fp,
+                    _parameterTypesProvider.FromFamilyParameter(fp)
+                ))
+                .ForEach(m => m.Value = GetValueAsString(m.FamilyParameter));
+        }
 
-        public string GetValueAsString(FamilyParameter parameter)
+        private string GetValueAsString(FamilyParameter parameter)
         {
             var famType = _familyManager.CurrentType;
             return parameter.StorageType switch

@@ -39,7 +39,7 @@ namespace LookupTableEditor.Models
 
         public void InsertFirstColumn()
         {
-            Table.Columns.Add("_", Type.GetType("System.String"));
+            Table.Columns.Add("_", typeof(string));
             _headerTypes.Add("_", _parameterTypesProvider.Empty());
         }
 
@@ -47,26 +47,28 @@ namespace LookupTableEditor.Models
         {
             var dataTableHeaderType = column.GetTypeForDataTable();
             var headerType = _parameterTypesProvider.FromSizeTableColumn(column);
+            var name = column.Name;
 
-            headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
-            if (headerType is null)
-                return;
-
-            var headerName = column.Name;
-
-            _headerTypes.Add(headerName, headerType);
-            DataColumn tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
-            tableColumn.Caption = headerName;
+            AddHeaderInternal(name, dataTableHeaderType, headerType);
         }
 
         public void AddHeader(FamilyParameter parameter)
         {
+            var name = parameter.Definition.Name;
             var dataTableHeaderType = parameter.Definition.GetTypeForDataTable();
             var headerType = _parameterTypesProvider.FromFamilyParameter(parameter);
+            AddHeaderInternal(name, dataTableHeaderType, headerType);
+        }
+
+        private void AddHeaderInternal(
+            string headerName,
+            Type dataTableHeaderType,
+            AbstractParameterType headerType
+        )
+        {
             headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
             if (headerType is null)
                 return;
-            var headerName = parameter.Definition.Name;
 
             _headerTypes.Add(headerName, headerType);
             DataColumn tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
@@ -127,7 +129,7 @@ namespace LookupTableEditor.Models
 
         internal void ChangeColumnName(
             int selectedColumnIndex,
-            string? oldValue,
+            string oldValue,
             string newValue,
             AbstractParameterType selectedColumnType
         )

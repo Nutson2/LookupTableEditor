@@ -25,7 +25,7 @@ namespace LookupTableEditor.Commands
 
             var parameterTypesProvider = new AbstractParameterTypesProvider();
 
-            var familiesService = new FamiliesService(doc);
+            var familiesService = new FamiliesService(doc, parameterTypesProvider);
             var sizeTableService = new SizeTableService(
                 doc,
                 uiApp.Application,

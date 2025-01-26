@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,10 +17,6 @@ namespace LookupTableEditor.Services
         private readonly Document _doc;
         private readonly RevitApplication _app;
         private readonly AbstractParameterTypesProvider _parameterTypesProvider;
-        private readonly string systemDecimalSeparator = CultureInfo
-            .CurrentCulture
-            .NumberFormat
-            .NumberDecimalSeparator;
 
         public FamilySizeTableManager Manager { get; }
         public List<AbstractParameterType> AbstractParameterTypes { get; }
@@ -60,8 +55,7 @@ namespace LookupTableEditor.Services
             };
             using var stream = new MemoryStream(parametersTypes);
             var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
-            return ((List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream))
-                ?? throw new Exception("Deserialize return null");
+            return (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
         }
 
         private FamilySizeTableManager GetOrCreateSizeTableManager()
@@ -78,28 +72,28 @@ namespace LookupTableEditor.Services
 
         public SizeTableInfo GetSizeTableInfo(string name)
         {
-            var dataTableInfo = new SizeTableInfo(
+            var sizeTableInfo = new SizeTableInfo(
                 name,
                 AbstractParameterTypes,
                 _parameterTypesProvider
             );
             var familySizeTable = Manager.GetSizeTable(name);
 
-            dataTableInfo.InsertFirstColumn();
+            sizeTableInfo.InsertFirstColumn();
 
             if (familySizeTable == null)
-                return dataTableInfo;
+                return sizeTableInfo;
 
             for (int columnIndx = 1; columnIndx < familySizeTable.NumberOfColumns; columnIndx++)
             {
                 var column = familySizeTable.GetColumnHeader(columnIndx);
-                dataTableInfo.AddHeader(column);
+                sizeTableInfo.AddHeader(column);
             }
 
             for (int rowIndex = 0; rowIndex < familySizeTable.NumberOfRows; rowIndex++)
             {
-                var row = dataTableInfo.Table.NewRow();
-                dataTableInfo.Table.Rows.Add(row);
+                var row = sizeTableInfo.Table.NewRow();
+                sizeTableInfo.Table.Rows.Add(row);
 
                 for (
                     int columnIndex = 0;
@@ -109,29 +103,18 @@ namespace LookupTableEditor.Services
                 {
                     string val = familySizeTable.AsValueString(rowIndex, columnIndex);
 
-                    if (
-                        dataTableInfo.Table.Columns[columnIndex].DataType
-                        == Type.GetType("System.Double")
-                    )
-                    {
-                        double.TryParse(
-                            val.Replace(".", systemDecimalSeparator),
-                            out double doubleValue
-                        );
-                        row[dataTableInfo.Table.Columns[columnIndex].ColumnName] = doubleValue;
-                    }
-                    else
-                    {
-                        row[dataTableInfo.Table.Columns[columnIndex].ColumnName] = val;
-                    }
+                    var dataColumn = sizeTableInfo.Table.Columns[columnIndex];
+
+                    row[dataColumn.ColumnName] =
+                        dataColumn.DataType == typeof(double) ? val.ToDouble() : val;
                 }
             }
-            return dataTableInfo;
+            return sizeTableInfo;
         }
 
         public void ImportSizeTable(SizeTableInfo tableInfo)
         {
-            FamilySizeTableErrorInfo errorInfo = new FamilySizeTableErrorInfo();
+            FamilySizeTableErrorInfo errorInfo = new();
 
             _doc.Run(
                 "Set size table",
@@ -165,8 +148,8 @@ namespace LookupTableEditor.Services
 
             tableInfo.FilePath = Path.Combine(folderPath, tableInfo.Name + ".csv");
 
-            using (StreamWriter sw = new(tableInfo.FilePath, false, Encoding.Default))
-                sw.Write(tableInfo.ConvertToString());
+            using StreamWriter sw = new(tableInfo.FilePath, false, Encoding.Default);
+            sw.Write(tableInfo.ConvertToString());
         }
 
         public string CreateFormula(

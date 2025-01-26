@@ -1,4 +1,4 @@
-﻿namespace LookupTableEditor
+﻿namespace LookupTableEditor.Models
 {
     public class DefinitionOfParameterType
     {

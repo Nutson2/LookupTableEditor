@@ -5,42 +5,25 @@ using System.Linq;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
-using LookupTableEditor.Views;
 
 namespace LookupTableEditor.ViewModels
 {
     public partial class SelectNewColumnViewModel : ObservableObject
     {
-        private readonly TableContentPageViewModel _tableContentPageViewModel;
         private readonly FamiliesService _familiesService;
-        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
-
-        public Action? OnClosed { get; set; }
-        public ObservableCollection<FamilyParameterModel> Parameters { get; set; } = new();
+        public SizeTableInfo? SizeTableInfo { get; set; }
+        public ObservableCollection<FamilyParameterModel> Parameters { get; }
         public CollectionViewSource CollectionViewSource { get; set; }
 
-        public SelectNewColumnViewModel(
-            TableContentPageViewModel tableContentPageViewModel,
-            FamiliesService familiesService,
-            AbstractParameterTypesProvider parameterTypesProvider
-        )
+        public event Action? OnClosed;
+
+        public SelectNewColumnViewModel(FamiliesService familiesService)
         {
-            _tableContentPageViewModel = tableContentPageViewModel;
             _familiesService = familiesService;
-            _parameterTypesProvider = parameterTypesProvider;
-
-            foreach (var fp in _familiesService.GetFamilyParameters())
-            {
-                var famParamType = _parameterTypesProvider.FromFamilyParameter(fp);
-                var famParamModel = new FamilyParameterModel(fp, famParamType)
-                {
-                    Value = _familiesService.GetValueAsString(fp),
-                };
-
-                Parameters.Add(famParamModel);
-            }
+            Parameters = new(_familiesService.GetFamilyParameters());
 
             CollectionViewSource = new() { Source = Parameters };
 
@@ -66,10 +49,8 @@ namespace LookupTableEditor.ViewModels
         {
             Parameters
                 .Where(fp => fp.IsSelected)
-                .ToList()
-                .ForEach(fp =>
-                    _tableContentPageViewModel.SizeTableInfo?.AddHeader(fp.FamilyParameter)
-                );
+                .ForEach(fp => SizeTableInfo?.AddHeader(fp.FamilyParameter));
+            SizeTableInfo = null;
             OnClosed?.Invoke();
         }
     }
