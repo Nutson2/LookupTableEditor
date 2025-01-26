@@ -1,10 +1,12 @@
 ﻿#if DEBUG
 
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using LookupTableEditor.Models;
 using Microsoft.Win32;
 
 namespace LookupTableEditor.Commands
@@ -13,11 +15,13 @@ namespace LookupTableEditor.Commands
     class CreateParameterDefinitionsXmlCommand : IExternalCommand
     {
         private const string NumberGeneralSizeTableType = "##NUMBER##GENERAL";
-        private FileInfo _definitionsFile;
+        private FileInfo? _definitionsFileInfo;
 
-        public Result Execute(ExternalCommandData commandData,
-                              ref string message,
-                              ElementSet elements)
+        public Result Execute(
+            ExternalCommandData commandData,
+            ref string message,
+            ElementSet elements
+        )
         {
             var definitions = GetDefinitions();
 
@@ -29,16 +33,22 @@ namespace LookupTableEditor.Commands
             return Result.Succeeded;
         }
 
-        private void SerializeDefinitions(List<DefinitionOfParameterType> definitions, string versionNumber)
+        private void SerializeDefinitions(
+            List<DefinitionOfParameterType> definitions,
+            string versionNumber
+        )
         {
-            var xmlFilePath = Path.Combine(_definitionsFile.DirectoryName, $"ParametersTypes{versionNumber}.xml");
+            if (_definitionsFileInfo is null)
+                return;
+            var xmlFilePath = Path.Combine(
+                _definitionsFileInfo.DirectoryName,
+                $"ParametersTypes{versionNumber}.xml"
+            );
 
             var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
 
-            using (var fs = new FileStream(xmlFilePath, FileMode.OpenOrCreate))
-            {
-                xmlSerializer.Serialize(fs, definitions);
-            }
+            using var fs = new FileStream(xmlFilePath, FileMode.OpenOrCreate);
+            xmlSerializer.Serialize(fs, definitions);
         }
 
         private List<DefinitionOfParameterType> GetDefinitions()
@@ -52,7 +62,7 @@ namespace LookupTableEditor.Commands
                 "autodesk.spec:spec.int64",
                 "autodesk.spec:spec.bool",
                 "autodesk.spec.aec:numberOfPoles",
-                "autodesk.spec.aec:number"
+                "autodesk.spec.aec:number",
             };
 
             foreach (var definition in definitionsAsStringArray)
@@ -67,11 +77,7 @@ namespace LookupTableEditor.Commands
                     ? NumberGeneralSizeTableType
                     : definition.Substring(numberSignIndex);
 
-                definitions.Add(new DefinitionOfParameterType
-                {
-                    TypeName = typeName,
-                    SizeTableType = sizeTableType
-                });
+                definitions.Add(new(typeName, sizeTableType));
             }
 
             return definitions;
@@ -79,15 +85,14 @@ namespace LookupTableEditor.Commands
 
         private string[] ReadDefinitions()
         {
-            var openDialog = new OpenFileDialog();
-            openDialog.Filter = "Txt Files (*.txt)|*.txt";
+            var openDialog = new OpenFileDialog { Filter = "Txt Files (*.txt)|*.txt" };
 
-            if (!openDialog.ShowDialog().Value)
-                return new string[] {};
+            if (openDialog.ShowDialog() == false)
+                return [];
 
-            _definitionsFile = new FileInfo(openDialog.FileName);
+            _definitionsFileInfo = new FileInfo(openDialog.FileName);
 
-            var header = File.ReadAllLines(_definitionsFile.FullName)[0];
+            var header = File.ReadAllLines(_definitionsFileInfo.FullName)[0];
 
             return header.Split(',');
         }

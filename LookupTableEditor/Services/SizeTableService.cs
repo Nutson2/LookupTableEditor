@@ -1,83 +1,99 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using LookupTableEditor.Extentions;
+using LookupTableEditor.Models;
 using RevitApplication = Autodesk.Revit.ApplicationServices.Application;
 
 namespace LookupTableEditor.Services
 {
-    public class SizeTableService
+    public class SizeTableService : IDisposable
     {
         private readonly Document _doc;
         private readonly RevitApplication _app;
-        private readonly string systemDecimalSeparator = CultureInfo
-            .CurrentCulture
-            .NumberFormat
-            .NumberDecimalSeparator;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
 
         public FamilySizeTableManager Manager { get; }
         public List<AbstractParameterType> AbstractParameterTypes { get; }
 
-        public SizeTableService(Document doc, RevitApplication application)
+        public SizeTableService(
+            Document doc,
+            RevitApplication application,
+            AbstractParameterTypesProvider parameterTypesProvider
+        )
         {
-            _doc = doc;
-            _app = application;
+            _doc = doc ?? throw new ArgumentNullException(nameof(doc));
+            _app = application ?? throw new ArgumentNullException(nameof(application));
+            _parameterTypesProvider =
+                parameterTypesProvider
+                ?? throw new ArgumentNullException(nameof(parameterTypesProvider));
 
-            _doc.Run(
-                "Create manager",
-                () => FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
+            Manager = GetOrCreateSizeTableManager();
+
+            var defs = GetDefenitionsOfParameterType();
+
+            AbstractParameterTypes = defs.ConvertAll(def =>
+                _parameterTypesProvider.FromDefinitionOfParameterType(def)
             );
-            Manager = FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id);
-
-            byte[] parametersTypes = GetDefinitionsByAppVersion(_app);
-            using var stream = new MemoryStream(parametersTypes);
-            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
-            var list = (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
-
-            AbstractParameterTypes = list.Select(def =>
-                    AbstractParameterType.FromDefinitionOfParameterType(def)
-                )
-                .ToList();
         }
 
-        private byte[] GetDefinitionsByAppVersion(RevitApplication app)
+        private List<DefinitionOfParameterType> GetDefenitionsOfParameterType()
         {
-            var revitAppVersion = app.VersionNumber.ToInt();
-
-            return revitAppVersion switch
+            byte[] parametersTypes = _app.VersionNumber.ToInt() switch
             {
                 2020 => Resource.ParametersTypes2020,
                 2021 => Resource.ParametersTypes2021,
                 2022 => Resource.ParametersTypes2022,
                 2023 => Resource.ParametersTypes2023,
                 2024 => Resource.ParametersTypes2024,
-                _ => Resource.ParametersTypes2024
+                _ => Resource.ParametersTypes2024,
             };
+            using var stream = new MemoryStream(parametersTypes);
+            var xmlSerializer = new XmlSerializer(typeof(List<DefinitionOfParameterType>));
+            return (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
+        }
+
+        private FamilySizeTableManager GetOrCreateSizeTableManager()
+        {
+            _doc.Run(
+                "Create manager",
+                () => FamilySizeTableManager.CreateFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
+            );
+            return FamilySizeTableManager.GetFamilySizeTableManager(_doc, _doc.OwnerFamily.Id)
+                ?? throw new NullReferenceException(
+                    $"{nameof(FamilySizeTableManager.GetFamilySizeTableManager)} return null\n"
+                );
         }
 
         public SizeTableInfo GetSizeTableInfo(string name)
         {
-            var dataTableInfo = new SizeTableInfo(name, AbstractParameterTypes);
+            var sizeTableInfo = new SizeTableInfo(
+                name,
+                AbstractParameterTypes,
+                _parameterTypesProvider
+            );
             var familySizeTable = Manager.GetSizeTable(name);
 
-            dataTableInfo.InsertFirstColumn();
+            sizeTableInfo.InsertFirstColumn();
 
             if (familySizeTable == null)
-                return dataTableInfo;
+                return sizeTableInfo;
 
             for (int columnIndx = 1; columnIndx < familySizeTable.NumberOfColumns; columnIndx++)
             {
                 var column = familySizeTable.GetColumnHeader(columnIndx);
-                dataTableInfo.AddHeader(column);
+                sizeTableInfo.AddHeader(column);
             }
 
             for (int rowIndex = 0; rowIndex < familySizeTable.NumberOfRows; rowIndex++)
             {
-                var row = dataTableInfo.Table.NewRow();
-                dataTableInfo.Table.Rows.Add(row);
+                var row = sizeTableInfo.Table.NewRow();
+                sizeTableInfo.Table.Rows.Add(row);
 
                 for (
                     int columnIndex = 0;
@@ -87,29 +103,18 @@ namespace LookupTableEditor.Services
                 {
                     string val = familySizeTable.AsValueString(rowIndex, columnIndex);
 
-                    if (
-                        dataTableInfo.Table.Columns[columnIndex].DataType
-                        == Type.GetType("System.Double")
-                    )
-                    {
-                        double.TryParse(
-                            val.Replace(".", systemDecimalSeparator),
-                            out double doubleValue
-                        );
-                        row[dataTableInfo.Table.Columns[columnIndex].ColumnName] = doubleValue;
-                    }
-                    else
-                    {
-                        row[dataTableInfo.Table.Columns[columnIndex].ColumnName] = val;
-                    }
+                    var dataColumn = sizeTableInfo.Table.Columns[columnIndex];
+
+                    row[dataColumn.ColumnName] =
+                        dataColumn.DataType == typeof(double) ? val.ToDouble() : val;
                 }
             }
-            return dataTableInfo;
+            return sizeTableInfo;
         }
 
         public void ImportSizeTable(SizeTableInfo tableInfo)
         {
-            FamilySizeTableErrorInfo errorInfo = new FamilySizeTableErrorInfo();
+            FamilySizeTableErrorInfo errorInfo = new();
 
             _doc.Run(
                 "Set size table",
@@ -143,8 +148,8 @@ namespace LookupTableEditor.Services
 
             tableInfo.FilePath = Path.Combine(folderPath, tableInfo.Name + ".csv");
 
-            using (StreamWriter sw = new(tableInfo.FilePath, false, Encoding.Default))
-                sw.Write(tableInfo.ConvertToString());
+            using StreamWriter sw = new(tableInfo.FilePath, false, Encoding.Default);
+            sw.Write(tableInfo.ConvertToString());
         }
 
         public string CreateFormula(
@@ -167,6 +172,11 @@ namespace LookupTableEditor.Services
 
             var res = $"size_lookup({tableName}, \"{columnName}\", \"{defaultValue}\" {keys})";
             return res;
+        }
+
+        public void Dispose()
+        {
+            Manager?.Dispose();
         }
     }
 }

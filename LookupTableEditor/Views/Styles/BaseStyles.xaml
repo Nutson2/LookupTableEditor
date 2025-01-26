@@ -1,49 +1,69 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <LinearGradientBrush x:Key="baseBrush" StartPoint="1,0" EndPoint="0.5,1">
-        <GradientStop Offset="0" Color="#FF6AB4F5" />
-        <GradientStop Offset="1" Color="#FFB99fff" />
-    </LinearGradientBrush>
+   <LinearGradientBrush x:Key="baseBrush"
+                        StartPoint="1,0"
+                        EndPoint="0.5,1">
+      <GradientStop Offset="0"
+                    Color="#FF6AB4F5" />
+      <GradientStop Offset="1"
+                    Color="#FFB99fff" />
+   </LinearGradientBrush>
 
-    <Style x:Key="base" TargetType="FrameworkElement">
-        <Setter Property="Margin" Value="3" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
+   <Style x:Key="base"
+          TargetType="FrameworkElement">
+      <Setter Property="Margin"
+              Value="3" />
+      <Setter Property="VerticalAlignment"
+              Value="Stretch" />
+      <Setter Property="HorizontalAlignment"
+              Value="Stretch" />
 
-    </Style>
+   </Style>
 
-    <Style BasedOn="{StaticResource base}" TargetType="Button">
-        <Style.Resources>
-            <Style TargetType="Border">
-                <Setter Property="Padding" Value="2" />
-                <Setter Property="CornerRadius" Value="2" />
-                <Setter Property="Background" Value="#99F0F0F0" />
-            </Style>
+   <Style BasedOn="{StaticResource base}"
+          TargetType="Button">
+      <Style.Resources>
+         <Style TargetType="Border">
+            <Setter Property="Padding"
+                    Value="2" />
+            <Setter Property="CornerRadius"
+                    Value="2" />
+            <Setter Property="Background"
+                    Value="#99F0F0F0" />
+         </Style>
 
-        </Style.Resources>
-    </Style>
-    <Style x:Key="verticalButton" TargetType="Button">
-        <Style.Resources>
-            <Style TargetType="Border">
-                <Setter Property="CornerRadius" Value="2" />
-            </Style>
-        </Style.Resources>
-    </Style>
+      </Style.Resources>
+   </Style>
+   <Style x:Key="verticalButton"
+          TargetType="Button">
+      <Style.Resources>
+         <Style TargetType="Border">
+            <Setter Property="CornerRadius"
+                    Value="2" />
+         </Style>
+      </Style.Resources>
+   </Style>
 
-    <Style
-        x:Key="iconButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="Button">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="Foreground" Value="#FF8E0505" />
-    </Style>
+   <Style x:Key="iconButton"
+          BasedOn="{StaticResource {x:Type Button}}"
+          TargetType="Button">
+      <Setter Property="FontSize"
+              Value="14" />
+      <Setter Property="Foreground"
+              Value="#FF8E0505" />
+   </Style>
 
-    <Style BasedOn="{StaticResource base}" TargetType="TextBox">
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-    </Style>
-    <Style BasedOn="{StaticResource base}" TargetType="TextBlock" />
+   <Style BasedOn="{StaticResource base}"
+          TargetType="TextBox">
+      <Setter Property="VerticalContentAlignment"
+              Value="Center" />
+   </Style>
+   <Style BasedOn="{StaticResource base}"
+          TargetType="TextBlock" />
 
 
-    <Style BasedOn="{StaticResource base}" TargetType="ComboBox" />
+   <Style BasedOn="{StaticResource base}"
+          TargetType="ComboBox" />
 
 </ResourceDictionary>

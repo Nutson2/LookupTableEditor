@@ -1,12 +1,16 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using Autodesk.Revit.DB;
 using LookupTableEditor.Extentions;
+using LookupTableEditor.Services;
 
-namespace LookupTableEditor
+namespace LookupTableEditor.Models
 {
-    public partial class SizeTableInfo
+    public class SizeTableInfo
     {
         private readonly string _headerDelimiter = ",";
         private readonly string systemDecimalSeparator = CultureInfo
@@ -14,48 +18,57 @@ namespace LookupTableEditor
             .NumberFormat
             .NumberDecimalSeparator;
 
-        private readonly Dictionary<string, AbstractParameterType> _headerTypes = new();
+        private readonly Dictionary<string, AbstractParameterType> _headerTypes = [];
         private readonly List<AbstractParameterType> _abstractParameterTypes;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
 
         public string? Name { get; set; }
         public string? FilePath { get; set; }
         public DataTable Table { get; } = new DataTable();
 
-        public SizeTableInfo(string? name, List<AbstractParameterType> abstractParameterTypes)
+        public SizeTableInfo(
+            string? name,
+            List<AbstractParameterType> abstractParameterTypes,
+            AbstractParameterTypesProvider parameterTypesProvider
+        )
         {
             Name = name;
             _abstractParameterTypes = abstractParameterTypes;
+            _parameterTypesProvider = parameterTypesProvider;
         }
 
         public void InsertFirstColumn()
         {
-            Table.Columns.Add("_", Type.GetType("System.String"));
-            _headerTypes.Add("_", AbstractParameterType.Empty());
+            Table.Columns.Add("_", typeof(string));
+            _headerTypes.Add("_", _parameterTypesProvider.Empty());
         }
 
         public void AddHeader(FamilySizeTableColumn column)
         {
-            Type dataTableHeaderType = column.GetTypeForDataTable();
-            AbstractParameterType headerType = column.GetHeaderType();
-            headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
-            if (headerType is null)
-                return;
+            var dataTableHeaderType = column.GetTypeForDataTable();
+            var headerType = _parameterTypesProvider.FromSizeTableColumn(column);
+            var name = column.Name;
 
-            var headerName = column.Name;
-
-            _headerTypes.Add(headerName, headerType);
-            DataColumn tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
-            tableColumn.Caption = headerName;
+            AddHeaderInternal(name, dataTableHeaderType, headerType);
         }
 
         public void AddHeader(FamilyParameter parameter)
         {
-            Type dataTableHeaderType = parameter.Definition.GetTypeForDataTable();
-            AbstractParameterType headerType = parameter.GetParameterType();
+            var name = parameter.Definition.Name;
+            var dataTableHeaderType = parameter.Definition.GetTypeForDataTable();
+            var headerType = _parameterTypesProvider.FromFamilyParameter(parameter);
+            AddHeaderInternal(name, dataTableHeaderType, headerType);
+        }
+
+        private void AddHeaderInternal(
+            string headerName,
+            Type dataTableHeaderType,
+            AbstractParameterType headerType
+        )
+        {
             headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
             if (headerType is null)
                 return;
-            var headerName = parameter.Definition.Name;
 
             _headerTypes.Add(headerName, headerType);
             DataColumn tableColumn = Table.Columns.Add(headerName, dataTableHeaderType);
@@ -71,6 +84,7 @@ namespace LookupTableEditor
                     _headerDelimiter,
                     Table
                         .Columns.Cast<DataColumn>()
+                        .Where(c => c is not null)
                         .Select(c => (c, _headerTypes[c.Caption]))
                         .Select(pair =>
                             $"{GetHeaderForFirstColumn(pair.c)}"
@@ -111,11 +125,11 @@ namespace LookupTableEditor
         internal AbstractParameterType GetColumnType(string selectedColumnName) =>
             _headerTypes.ContainsKey(selectedColumnName)
                 ? _headerTypes[selectedColumnName]
-                : AbstractParameterType.Empty();
+                : _parameterTypesProvider.Empty();
 
         internal void ChangeColumnName(
             int selectedColumnIndex,
-            string? oldValue,
+            string oldValue,
             string newValue,
             AbstractParameterType selectedColumnType
         )

@@ -1,21 +1,23 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LookupTableEditor.Extentions;
+using LookupTableEditor.Models;
 using LookupTableEditor.Services;
 
-namespace LookupTableEditor.Views
+namespace LookupTableEditor.ViewModels
 {
     public partial class TableContentPageViewModel : ObservableObject
     {
         private readonly SizeTableService _sizeTableService;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
         private int selectedColumnIndex;
         public int? SelectedRowIndex { get; set; }
-        public Action? OnColumnNameChanged { get; set; }
-        public Action? OnAddNewColumn { get; set; }
-
         public bool IsTableNotExist => !SizeTableNames.Contains(CurTableName);
         public bool IsSizeTableInfoExist => SizeTableInfo is not null;
         public int SelectedColumnIndex
@@ -23,6 +25,8 @@ namespace LookupTableEditor.Views
             get { return selectedColumnIndex; }
             set
             {
+                if (SizeTableInfo is null)
+                    return;
                 selectedColumnIndex = value;
                 SelectedColumnName = SizeTableInfo.Table.Columns[value].Caption;
                 SelectedColumnType = SizeTableInfo.GetColumnType(SelectedColumnName);
@@ -36,10 +40,10 @@ namespace LookupTableEditor.Views
         private SizeTableInfo? _sizeTableInfo;
 
         [ObservableProperty]
-        private string _selectedColumnName;
+        private string? _selectedColumnName;
 
         [ObservableProperty]
-        private AbstractParameterType _selectedColumnType = AbstractParameterType.Empty();
+        private AbstractParameterType? _selectedColumnType;
 
         [ObservableProperty]
         private List<string> _sizeTableNames = new();
@@ -48,9 +52,19 @@ namespace LookupTableEditor.Views
         [NotifyPropertyChangedFor(nameof(IsTableNotExist))]
         private string _curTableName = string.Empty;
 
-        public TableContentPageViewModel(SizeTableService sizeTableService)
+        public event Action? OnColumnNameChanged;
+        public event Action<SizeTableInfo>? OnAddNewColumn;
+
+        public TableContentPageViewModel(
+            SizeTableService sizeTableService,
+            AbstractParameterTypesProvider parameterTypesProvider
+        )
         {
             _sizeTableService = sizeTableService;
+            _parameterTypesProvider = parameterTypesProvider;
+
+            SelectedColumnType = _parameterTypesProvider.Empty();
+
             SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
             CurTableName = SizeTableNames.FirstOrDefault();
 
@@ -77,21 +91,26 @@ namespace LookupTableEditor.Views
             }
         }
 
-        partial void OnSelectedColumnNameChanged(string? oldValue, string newValue)
+        partial void OnSelectedColumnNameChanged(string? oldValue, string? newValue)
         {
-            if (oldValue is not null && !oldValue.IsValid() || !newValue.IsValid())
+            if (!oldValue.IsValid() || !newValue.IsValid() || SelectedColumnType is null)
                 return;
+
             SizeTableInfo?.ChangeColumnName(
                 SelectedColumnIndex,
-                oldValue,
-                newValue,
+                oldValue!,
+                newValue!,
                 SelectedColumnType
             );
             OnColumnNameChanged?.Invoke();
         }
 
-        partial void OnSelectedColumnTypeChanged(AbstractParameterType value) =>
+        partial void OnSelectedColumnTypeChanged(AbstractParameterType? value)
+        {
+            if (SelectedColumnName is null || value is null)
+                return;
             SizeTableInfo?.ChangeColumnType(SelectedColumnName, value);
+        }
 
         #endregion
 
@@ -108,16 +127,25 @@ namespace LookupTableEditor.Views
         [RelayCommand]
         private void SaveSizeTable()
         {
+            if (SizeTableInfo is null)
+                return;
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             Process.Start(SizeTableInfo.FilePath);
         }
 
         [RelayCommand]
-        private void AddRowOnTop() => AddRowOnTop(SelectedRowIndex.Value);
+        private void AddRowOnTop()
+        {
+            if (SelectedRowIndex is null)
+                return;
+            AddRowOnTop(SelectedRowIndex.Value);
+        }
 
         [RelayCommand]
         private void SetNewTable()
         {
+            if (SizeTableInfo is null)
+                return;
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             _sizeTableService.ImportSizeTable(SizeTableInfo);
             SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
@@ -126,19 +154,27 @@ namespace LookupTableEditor.Views
         [RelayCommand]
         private void AddNewColumn()
         {
-            OnAddNewColumn?.Invoke();
+            if (SizeTableInfo is null)
+                return;
+            OnAddNewColumn?.Invoke(SizeTableInfo);
         }
 
         #endregion
         public void AddRowOnTop(int index)
         {
-            SizeTableInfo.Table?.Rows.InsertAt(SizeTableInfo.Table.NewRow(), index);
+            SizeTableInfo?.Table?.Rows.InsertAt(SizeTableInfo.Table.NewRow(), index);
         }
 
         public void PasteFromClipboard()
         {
-            if (SizeTableInfo?.Table == null || !Clipboard.ContainsText())
+            if (
+                SizeTableInfo?.Table is null
+                || !Clipboard.ContainsText()
+                || SelectedRowIndex is null
+            )
+            {
                 return;
+            }
 
             int rowIndx = SelectedRowIndex.Value;
             int columnIndx = SelectedColumnIndex;
@@ -158,20 +194,17 @@ namespace LookupTableEditor.Views
                 if (rowIndx + tmpRowIndx >= dataTable.Rows.Count)
                     dataTable.Rows.Add(dataTable.NewRow());
                 tmpColIndx = 0;
-                string[] columnsValue = row.Split('\t');
-                foreach (string columnValue in columnsValue)
+                foreach (string columnValue in row.Split('\t'))
                 {
                     if (columnIndx + tmpColIndx >= dataTable.Columns.Count)
                         break;
 
                     try
                     {
-                        if (dataTable.Columns[tmpColIndx].DataType == Type.GetType("System.String"))
-                            dataTable.Rows[rowIndx + tmpRowIndx][columnIndx + tmpColIndx] =
-                                columnValue.ToString();
-                        else
-                            dataTable.Rows[rowIndx + tmpRowIndx][columnIndx + tmpColIndx] =
-                                double.Parse(columnValue);
+                        dataTable.Rows[rowIndx + tmpRowIndx][columnIndx + tmpColIndx] =
+                            dataTable.Columns[tmpColIndx].DataType == Type.GetType("System.String")
+                                ? columnValue
+                                : columnValue.ToDouble();
                     }
                     catch { }
                     tmpColIndx++;

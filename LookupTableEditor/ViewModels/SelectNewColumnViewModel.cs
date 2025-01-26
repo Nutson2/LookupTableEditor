@@ -1,56 +1,41 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
-using LookupTableEditor.Views;
 
 namespace LookupTableEditor.ViewModels
 {
     public partial class SelectNewColumnViewModel : ObservableObject
     {
-        private readonly TableContentPageViewModel _tableContentPageViewModel;
         private readonly FamiliesService _familiesService;
-
-        public Action? OnClosed { get; set; }
-        public ObservableCollection<FamilyParameterExtended> Parameters { get; set; } = new();
+        public SizeTableInfo? SizeTableInfo { get; set; }
+        public ObservableCollection<FamilyParameterModel> Parameters { get; }
         public CollectionViewSource CollectionViewSource { get; set; }
 
-        public SelectNewColumnViewModel(
-            TableContentPageViewModel tableContentPageViewModel,
-            FamiliesService familiesService
-        )
+        public event Action? OnClosed;
+
+        public SelectNewColumnViewModel(FamiliesService familiesService)
         {
-            _tableContentPageViewModel = tableContentPageViewModel;
             _familiesService = familiesService;
+            Parameters = new(_familiesService.GetFamilyParameters());
 
-            _familiesService
-                .GetFamilyParameters()
-                .ToList()
-                .ForEach(fp =>
-                {
-                    Parameters.Add(
-                        new FamilyParameterExtended(fp)
-                        {
-                            Value = _familiesService.GetValueAsString(fp)
-                        }
-                    );
-                    ;
-                });
-
-            CollectionViewSource = new CollectionViewSource() { Source = Parameters };
+            CollectionViewSource = new() { Source = Parameters };
 
             CollectionViewSource.GroupDescriptions.Add(
-                new PropertyGroupDescription(nameof(FamilyParameterExtended.GroupName))
+                new PropertyGroupDescription(nameof(FamilyParameterModel.GroupName))
             );
             CollectionViewSource.GroupDescriptions.Add(
-                new PropertyGroupDescription(nameof(FamilyParameterExtended.IsInstance))
+                new PropertyGroupDescription(nameof(FamilyParameterModel.IsInstance))
             );
             CollectionViewSource.SortDescriptions.Add(
                 new SortDescription(
-                    nameof(FamilyParameterExtended.GroupName),
+                    nameof(FamilyParameterModel.GroupName),
                     ListSortDirection.Ascending
                 )
             );
@@ -64,10 +49,8 @@ namespace LookupTableEditor.ViewModels
         {
             Parameters
                 .Where(fp => fp.IsSelected)
-                .ToList()
-                .ForEach(fp =>
-                    _tableContentPageViewModel.SizeTableInfo.AddHeader(fp.FamilyParameter)
-                );
+                .ForEach(fp => SizeTableInfo?.AddHeader(fp.FamilyParameter));
+            SizeTableInfo = null;
             OnClosed?.Invoke();
         }
     }

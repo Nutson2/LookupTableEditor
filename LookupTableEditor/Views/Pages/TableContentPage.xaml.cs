@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Windows.Controls;
 using System.Windows.Input;
+using LookupTableEditor.ViewModels;
 
 namespace LookupTableEditor.Views
 {
@@ -16,7 +17,7 @@ namespace LookupTableEditor.Views
             InitializeComponent();
             DataContext = vm;
             _vm = vm;
-            _vm.OnColumnNameChanged = () =>
+            _vm.OnColumnNameChanged += () =>
             {
                 if (_vm.SizeTableInfo is null)
                     return;
@@ -53,11 +54,10 @@ namespace LookupTableEditor.Views
         {
             if (dg_Table.CurrentColumn is null)
                 return;
-            var indx = _vm.SizeTableInfo?.Table.Columns.IndexOf(
-                _vm.SizeTableInfo.Table.Columns[dg_Table.CurrentColumn.Header.ToString()]
-            );
-            _vm.SelectedColumnIndex = indx ?? 0;
+            var columns = _vm.SizeTableInfo?.Table.Columns;
+            var indx = columns?.IndexOf(columns[dg_Table.CurrentColumn.Header.ToString()]);
 
+            _vm.SelectedColumnIndex = indx ?? 0;
             _vm.SelectedRowIndex = SelectedRowIndex();
         }
 
@@ -75,11 +75,11 @@ namespace LookupTableEditor.Views
 
             if (newPosition == 0)
             {
-                newPosition += 1;
+                newPosition++;
                 e.Column.DisplayIndex = newPosition;
             }
 
-            _vm.SizeTableInfo.Table.Columns[e.Column.Header.ToString()].SetOrdinal(newPosition);
+            _vm.SizeTableInfo?.Table.Columns[e.Column.Header.ToString()].SetOrdinal(newPosition);
         }
     }
 }

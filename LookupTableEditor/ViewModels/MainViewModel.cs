@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LookupTableEditor.Models;
 using LookupTableEditor.Services;
 using LookupTableEditor.Views;
 
@@ -11,34 +12,41 @@ namespace LookupTableEditor.ViewModels
     {
         private readonly SizeTableService _sizeTableService;
         private readonly FamiliesService _familiesService;
-        private readonly TableContentPageViewModel tableContentPageVM;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
+
+        private readonly TableContentPageViewModel _tableContentPageVM;
+        private readonly SelectNewColumnViewModel _selectNewColumnPageVM;
 
         [ObservableProperty]
         private Page? _currentPage;
 
-        public MainViewModel(SizeTableService sizeTableService, FamiliesService familiesService)
+        public MainViewModel(
+            SizeTableService sizeTableService,
+            FamiliesService familiesService,
+            AbstractParameterTypesProvider parameterTypesProvider
+        )
         {
             _sizeTableService = sizeTableService;
             _familiesService = familiesService;
+            _parameterTypesProvider = parameterTypesProvider;
 
-            tableContentPageVM = new TableContentPageViewModel(_sizeTableService);
-            tableContentPageVM.OnAddNewColumn = SetSelectNewColumnPage;
+            _tableContentPageVM = new(_sizeTableService, _parameterTypesProvider);
+            _tableContentPageVM.OnAddNewColumn += SetSelectNewColumnPage;
+
+            _selectNewColumnPageVM = new(_familiesService);
+            _selectNewColumnPageVM.OnClosed += SetTableContentPage;
 
             SetTableContentPage();
         }
 
         [RelayCommand]
-        private void SetTableContentPage()
-        {
-            CurrentPage = new TableContentPage(tableContentPageVM);
-        }
+        private void SetTableContentPage() =>
+            CurrentPage = new TableContentPage(_tableContentPageVM);
 
-        private void SetSelectNewColumnPage()
+        private void SetSelectNewColumnPage(SizeTableInfo sizeTableInfo)
         {
-            var vm = new SelectNewColumnViewModel(tableContentPageVM, _familiesService);
-            vm.OnClosed = SetTableContentPage;
-
-            CurrentPage = new SelectNewColumnPage(vm);
+            _selectNewColumnPageVM.SizeTableInfo = sizeTableInfo;
+            CurrentPage = new SelectNewColumnPage(_selectNewColumnPageVM);
         }
 
         [RelayCommand]
