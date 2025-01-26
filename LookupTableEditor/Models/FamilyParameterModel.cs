@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using CommunityToolkit.Mvvm.ComponentModel;
+using LookupTableEditor.Extentions;
 
 namespace LookupTableEditor.Models
 {
@@ -11,8 +12,8 @@ namespace LookupTableEditor.Models
         public string Value { get; set; } = string.Empty;
         public string Formula => FamilyParameter.Formula;
         public AbstractParameterType ParameterType { get; }
-        public string GroupName =>
-            LabelUtils.GetLabelFor(FamilyParameter.Definition.ParameterGroup);
+        public string GroupName { get; }
+
         public string IsInstance =>
             FamilyParameter.IsInstance ? "Параметры экземляра" : "Параметры типа";
 
@@ -26,6 +27,7 @@ namespace LookupTableEditor.Models
         {
             FamilyParameter = familyParameter;
             ParameterType = parameterType;
+            GroupName = FamilyParameter.Definition.GetGroupName();
         }
     }
 }
