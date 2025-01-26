@@ -11,17 +11,26 @@ namespace LookupTableEditor.ViewModels
     {
         private readonly SizeTableService _sizeTableService;
         private readonly FamiliesService _familiesService;
+        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
         private readonly TableContentPageViewModel tableContentPageVM;
 
         [ObservableProperty]
         private Page? _currentPage;
 
-        public MainViewModel(SizeTableService sizeTableService, FamiliesService familiesService)
+        public MainViewModel(
+            SizeTableService sizeTableService,
+            FamiliesService familiesService,
+            AbstractParameterTypesProvider parameterTypesProvider
+        )
         {
             _sizeTableService = sizeTableService;
             _familiesService = familiesService;
+            _parameterTypesProvider = parameterTypesProvider;
 
-            tableContentPageVM = new TableContentPageViewModel(_sizeTableService);
+            tableContentPageVM = new TableContentPageViewModel(
+                _sizeTableService,
+                _parameterTypesProvider
+            );
             tableContentPageVM.OnAddNewColumn = SetSelectNewColumnPage;
 
             SetTableContentPage();
@@ -35,7 +44,11 @@ namespace LookupTableEditor.ViewModels
 
         private void SetSelectNewColumnPage()
         {
-            var vm = new SelectNewColumnViewModel(tableContentPageVM, _familiesService);
+            var vm = new SelectNewColumnViewModel(
+                tableContentPageVM,
+                _familiesService,
+                _parameterTypesProvider
+            );
             vm.OnClosed = SetTableContentPage;
 
             CurrentPage = new SelectNewColumnPage(vm);

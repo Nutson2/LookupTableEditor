@@ -1,4 +1,5 @@
-﻿using Autodesk.Revit.DB;
+﻿using System.Linq;
+using Autodesk.Revit.DB;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace LookupTableEditor
@@ -29,7 +30,7 @@ namespace LookupTableEditor
 
         public override bool Equals(object obj)
         {
-            return obj is null ? false : ToString() == obj?.ToString();
+            return obj is not null && ToString() == obj?.ToString();
         }
 
         public override int GetHashCode() => ToString().GetHashCode();

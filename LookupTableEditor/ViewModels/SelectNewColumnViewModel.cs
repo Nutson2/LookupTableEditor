@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -40,7 +42,7 @@ namespace LookupTableEditor.ViewModels
                 Parameters.Add(famParamModel);
             }
 
-            CollectionViewSource = new CollectionViewSource() { Source = Parameters };
+            CollectionViewSource = new() { Source = Parameters };
 
             CollectionViewSource.GroupDescriptions.Add(
                 new PropertyGroupDescription(nameof(FamilyParameterModel.GroupName))
@@ -66,7 +68,7 @@ namespace LookupTableEditor.ViewModels
                 .Where(fp => fp.IsSelected)
                 .ToList()
                 .ForEach(fp =>
-                    _tableContentPageViewModel.SizeTableInfo.AddHeader(fp.FamilyParameter)
+                    _tableContentPageViewModel.SizeTableInfo?.AddHeader(fp.FamilyParameter)
                 );
             OnClosed?.Invoke();
         }

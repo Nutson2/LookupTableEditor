@@ -79,7 +79,7 @@ namespace LookupTableEditor.Views
                 e.Column.DisplayIndex = newPosition;
             }
 
-            _vm.SizeTableInfo.Table.Columns[e.Column.Header.ToString()].SetOrdinal(newPosition);
+            _vm.SizeTableInfo?.Table.Columns[e.Column.Header.ToString()].SetOrdinal(newPosition);
         }
     }
 }

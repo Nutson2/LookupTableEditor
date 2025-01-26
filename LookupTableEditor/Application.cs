@@ -9,6 +9,8 @@ namespace LookupTableEditor
     [UsedImplicitly]
     public class Application : ExternalApplication
     {
+        private const string name = nameof(LookupTableEditor);
+
         public override void OnStartup()
         {
             CreateRibbon();
@@ -16,17 +18,11 @@ namespace LookupTableEditor
 
         private void CreateRibbon()
         {
-            var panel = Application.CreatePanel("Commands", "LookupTableEditor");
-
-            var tableEditorButton = panel.AddPushButton<LookupTableEditorCommand>(
-                nameof(LookupTableEditorCommand.Execute)
-            );
-            tableEditorButton.SetImage(
-                $"/{nameof(LookupTableEditor)};component/Resources/Icons/{nameof(LookupTableEditorCommand)}16.png"
-            );
-            tableEditorButton.SetLargeImage(
-                $"/{nameof(LookupTableEditor)};component/Resources/Icons/{nameof(LookupTableEditorCommand)}32.png"
-            );
+            Application
+                .CreatePanel("Commands", name)
+                .AddPushButton<LookupTableEditorCommand>(name)
+                .SetImage($"/{name};component/Resources/Icons/{name}16.png")
+                .SetLargeImage($"/{name};component/Resources/Icons/{name}32.png");
         }
     }
 }

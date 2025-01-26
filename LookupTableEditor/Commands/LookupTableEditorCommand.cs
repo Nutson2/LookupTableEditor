@@ -23,9 +23,19 @@ namespace LookupTableEditor.Commands
             if (!doc.IsFamilyDocument)
                 return Result.Cancelled;
 
+            var parameterTypesProvider = new AbstractParameterTypesProvider();
+
             var familiesService = new FamiliesService(doc);
-            var sizeTableService = new SizeTableService(doc, uiApp.Application);
-            var mainVM = new MainViewModel(sizeTableService, familiesService);
+            var sizeTableService = new SizeTableService(
+                doc,
+                uiApp.Application,
+                parameterTypesProvider
+            );
+            var mainVM = new MainViewModel(
+                sizeTableService,
+                familiesService,
+                parameterTypesProvider
+            );
             var mainView = new MainWindow(mainVM);
             mainView.ShowDialog();
 

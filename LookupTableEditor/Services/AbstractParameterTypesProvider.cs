@@ -1,5 +1,11 @@
-﻿using Autodesk.Revit.DB;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Autodesk.Revit.DB;
+#if R22_OR_GREATER
 using LookupTableEditor.Extentions;
+#else
+using System;
+#endif
 
 namespace LookupTableEditor.Services
 {

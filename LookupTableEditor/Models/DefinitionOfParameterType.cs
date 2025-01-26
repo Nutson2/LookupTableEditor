@@ -2,10 +2,8 @@
 {
     public class DefinitionOfParameterType
     {
-        public string TypeName { get; set; }
-        public string SizeTableType { get; set; }
-
-        public DefinitionOfParameterType() { }
+        public string TypeName { get; }
+        public string SizeTableType { get; }
 
         public DefinitionOfParameterType(string typeName, string sizeTableType)
         {

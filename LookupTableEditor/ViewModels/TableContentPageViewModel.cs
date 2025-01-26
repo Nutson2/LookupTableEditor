@@ -1,9 +1,13 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LookupTableEditor.Extentions;
+using LookupTableEditor.Models;
 using LookupTableEditor.Services;
 
 namespace LookupTableEditor.Views
@@ -24,6 +28,8 @@ namespace LookupTableEditor.Views
             get { return selectedColumnIndex; }
             set
             {
+                if (SizeTableInfo is null)
+                    return;
                 selectedColumnIndex = value;
                 SelectedColumnName = SizeTableInfo.Table.Columns[value].Caption;
                 SelectedColumnType = SizeTableInfo.GetColumnType(SelectedColumnName);
@@ -37,10 +43,10 @@ namespace LookupTableEditor.Views
         private SizeTableInfo? _sizeTableInfo;
 
         [ObservableProperty]
-        private string _selectedColumnName;
+        private string? _selectedColumnName;
 
         [ObservableProperty]
-        private AbstractParameterType _selectedColumnType;
+        private AbstractParameterType? _selectedColumnType;
 
         [ObservableProperty]
         private List<string> _sizeTableNames = new();
@@ -85,21 +91,30 @@ namespace LookupTableEditor.Views
             }
         }
 
-        partial void OnSelectedColumnNameChanged(string? oldValue, string newValue)
+        partial void OnSelectedColumnNameChanged(string? oldValue, string? newValue)
         {
-            if (oldValue is not null && !oldValue.IsValid() || !newValue.IsValid())
+            if (
+                oldValue?.IsValid() == false
+                || newValue?.IsValid() == false
+                || SelectedColumnType is null
+            )
                 return;
+
             SizeTableInfo?.ChangeColumnName(
                 SelectedColumnIndex,
                 oldValue,
-                newValue,
+                newValue!,
                 SelectedColumnType
             );
             OnColumnNameChanged?.Invoke();
         }
 
-        partial void OnSelectedColumnTypeChanged(AbstractParameterType value) =>
+        partial void OnSelectedColumnTypeChanged(AbstractParameterType? value)
+        {
+            if (SelectedColumnName is null || value is null)
+                return;
             SizeTableInfo?.ChangeColumnType(SelectedColumnName, value);
+        }
 
         #endregion
 
@@ -116,16 +131,25 @@ namespace LookupTableEditor.Views
         [RelayCommand]
         private void SaveSizeTable()
         {
+            if (SizeTableInfo is null)
+                return;
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             Process.Start(SizeTableInfo.FilePath);
         }
 
         [RelayCommand]
-        private void AddRowOnTop() => AddRowOnTop(SelectedRowIndex.Value);
+        private void AddRowOnTop()
+        {
+            if (SelectedRowIndex is null)
+                return;
+            AddRowOnTop(SelectedRowIndex.Value);
+        }
 
         [RelayCommand]
         private void SetNewTable()
         {
+            if (SizeTableInfo is null)
+                return;
             _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
             _sizeTableService.ImportSizeTable(SizeTableInfo);
             SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
@@ -140,13 +164,19 @@ namespace LookupTableEditor.Views
         #endregion
         public void AddRowOnTop(int index)
         {
-            SizeTableInfo.Table?.Rows.InsertAt(SizeTableInfo.Table.NewRow(), index);
+            SizeTableInfo?.Table?.Rows.InsertAt(SizeTableInfo.Table.NewRow(), index);
         }
 
         public void PasteFromClipboard()
         {
-            if (SizeTableInfo?.Table == null || !Clipboard.ContainsText())
+            if (
+                SizeTableInfo?.Table is null
+                || !Clipboard.ContainsText()
+                || SelectedRowIndex is null
+            )
+            {
                 return;
+            }
 
             int rowIndx = SelectedRowIndex.Value;
             int columnIndx = SelectedColumnIndex;
@@ -166,20 +196,17 @@ namespace LookupTableEditor.Views
                 if (rowIndx + tmpRowIndx >= dataTable.Rows.Count)
                     dataTable.Rows.Add(dataTable.NewRow());
                 tmpColIndx = 0;
-                string[] columnsValue = row.Split('\t');
-                foreach (string columnValue in columnsValue)
+                foreach (string columnValue in row.Split('\t'))
                 {
                     if (columnIndx + tmpColIndx >= dataTable.Columns.Count)
                         break;
 
                     try
                     {
-                        if (dataTable.Columns[tmpColIndx].DataType == Type.GetType("System.String"))
-                            dataTable.Rows[rowIndx + tmpRowIndx][columnIndx + tmpColIndx] =
-                                columnValue.ToString();
-                        else
-                            dataTable.Rows[rowIndx + tmpRowIndx][columnIndx + tmpColIndx] =
-                                double.Parse(columnValue);
+                        dataTable.Rows[rowIndx + tmpRowIndx][columnIndx + tmpColIndx] =
+                            dataTable.Columns[tmpColIndx].DataType == Type.GetType("System.String")
+                                ? columnValue
+                                : columnValue.ToDouble();
                     }
                     catch { }
                     tmpColIndx++;

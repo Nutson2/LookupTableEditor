@@ -1,13 +1,16 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using Autodesk.Revit.DB;
 using LookupTableEditor.Extentions;
 using LookupTableEditor.Services;
 
-namespace LookupTableEditor
+namespace LookupTableEditor.Models
 {
-    public partial class SizeTableInfo
+    public class SizeTableInfo
     {
         private readonly string _headerDelimiter = ",";
         private readonly string systemDecimalSeparator = CultureInfo
@@ -15,7 +18,7 @@ namespace LookupTableEditor
             .NumberFormat
             .NumberDecimalSeparator;
 
-        private readonly Dictionary<string, AbstractParameterType> _headerTypes = new();
+        private readonly Dictionary<string, AbstractParameterType> _headerTypes = [];
         private readonly List<AbstractParameterType> _abstractParameterTypes;
         private readonly AbstractParameterTypesProvider _parameterTypesProvider;
 
