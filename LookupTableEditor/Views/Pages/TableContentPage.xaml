@@ -1,164 +1,112 @@
-﻿<Page
-    x:Class="LookupTableEditor.Views.Pages.TableContentPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:LookupTableEditor.ViewModels"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="TablePresenterPage"
-    d:DataContext="{d:DesignInstance Type=local:TableContentPageViewModel}"
-    d:DesignHeight="350"
-    d:DesignWidth="500"
-    PreviewKeyDown="Page_PreviewKeyDown"
-    mc:Ignorable="d">
+﻿<Page x:Class="LookupTableEditor.Views.Pages.TableContentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:LookupTableEditor.ViewModels"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Title="TablePresenterPage"
+      d:DataContext="{d:DesignInstance Type=local:TableContentPageViewModel}"
+      d:DesignHeight="350"
+      d:DesignWidth="500"
+      PreviewKeyDown="Page_PreviewKeyDown"
+      mc:Ignorable="d">
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="..\Styles\BaseStyles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+   <Page.Resources>
+      <ResourceDictionary>
+         <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="..\Styles\BaseStyles.xaml" />
+         </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
+   </Page.Resources>
+   
+   <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="auto" />
+         <RowDefinition Height="auto" />
+         <RowDefinition />
+      </Grid.RowDefinitions>
 
-        <GroupBox
-            Grid.Row="0"
-            Margin="3"
-            BorderBrush="#FF0994E8"
-            BorderThickness="2"
-            Header="Таблицы выбора">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="80" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                </Grid.RowDefinitions>
-                <ComboBox
-                    Grid.ColumnSpan="2"
-                    VerticalContentAlignment="Center"
-                    Background="#99F0F0F0"
-                    ItemsSource="{Binding Path=SizeTableNames}"
-                    SelectedValue="{Binding Path=CurTableName, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Row="1"
-                    d:Text=" New table name"
-                    Text="{Binding Path=CurTableName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+      <GroupBox Grid.Row="0"
+                Margin="3"
+                BorderBrush="#4C0994E8"
+                BorderThickness="1"
+                Header="Таблицы выбора"
+                Foreground="Black">
+         <Grid>
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition />
+               <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="30" />
+               <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <ComboBox Grid.ColumnSpan="2"
+                      VerticalContentAlignment="Center"
+                      Background="#99F0F0F0"
+                      ItemsSource="{Binding Path=SizeTableNames}"
+                      SelectedValue="{Binding Path=CurTableName, Mode=TwoWay}" />
+            <TextBox Grid.Row="1"
+                     d:Text=" New table name"
+                     Text="{Binding Path=CurTableName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                <Button
-                    Grid.Row="1"
+            <Button Grid.Row="1"
                     Grid.Column="1"
                     Command="{Binding CreateNewTableCommand}"
                     Content="Создать"
                     IsEnabled="{Binding IsTableNotExist}" />
-            </Grid>
-        </GroupBox>
+         </Grid>
+      </GroupBox>
 
-        <GroupBox
-            Grid.Row="1"
-            Margin="3"
-            BorderBrush="#FF0994E8"
-            BorderThickness="2"
-            Header="Выбранный столбец">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="70" />
-                </Grid.ColumnDefinitions>
-                <StackPanel>
-                    <TextBox Text="{Binding SelectedColumnName}" />
-                    <ComboBox
-                        DisplayMemberPath="Label"
-                        ItemsSource="{Binding ParameterTypes}"
-                        SelectedValue="{Binding SelectedColumnType, Mode=TwoWay}" />
-                    <TextBlock
-                        d:Text="##pupupu##pupu"
-                        Background="#FFCDECF9"
-                        Text="{Binding SelectedColumnType.SizeTablesTypeName}" />
-                </StackPanel>
-                <Button Grid.Column="1" Command="{Binding AddNewColumnCommand}">
-                    <TextBlock
-                        Text="Add new column"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
-                </Button>
-            </Grid>
-        </GroupBox>
+      <WrapPanel Grid.Row="1"
+                 Grid.Column="1">
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="40" />
-            </Grid.ColumnDefinitions>
+         <Button Content="+C"
+                 Command="{Binding AddNewColumnCommand}"
+                 Style="{StaticResource iconButton}"
+                 ToolTip="Добавить столбец в начало таблицы" />
+         <Button Command="{Binding AddRowOnTopCommand}"
+                 Content="+R"
+                 Style="{StaticResource iconButton}"
+                 ToolTip="Добавить строку" />
+         <Button Command="{Binding SaveSizeTableCommand}"
+                 Content="📝"
+                 Style="{StaticResource iconButton}"
+                 ToolTip="Экспортировать таблицу в CSV" />
+         <Button Command="{Binding SetNewTableCommand}"
+                 Content="Применить"
+                 Style="{StaticResource iconButton}"                 
+                 IsEnabled="{Binding IsSizeTableInfoExist}" />
+      </WrapPanel>
 
-            <DataGrid
-                x:Name="dg_Table"
-                Background="#99F0F0F0"
-                ClipboardCopyMode="ExcludeHeader"
-                ColumnReordering="dg_Table_ColumnReordering"
-                ColumnReordered="dg_Table_ColumnReordered"
-                ColumnWidth="100"
-                ItemsSource="{Binding Path=SizeTableInfo.Table}"
-                MinColumnWidth="30"
-                SelectedCellsChanged="dg_Table_SelectedCellsChanged"
+      <Grid Grid.Row="2">
+         <DataGrid x:Name="dg_Table"
+                   Background="#99F0F0F0"
+                   ClipboardCopyMode="ExcludeHeader"
+                   ColumnReordering="dg_Table_ColumnReordering"
+                   ColumnReordered="dg_Table_ColumnReordered"
+                   ColumnWidth="100"
+                   ItemsSource="{Binding Path=SizeTableInfo.Table}"
+                   MinColumnWidth="30"
+                   SelectedCellsChanged="dg_Table_SelectedCellsChanged"
+                   SelectionUnit="Cell">
 
-                SelectionUnit="Cell">
+            <DataGrid.ColumnHeaderStyle>
+               <Style TargetType="DataGridColumnHeader">
+                  <Setter Property="ContentTemplate">
+                     <Setter.Value>
+                        <DataTemplate>
+                           <TextBlock HorizontalAlignment="Center"
+                                      Text="{Binding}"
+                                      TextAlignment="Center"
+                                      TextWrapping="Wrap" />
+                        </DataTemplate>
+                     </Setter.Value>
+                  </Setter>
+               </Style>
+            </DataGrid.ColumnHeaderStyle>
+         </DataGrid>
 
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        Text="{Binding}"
-                                        TextAlignment="Center"
-                                        TextWrapping="Wrap" />
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
-
-            </DataGrid>
-
-            <Grid Grid.Row="2" Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <Button
-                    Grid.Column="0"
-                    Command="{Binding AddRowOnTopCommand}"
-                    Content="➕"
-                    Style="{StaticResource iconButton}"
-                    ToolTip="Добавить строку в начало таблицы" />
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Command="{Binding SaveSizeTableCommand}"
-                    Content="📝"
-                    Style="{StaticResource iconButton}"
-                    ToolTip="Экспортировать таблицу в CSV" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="4"
-                    Command="{Binding SetNewTableCommand}"
-                    Content="Применить"
-                    IsEnabled="{Binding IsSizeTableInfoExist}" />
-
-            </Grid>
-        </Grid>
-
-
-    </Grid>
+      </Grid>
+   </Grid>
 </Page>
