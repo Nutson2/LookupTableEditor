@@ -12,7 +12,7 @@ using LookupTableEditor.Services;
 
 namespace LookupTableEditor.ViewModels;
 
-public partial class TableContentPageViewModel : ObservableObject
+public partial class TableContentViewModel : BaseViewModel
 {
     private readonly SizeTableService _sizeTableService;
 
@@ -34,7 +34,7 @@ public partial class TableContentPageViewModel : ObservableObject
     [ObservableProperty]
     private List<string> _sizeTableNames = new();
 
-    public TableContentPageViewModel(
+    public TableContentViewModel(
         SizeTableService sizeTableService,
         AbstractParameterTypesProvider parameterTypesProvider
     )

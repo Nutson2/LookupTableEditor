@@ -48,8 +48,6 @@
    <Style x:Key="iconButton"
           BasedOn="{StaticResource {x:Type Button}}"
           TargetType="Button">
-      <Setter Property="FontSize"
-              Value="14" />
       <Setter Property="Foreground"
               Value="#FF8E0505" />
    </Style>
@@ -59,6 +57,7 @@
       <Setter Property="VerticalContentAlignment"
               Value="Center" />
    </Style>
+   
    <Style BasedOn="{StaticResource base}"
           TargetType="TextBlock" />
 
