@@ -26,6 +26,7 @@
       "enum": [
         "Clean",
         "Compile",
+        "CopyAddInFiles",
         "Restore"
       ]
     },
@@ -100,14 +101,6 @@
   "allOf": [
     {
       "properties": {
-        "Configuration": {
-          "type": "string",
-          "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
-          "enum": [
-            "Debug",
-            "Release"
-          ]
-        },
         "Solution": {
           "type": "string",
           "description": "Path to a solution file that is automatically loaded"

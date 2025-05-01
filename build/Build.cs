@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.IO;
@@ -7,9 +8,9 @@ using Nuke.Common.Utilities.Collections;
 using Serilog;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-class Build : NukeBuild
+class Build2 : NukeBuild
 {
-    public static int Main() => Execute<Build>(x => x.Compile);
+    public static int Main2() => Execute<Build2>(x => x.AfterCompile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild
@@ -55,6 +56,27 @@ class Build : NukeBuild
                         if (t.Contains("Debug"))
                             continue;
                         DotNetBuild(s => s.SetProjectFile(Solution).SetConfiguration(t));
+                    }
+                });
+    Target AfterCompile =>
+        _ =>
+            _.DependsOn(Compile)
+                .Executes(() =>
+                {
+                    var t = Solution.Projects.FirstOrDefault(p => p.Name == "LookupTableEditor");
+                    var addin = Path.Combine(
+                        Path.GetDirectoryName(t.Path),
+                        "LookupTableEditor.addin"
+                    );
+                    var addinFile = new FileInfo(addin);
+                    var p = t.Directory.GlobDirectories("**/bin").First();
+
+                    foreach (var item in Directory.GetDirectories(p))
+                    {
+                        File.Copy(
+                            addinFile.FullName,
+                            Path.Combine(item, "LookupTableEditor.addin")
+                        );
                     }
                 });
 }
