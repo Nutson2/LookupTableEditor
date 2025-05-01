@@ -4,33 +4,41 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:LookupTableEditor.Views.Pages"
+      xmlns:viewmodels="clr-namespace:LookupTableEditor.ViewModels"
+      d:DataContext="{d:DesignInstance Type=viewmodels:RequestTableNameVM}"
       mc:Ignorable="d"
-      d:DesignHeight="50"
-      d:DesignWidth="300"
+      d:DesignHeight="60"
+      d:DesignWidth="450"
       Title="RequestTableName">
 
    <Page.Resources>
       <ResourceDictionary>
          <ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary Source="Styles\BaseStyles.xaml" />
+            <ResourceDictionary Source="..\Styles\BaseStyles.xaml" />
          </ResourceDictionary.MergedDictionaries>
       </ResourceDictionary>
    </Page.Resources>
 
-   <Grid>
-      <Grid.RowDefinitions>
-         <RowDefinition />
-         <RowDefinition />
-      </Grid.RowDefinitions>
+   <GroupBox Header="dsdsdsdsd"
+             VerticalAlignment="Center"
+             HorizontalAlignment="Center"
+             Background="{StaticResource baseBrush}"
+             BorderBrush="{StaticResource baseBrush}">
+      <StackPanel Orientation="Horizontal">
 
-      <TextBox />
+         <TextBox Text="{Binding TableName, Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}"
+                  MinWidth="300" />
 
-      <WrapPanel Grid.Row="1"
-                 VerticalAlignment="Center">
-         <Button Style="{StaticResource iconButton}"
-                 Content="Cancel" />
-         <Button Style="{StaticResource iconButton}"
-                 Content="OK" />
-      </WrapPanel>
-   </Grid>
+         <WrapPanel Grid.Row="1"
+                    HorizontalAlignment="Right">
+            <Button Style="{StaticResource iconButton}"
+                    Command="{Binding CancelCommand}"
+                    Content="Cancel" />
+            <Button Style="{StaticResource iconButton}"
+                    Command="{Binding OkCommand}"
+                    Content="OK" />
+         </WrapPanel>
+      </StackPanel>
+   </GroupBox>
 </Page>

@@ -48,6 +48,8 @@
    <Style x:Key="iconButton"
           BasedOn="{StaticResource {x:Type Button}}"
           TargetType="Button">
+      <Setter Property="FontSize"
+              Value="16" />
       <Setter Property="Foreground"
               Value="#FF8E0505" />
    </Style>
@@ -56,7 +58,11 @@
           TargetType="TextBox">
       <Setter Property="VerticalContentAlignment"
               Value="Center" />
-      
+      <Setter Property="VerticalAlignment"
+              Value="Center" />
+      <Setter Property="FontSize"
+              Value="16" />
+
       <Setter Property="Validation.ErrorTemplate">
          <Setter.Value>
             <ControlTemplate>
@@ -81,13 +87,13 @@
                                    VerticalScrollBarVisibility="Hidden"
                                    Padding="{TemplateBinding Padding}" />
                   </Border>
-                  <ItemsControl Margin="0 5 0 0"
-                                FontSize="12"
+                  <ItemsControl FontSize="14"
                                 ItemsSource="{TemplateBinding Validation.Errors}">
                      <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                           <TextBlock Foreground="Red"
-                                      Text="{Binding ErrorContent}" />
+                           <TextBlock Foreground="#FFD00808"
+                                               Text="{Binding ErrorContent,
+                              UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                      </ItemsControl.ItemTemplate>
                   </ItemsControl>
@@ -96,7 +102,7 @@
          </Setter.Value>
       </Setter>
    </Style>
-   
+
    <Style BasedOn="{StaticResource base}"
           TargetType="TextBlock" />
 

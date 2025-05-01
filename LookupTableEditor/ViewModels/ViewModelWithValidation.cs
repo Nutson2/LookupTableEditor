@@ -23,19 +23,15 @@ public class ErrorsViewModel : ObservableObject, INotifyDataErrorInfo
     {
         _propertyErrors.TryAdd(propertyName, new());
         _propertyErrors[propertyName].Add(errorMessage);
-        OnErrorsChanged(propertyName);
     }
 
-    private void ClearErrors(string propertyName)
+    private void ClearErrors(string propertyName) => _propertyErrors.Remove(propertyName);
+
+    private void OnErrorsChanged(string propertyName)
     {
-        if (_propertyErrors.Remove(propertyName))
-        {
-            OnErrorsChanged(propertyName);
-        }
-    }
-
-    private void OnErrorsChanged(string propertyName) =>
+        OnPropertyChanged(nameof(HasErrors));
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+    }
 
     public void Validate(
         Func<bool> predicat,
@@ -48,5 +44,6 @@ public class ErrorsViewModel : ObservableObject, INotifyDataErrorInfo
         {
             AddError(propertyName, warningMessage);
         }
+        OnErrorsChanged(propertyName);
     }
 }

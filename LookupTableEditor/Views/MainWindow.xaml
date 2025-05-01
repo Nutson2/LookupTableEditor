@@ -14,11 +14,20 @@
         d:Height="200"
         d:MinWidth="500"
         d:MinHeight="200"
+        SizeToContent="WidthAndHeight"
         Topmost="True"
         d:DataContext="{d:DesignInstance Type=viewmodels:TableContentViewModel}"
-        mc:Ignorable="d"
-        Background="{StaticResource baseBrush}">
+        mc:Ignorable="d">
 
+   <Window.Background>
+      <LinearGradientBrush StartPoint="1,0"
+                           EndPoint="0.5,1">
+         <GradientStop Offset="0"
+                       Color="#FF6A99Ff" />
+         <GradientStop Offset="1"
+                       Color="#FFB99fff" />
+      </LinearGradientBrush>
+   </Window.Background>
 
    <Window.Resources>
       <ResourceDictionary>
@@ -29,10 +38,10 @@
    </Window.Resources>
 
    <Grid>
-      <Frame Content="{Binding Path=DialogPage}"
+      <Frame Content="{Binding Path=DialogPage}" Panel.ZIndex="99"
              NavigationUIVisibility="Hidden" />
 
-      <Grid x:Name="MainBody">
+      <Grid x:Name="MainBody" Panel.ZIndex="0" >
          <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="auto" />
@@ -59,8 +68,7 @@
                        Grid.Column="1"
                        Command="{Binding CreateNewTableCommand}"
                        Content="Создать"
-                       Style="{StaticResource iconButton}"
-                       IsEnabled="{Binding IsTableNotExist}" />
+                       Style="{StaticResource iconButton}" />
             </Grid>
 
             <WrapPanel Grid.Row="1"

@@ -21,20 +21,24 @@ public partial class MainWindow : Window
         DataContext = viewModel;
         _viewModel = viewModel;
         _viewModel.OnPageLoaded += ViewModel_OnPageLoaded;
-
-        _viewModel.OnColumnNameChanged += () =>
-        {
-            if (_viewModel.SizeTableInfo is null)
-                return;
-            for (int i = 0; i < dg_Table.Columns.Count; i++)
-            {
-                dg_Table.Columns[i].Header = _viewModel.SizeTableInfo.Table.Columns[i].Caption;
-            }
-        };
+        _viewModel.OnColumnNameChanged += HandleColumnNameChanged;
     }
 
-    private void ViewModel_OnPageLoaded(System.Windows.Controls.Page? obj) =>
-        MainBody.Effect = obj is null ? _blurEffect : null;
+    private void HandleColumnNameChanged()
+    {
+        if (_viewModel.SizeTableInfo is null)
+            return;
+        for (int i = 0; i < dg_Table.Columns.Count; i++)
+        {
+            dg_Table.Columns[i].Header = _viewModel.SizeTableInfo.Table.Columns[i].Caption;
+        }
+    }
+
+    private void ViewModel_OnPageLoaded(System.Windows.Controls.Page? obj)
+    {
+        MainBody.Effect = obj is null ? null : _blurEffect;
+        MainBody.IsHitTestVisible = obj is null;
+    }
 
     private void Page_PreviewKeyDown(object sender, KeyEventArgs e)
     {

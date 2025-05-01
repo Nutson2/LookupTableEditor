@@ -165,10 +165,10 @@ public partial class TableContentViewModel : BaseViewModel
     private void CreateNewTable()
     {
         var dialogVM = new RequestTableNameVM(
+            this,
             (curTableName) =>
             {
                 SizeTableInfo = _sizeTableService.GetSizeTableInfo(curTableName);
-                DialogPage = null;
             }
         );
         DialogPage = new RequestTableName(dialogVM);
