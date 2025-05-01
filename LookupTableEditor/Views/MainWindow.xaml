@@ -85,7 +85,7 @@
             </WrapPanel>
 
             <Grid Grid.Row="2">
-               <DataGrid
+               <DataGrid x:Name="dg_Table"
                          Background="#99F0F0F0"
                          ClipboardCopyMode="ExcludeHeader"
                          ColumnReordering="dg_Table_ColumnReordering"

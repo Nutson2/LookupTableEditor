@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -146,6 +147,8 @@ public class SizeTableService : IDisposable
 
         using StreamWriter sw = new(tableInfo.FilePath, false, Encoding.Default);
         sw.Write(tableInfo.ConvertToString());
+
+        Process.Start(tableInfo.FilePath);
     }
 
     public string CreateFormula(

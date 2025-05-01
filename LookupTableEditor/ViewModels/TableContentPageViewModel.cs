@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
+using LookupTableEditor.Views.Pages;
 
 namespace LookupTableEditor.ViewModels;
 
@@ -164,9 +164,14 @@ public partial class TableContentViewModel : BaseViewModel
     [RelayCommand]
     private void CreateNewTable()
     {
-        if (!CurTableName.IsValid())
-            return;
-        SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName!);
+        var dialogVM = new RequestTableNameVM(
+            (curTableName) =>
+            {
+                SizeTableInfo = _sizeTableService.GetSizeTableInfo(curTableName);
+                DialogPage = null;
+            }
+        );
+        DialogPage = new RequestTableName(dialogVM);
     }
 
     [RelayCommand]
@@ -175,8 +180,6 @@ public partial class TableContentViewModel : BaseViewModel
         if (SizeTableInfo is null)
             return;
         _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
-        if (SizeTableInfo.FilePath != null)
-            Process.Start(SizeTableInfo.FilePath);
     }
 
     [RelayCommand]

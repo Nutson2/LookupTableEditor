@@ -56,6 +56,45 @@
           TargetType="TextBox">
       <Setter Property="VerticalContentAlignment"
               Value="Center" />
+      
+      <Setter Property="Validation.ErrorTemplate">
+         <Setter.Value>
+            <ControlTemplate>
+               <AdornedElementPlaceholder />
+            </ControlTemplate>
+         </Setter.Value>
+      </Setter>
+
+      <Setter Property="Template">
+         <Setter.Value>
+            <ControlTemplate  TargetType="{x:Type TextBoxBase}">
+               <StackPanel>
+                  <Border x:Name="textBoxBorder"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          CornerRadius="3"
+                          Background="{TemplateBinding Background}"
+                          SnapsToDevicePixels="True">
+                     <ScrollViewer x:Name="PART_ContentHost"
+                                   Focusable="False"
+                                   HorizontalScrollBarVisibility="Hidden"
+                                   VerticalScrollBarVisibility="Hidden"
+                                   Padding="{TemplateBinding Padding}" />
+                  </Border>
+                  <ItemsControl Margin="0 5 0 0"
+                                FontSize="12"
+                                ItemsSource="{TemplateBinding Validation.Errors}">
+                     <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                           <TextBlock Foreground="Red"
+                                      Text="{Binding ErrorContent}" />
+                        </DataTemplate>
+                     </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+               </StackPanel>
+            </ControlTemplate>
+         </Setter.Value>
+      </Setter>
    </Style>
    
    <Style BasedOn="{StaticResource base}"

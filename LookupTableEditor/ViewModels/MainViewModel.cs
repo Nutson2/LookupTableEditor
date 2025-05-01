@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace LookupTableEditor.ViewModels;
 
-public abstract partial class BaseViewModel : ObservableObject
+public abstract partial class BaseViewModel : ErrorsViewModel
 {
     [ObservableProperty]
     private Page? _dialogPage;
