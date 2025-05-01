@@ -3,11 +3,11 @@
 using System.Linq;
 #endif
 
-namespace LookupTableEditor.Models
+namespace LookupTableEditor.Models;
+
+public class AbstractParameterType
 {
-    public class AbstractParameterType
-    {
-        public string SizeTablesTypeName { get; }
+    public string SizeTablesTypeName { get; }
 
 #if R22_OR_GREATER
         public ForgeTypeId? ParameterType { get; }
@@ -41,22 +41,26 @@ namespace LookupTableEditor.Models
 
 #else
 
-        public UnitType? UnitType { get; }
+    public UnitType? UnitType { get; }
 
-        public AbstractParameterType(UnitType? unitType, string sizeTablesTypeName)
-        {
-            SizeTablesTypeName = sizeTablesTypeName;
-            UnitType = unitType;
-        }
+    public AbstractParameterType(UnitType? unitType, string sizeTablesTypeName)
+    {
+        SizeTablesTypeName = sizeTablesTypeName;
+        UnitType           = unitType;
+    }
 
-        public AbstractParameterType(UnitType? unitType)
-            : this(unitType, string.Empty) { }
+    public AbstractParameterType(UnitType? unitType)
+        : this(unitType, string.Empty)
+    {
+    }
 
-        public string Label =>
-            UnitType.HasValue ? LabelUtils.GetLabelFor((ParameterType)UnitType) : " - ";
+    public string Label =>
+        UnitType.HasValue ? LabelUtils.GetLabelFor((ParameterType)UnitType) : " - ";
 
-        public override string ToString() => UnitType.HasValue ? UnitType.ToString() : string.Empty;
+    public override string ToString()
+    {
+        return UnitType.HasValue ? UnitType.ToString() : string.Empty;
+    }
 
 #endif
-    }
 }

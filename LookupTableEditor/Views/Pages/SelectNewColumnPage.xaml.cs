@@ -2,29 +2,29 @@
 using LookupTableEditor.Models;
 using LookupTableEditor.ViewModels;
 
-namespace LookupTableEditor.Views
+namespace LookupTableEditor.Views.Pages;
+
+/// <summary>
+///     Логика взаимодействия для TableDefinitionPage.xaml
+/// </summary>
+public partial class SelectNewColumnPage : Page
 {
-    /// <summary>
-    /// Логика взаимодействия для TableDefinitionPage.xaml
-    /// </summary>
-    public partial class SelectNewColumnPage : Page
+    public SelectNewColumnPage(SelectNewColumnViewModel selectNewColumnViewModel)
     {
-        public SelectNewColumnPage(SelectNewColumnViewModel selectNewColumnViewModel)
+        InitializeComponent();
+        DataContext = selectNewColumnViewModel;
+    }
+
+    private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        foreach (FamilyParameterModel fp in e.AddedItems)
         {
-            InitializeComponent();
-            DataContext = selectNewColumnViewModel;
+            fp.IsSelected = true;
         }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        foreach (FamilyParameterModel fp in e.RemovedItems)
         {
-            foreach (FamilyParameterModel fp in e.AddedItems)
-            {
-                fp.IsSelected = true;
-            }
-            foreach (FamilyParameterModel fp in e.RemovedItems)
-            {
-                fp.IsSelected = false;
-            }
+            fp.IsSelected = false;
         }
     }
 }

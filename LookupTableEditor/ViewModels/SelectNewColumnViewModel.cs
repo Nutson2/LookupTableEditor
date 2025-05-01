@@ -9,49 +9,49 @@ using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
 
-namespace LookupTableEditor.ViewModels
+namespace LookupTableEditor.ViewModels;
+
+public partial class SelectNewColumnViewModel : ObservableObject
 {
-    public partial class SelectNewColumnViewModel : ObservableObject
-    {
-        private readonly FamiliesService _familiesService;
-        public SizeTableInfo? SizeTableInfo { get; set; }
-        public ObservableCollection<FamilyParameterModel> Parameters { get; }
-        public CollectionViewSource CollectionViewSource { get; set; }
+	public SelectNewColumnViewModel(FamiliesService familiesService)
+	{
+		Parameters = new ObservableCollection<FamilyParameterModel>(familiesService.GetFamilyParameters());
 
-        public event Action? OnClosed;
+		CollectionViewSource = new CollectionViewSource { Source = Parameters };
 
-        public SelectNewColumnViewModel(FamiliesService familiesService)
-        {
-            _familiesService = familiesService;
-            Parameters = new(_familiesService.GetFamilyParameters());
+		CollectionViewSource.GroupDescriptions.Add(
+			new PropertyGroupDescription(nameof(FamilyParameterModel.GroupName))
+		);
+		CollectionViewSource.GroupDescriptions.Add(
+			new PropertyGroupDescription(nameof(FamilyParameterModel.IsInstance))
+		);
+		CollectionViewSource.SortDescriptions.Add(
+			new SortDescription(
+				nameof(FamilyParameterModel.GroupName),
+				ListSortDirection.Ascending
+			)
+		);
+	}
 
-            CollectionViewSource = new() { Source = Parameters };
+	public SizeTableInfo? SizeTableInfo { get; set; }
+	private ObservableCollection<FamilyParameterModel> Parameters { get; }
+	public CollectionViewSource CollectionViewSource { get; set; }
 
-            CollectionViewSource.GroupDescriptions.Add(
-                new PropertyGroupDescription(nameof(FamilyParameterModel.GroupName))
-            );
-            CollectionViewSource.GroupDescriptions.Add(
-                new PropertyGroupDescription(nameof(FamilyParameterModel.IsInstance))
-            );
-            CollectionViewSource.SortDescriptions.Add(
-                new SortDescription(
-                    nameof(FamilyParameterModel.GroupName),
-                    ListSortDirection.Ascending
-                )
-            );
-        }
+	public event Action? OnClosed;
 
-        [RelayCommand]
-        private void Cancel() => OnClosed?.Invoke();
+	[RelayCommand]
+	private void Cancel()
+	{
+		OnClosed?.Invoke();
+	}
 
-        [RelayCommand]
-        private void OK()
-        {
-            Parameters
-                .Where(fp => fp.IsSelected)
-                .ForEach(fp => SizeTableInfo?.AddHeader(fp.FamilyParameter));
-            SizeTableInfo = null;
-            OnClosed?.Invoke();
-        }
-    }
+	[RelayCommand]
+	private void Ok()
+	{
+		Parameters
+		   .Where(fp => fp.IsSelected)
+		   .ForEach(fp => SizeTableInfo?.AddHeader(fp.FamilyParameter));
+		SizeTableInfo = null;
+		OnClosed?.Invoke();
+	}
 }

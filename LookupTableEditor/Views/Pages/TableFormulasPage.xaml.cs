@@ -1,17 +1,16 @@
 ﻿using System.Windows.Controls;
 using LookupTableEditor.ViewModels;
 
-namespace LookupTableEditor.Views
+namespace LookupTableEditor.Views.Pages;
+
+/// <summary>
+///     Логика взаимодействия для TableFormulasPage.xaml
+/// </summary>
+public partial class TableFormulasPage : Page
 {
-    /// <summary>
-    /// Логика взаимодействия для TableFormulasPage.xaml
-    /// </summary>
-    public partial class TableFormulasPage : Page
+    public TableFormulasPage(TableFormulasViewModel viewModel)
     {
-        public TableFormulasPage(TableFormulasViewModel viewModel)
-        {
-            InitializeComponent();
-            DataContext = viewModel;
-        }
+        InitializeComponent();
+        DataContext = viewModel;
     }
 }

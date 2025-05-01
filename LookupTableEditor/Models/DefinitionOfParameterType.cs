@@ -1,14 +1,7 @@
-﻿namespace LookupTableEditor.Models
-{
-    public class DefinitionOfParameterType
-    {
-        public string TypeName { get; }
-        public string SizeTableType { get; }
+﻿namespace LookupTableEditor.Models;
 
-        public DefinitionOfParameterType(string typeName, string sizeTableType)
-        {
-            TypeName = typeName;
-            SizeTableType = sizeTableType;
-        }
-    }
+public class DefinitionOfParameterType
+{
+    public string TypeName { get; set; } = string.Empty;
+    public string SizeTableType { get; set; } = string.Empty;
 }

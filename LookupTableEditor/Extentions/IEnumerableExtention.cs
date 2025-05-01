@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LookupTableEditor.Extentions
+namespace LookupTableEditor.Extentions;
+
+public static class IEnumerableExtention
 {
-    public static class IEnumerableExtention
+    public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
     {
-        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        foreach (T item in enumerable)
         {
-            foreach (var item in enumerable)
-            {
-                action.Invoke(item);
-            }
-            return enumerable;
+            action.Invoke(item);
         }
+
+        return enumerable;
     }
 }

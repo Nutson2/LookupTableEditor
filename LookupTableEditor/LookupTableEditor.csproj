@@ -10,6 +10,7 @@
         <Configurations>Debug R20;Debug R21;Debug R22;Debug R23;Debug R24</Configurations>
         <Configurations>$(Configurations);Release R20;Release R21;Release R22;Release R23;Release R24</Configurations>
     </PropertyGroup>
+	
     <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
         <DebugType>full</DebugType>
         <DebugSymbols>true</DebugSymbols>
@@ -54,12 +55,6 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <StartAction>Program</StartAction>
-        <StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
-        <StartArguments>/language ENG</StartArguments>
-    </PropertyGroup>
-
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R20|AnyCPU'">
       <DefineConstants>$(DefineConstants);R20_OR_GREATER;R20</DefineConstants>
     </PropertyGroup>
@@ -79,6 +74,14 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R24|AnyCPU'">
       <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R24</DefineConstants>
     </PropertyGroup>
+	
+    <PropertyGroup>
+        <StartAction>Program</StartAction>
+        <StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
+        <StartArguments>/language ENG</StartArguments>
+        <OutputPath>bin\$(Configuration)\LookupTableEditor</OutputPath>
+    </PropertyGroup>
+
 
     <ItemGroup>
       <Resource Include="Resources\ParametersTypes2020.xml" />
@@ -106,12 +109,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Nice3point.Revit.Extensions" />
-        <Using Include="Nice3point.Revit.Toolkit.Utils" />
-        <Using Include="JetBrains.Annotations" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="Resource.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -130,9 +127,13 @@
         <LastGenOutput>Resource.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
+	
+	<ItemGroup>
+		<None Update="LookupTableEditor.addin">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 
-    <ItemGroup>
-      <None Update="Settings.settings">
+		<None Update="Settings.settings">
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>

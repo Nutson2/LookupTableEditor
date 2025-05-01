@@ -4,59 +4,58 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
-using LookupTableEditor.Views;
+using LookupTableEditor.Views.Pages;
 
-namespace LookupTableEditor.ViewModels
+namespace LookupTableEditor.ViewModels;
+
+public partial class MainViewModel : ObservableObject
 {
-    public partial class MainViewModel : ObservableObject
-    {
-        private readonly SizeTableService _sizeTableService;
-        private readonly FamiliesService _familiesService;
-        private readonly AbstractParameterTypesProvider _parameterTypesProvider;
+	private readonly SelectNewColumnViewModel _selectNewColumnPageVm;
+	private readonly TableContentPageViewModel _tableContentPageVm;
 
-        private readonly TableContentPageViewModel _tableContentPageVM;
-        private readonly SelectNewColumnViewModel _selectNewColumnPageVM;
+	[ObservableProperty] private Page? _currentPage;
 
-        [ObservableProperty]
-        private Page? _currentPage;
+	public MainViewModel(SizeTableService sizeTableService,
+						 FamiliesService familiesService,
+						 AbstractParameterTypesProvider parameterTypesProvider
+	)
+	{
+		_tableContentPageVm = new TableContentPageViewModel(sizeTableService, parameterTypesProvider);
+		_tableContentPageVm.OnAddNewColumn += SetSelectNewColumnPage;
 
-        public MainViewModel(
-            SizeTableService sizeTableService,
-            FamiliesService familiesService,
-            AbstractParameterTypesProvider parameterTypesProvider
-        )
-        {
-            _sizeTableService = sizeTableService;
-            _familiesService = familiesService;
-            _parameterTypesProvider = parameterTypesProvider;
+		_selectNewColumnPageVm = new SelectNewColumnViewModel(familiesService);
+		_selectNewColumnPageVm.OnClosed += SetTableContentPage;
 
-            _tableContentPageVM = new(_sizeTableService, _parameterTypesProvider);
-            _tableContentPageVM.OnAddNewColumn += SetSelectNewColumnPage;
+		SetTableContentPage();
+	}
 
-            _selectNewColumnPageVM = new(_familiesService);
-            _selectNewColumnPageVM.OnClosed += SetTableContentPage;
+	[RelayCommand]
+	private void SetTableContentPage()
+	{
+		CurrentPage = new TableContentPage(_tableContentPageVm);
+	}
 
-            SetTableContentPage();
-        }
+	private void SetSelectNewColumnPage(SizeTableInfo sizeTableInfo)
+	{
+		_selectNewColumnPageVm.SizeTableInfo = sizeTableInfo;
+		CurrentPage = new SelectNewColumnPage(_selectNewColumnPageVm);
+	}
 
-        [RelayCommand]
-        private void SetTableContentPage() =>
-            CurrentPage = new TableContentPage(_tableContentPageVM);
+	[RelayCommand]
+	private void SetTableFormulasPage()
+	{
+		CurrentPage = new TableFormulasPage(new TableFormulasViewModel());
+	}
 
-        private void SetSelectNewColumnPage(SizeTableInfo sizeTableInfo)
-        {
-            _selectNewColumnPageVM.SizeTableInfo = sizeTableInfo;
-            CurrentPage = new SelectNewColumnPage(_selectNewColumnPageVM);
-        }
+	[RelayCommand]
+	private void GotoTelegram()
+	{
+		Process.Start(Settings.Default.TelegramUrl);
+	}
 
-        [RelayCommand]
-        private void SetTableFormulasPage() =>
-            CurrentPage = new TableFormulasPage(new TableFormulasViewModel());
-
-        [RelayCommand]
-        private void GotoTelegram() => Process.Start(Settings.Default.TelegramUrl);
-
-        [RelayCommand]
-        private void GoToYouTube() => Process.Start(Settings.Default.YouTubeChannelUrl);
-    }
+	[RelayCommand]
+	private void GoToYouTube()
+	{
+		Process.Start(Settings.Default.YouTubeChannelUrl);
+	}
 }

@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Профиль 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Autodesk\\Revit 2022\\Revit.exe",
+      "workingDirectory": "C:\\ProgramData\\Autodesk\\Revit\\Addins\\2022"
+    }
+  }
+}

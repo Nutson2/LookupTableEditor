@@ -1,9 +1,8 @@
 ﻿<Page
-    x:Class="LookupTableEditor.Views.SelectNewColumnPage"
+    x:Class="LookupTableEditor.Views.Pages.SelectNewColumnPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:LookupTableEditor.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:LookupTableEditor.ViewModels"
     Title="SelectNewColumnPage"
@@ -97,7 +96,7 @@
                 Content="Отмена" />
             <Button
                 Width="60"
-                Command="{Binding OKCommand}"
+                Command="{Binding OkCommand}"
                 Content="OK" />
         </StackPanel>
     </Grid>

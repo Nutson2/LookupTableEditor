@@ -1,28 +1,28 @@
 ﻿using LookupTableEditor.Commands;
+using Nice3point.Revit.Extensions;
 using Nice3point.Revit.Toolkit.External;
 
-namespace LookupTableEditor
+namespace LookupTableEditor;
+
+/// <summary>
+///     Application entry point
+/// </summary>
+
+public class Application : ExternalApplication
 {
-    /// <summary>
-    ///     Application entry point
-    /// </summary>
-    [UsedImplicitly]
-    public class Application : ExternalApplication
-    {
-        private const string name = nameof(LookupTableEditor);
+	private const string Name = nameof(LookupTableEditor);
 
-        public override void OnStartup()
-        {
-            CreateRibbon();
-        }
+	public override void OnStartup()
+	{
+		CreateRibbon();
+	}
 
-        private void CreateRibbon()
-        {
-            Application
-                .CreatePanel("Commands", name)
-                .AddPushButton<LookupTableEditorCommand>(name)
-                .SetImage($"/{name};component/Resources/Icons/{name}16.png")
-                .SetLargeImage($"/{name};component/Resources/Icons/{name}32.png");
-        }
-    }
+	private void CreateRibbon()
+	{
+		Application
+			.CreatePanel("Commands", Name)
+			.AddPushButton<LookupTableEditorCommand>(Name)
+			.SetImage($"/{Name};component/Resources/Icons/{Name}16.png")
+			.SetLargeImage($"/{Name};component/Resources/Icons/{Name}32.png");
+	}
 }
