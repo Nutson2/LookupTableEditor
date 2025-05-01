@@ -20,9 +20,9 @@ public partial class SelectNewColumnViewModel : BaseDialogVM<IEnumerable<FamilyP
     )
         : base(ownerVM, action)
     {
-        RequestedValue = new ObservableCollection<FamilyParameterModel>(parameters);
+        RequestVal = new ObservableCollection<FamilyParameterModel>(parameters);
 
-        CollectionViewSource = new CollectionViewSource { Source = RequestedValue };
+        CollectionViewSource = new CollectionViewSource { Source = RequestVal };
 
         CollectionViewSource.GroupDescriptions.Add(
             new PropertyGroupDescription(nameof(FamilyParameterModel.GroupName))

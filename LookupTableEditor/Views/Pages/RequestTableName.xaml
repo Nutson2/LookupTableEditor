@@ -25,12 +25,12 @@
              Background="{StaticResource baseBrush}"
              BorderBrush="{StaticResource baseBrush}">
       <GroupBox.Header>
-         <TextBlock Text="New size table name"
-                    Background="#4CB99FFF" /> 
+         <TextBlock Text="New size table name" FontSize="14"
+                    Background="#66E3DAFB" /> 
       </GroupBox.Header>
       <StackPanel Orientation="Horizontal">
 
-         <TextBox Text="{Binding TableName, Mode=TwoWay,
+         <TextBox Text="{Binding RequestVal, Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}"
                   MinWidth="300" />
 

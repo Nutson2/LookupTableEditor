@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace LookupTableEditor.ViewModels;
@@ -10,11 +9,18 @@ public abstract partial class BaseDialogVM<T> : ErrorsViewModel, INotifyDataErro
     private BaseViewModel _ownerVM;
     private readonly Action<T?> _action;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(OkCommand))]
-    private T? _requestedValue;
-
-    partial void OnRequestedValueChanged(T? value) => ValidateRequestedProp(value);
+    private T? requestVal;
+    public T? RequestVal
+    {
+        get => requestVal;
+        set
+        {
+            requestVal = value;
+            ValidateRequestedProp(value);
+            OnPropertyChanged();
+            OkCommand.NotifyCanExecuteChanged();
+        }
+    }
 
     public abstract void ValidateRequestedProp(T? value);
 
@@ -30,7 +36,7 @@ public abstract partial class BaseDialogVM<T> : ErrorsViewModel, INotifyDataErro
     private void Ok()
     {
         _ownerVM.DialogPage = null;
-        _action.Invoke(RequestedValue);
+        _action.Invoke(RequestVal);
     }
 
     [RelayCommand]
