@@ -6,15 +6,17 @@ namespace LookupTableEditor.Models;
 
 public partial class FamilyParameterModel : ObservableObject
 {
-    [ObservableProperty] private bool _isSelected;
+    [ObservableProperty]
+    private bool _isSelected;
 
-    public FamilyParameterModel(FamilyParameter familyParameter,
-                                AbstractParameterType parameterType
+    public FamilyParameterModel(
+        FamilyParameter familyParameter,
+        AbstractParameterType parameterType
     )
     {
         FamilyParameter = familyParameter;
-        ParameterType   = parameterType;
-        GroupName       = FamilyParameter.Definition.GetGroupName();
+        ParameterType = parameterType;
+        GroupName = FamilyParameter.Definition.GetGroupName();
     }
 
     public FamilyParameter FamilyParameter { get; }
@@ -25,5 +27,6 @@ public partial class FamilyParameterModel : ObservableObject
     public AbstractParameterType ParameterType { get; }
     public string GroupName { get; }
 
-    public string IsInstance => FamilyParameter.IsInstance ? "Параметры экземляра" : "Параметры типа";
+    public string IsInstance =>
+        FamilyParameter.IsInstance ? "Параметры экземляра" : "Параметры типа";
 }

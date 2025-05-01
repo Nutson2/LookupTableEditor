@@ -1,0 +1,48 @@
+﻿<Page x:Class="LookupTableEditor.Views.Pages.RequestTableName"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:LookupTableEditor.Views.Pages"
+      xmlns:viewmodels="clr-namespace:LookupTableEditor.ViewModels"
+      d:DataContext="{d:DesignInstance Type=viewmodels:RequestTableNameVM}"
+      mc:Ignorable="d"
+      d:DesignHeight="60"
+      d:DesignWidth="450"
+      Title="RequestTableName">
+
+   <Page.Resources>
+      <ResourceDictionary>
+         <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="..\Styles\BaseStyles.xaml" />
+         </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
+   </Page.Resources>
+
+   <GroupBox 
+             VerticalAlignment="Center"
+             HorizontalAlignment="Center"
+             Background="{StaticResource baseBrush}"
+             BorderBrush="{StaticResource baseBrush}">
+      <GroupBox.Header>
+         <TextBlock Text="New size table name"
+                    Background="#4CB99FFF" /> 
+      </GroupBox.Header>
+      <StackPanel Orientation="Horizontal">
+
+         <TextBox Text="{Binding TableName, Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}"
+                  MinWidth="300" />
+
+         <WrapPanel Grid.Row="1"
+                    HorizontalAlignment="Right">
+            <Button Style="{StaticResource iconButton}"
+                    Command="{Binding CancelCommand}"
+                    Content="Cancel" />
+            <Button Style="{StaticResource iconButton}"
+                    Command="{Binding OkCommand}"
+                    Content="OK" />
+         </WrapPanel>
+      </StackPanel>
+   </GroupBox>
+</Page>

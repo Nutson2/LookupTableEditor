@@ -9,12 +9,14 @@ using CommunityToolkit.Mvvm.Input;
 using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
+using LookupTableEditor.Views.Pages;
 
 namespace LookupTableEditor.ViewModels;
 
-public partial class TableContentPageViewModel : ObservableObject
+public partial class TableContentViewModel : BaseViewModel
 {
     private readonly SizeTableService _sizeTableService;
+    private readonly FamiliesService _familiesService;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsTableNotExist))]
@@ -34,13 +36,14 @@ public partial class TableContentPageViewModel : ObservableObject
     [ObservableProperty]
     private List<string> _sizeTableNames = new();
 
-    public TableContentPageViewModel(
+    public TableContentViewModel(
         SizeTableService sizeTableService,
-        AbstractParameterTypesProvider parameterTypesProvider
+        AbstractParameterTypesProvider parameterTypesProvider,
+        FamiliesService familiesService
     )
     {
         _sizeTableService = sizeTableService;
-
+        _familiesService = familiesService;
         SelectedColumnType = parameterTypesProvider.Empty();
 
         SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
@@ -164,9 +167,14 @@ public partial class TableContentPageViewModel : ObservableObject
     [RelayCommand]
     private void CreateNewTable()
     {
-        if (!CurTableName.IsValid())
-            return;
-        SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName!);
+        var dialogVM = new RequestTableNameVM(
+            this,
+            (curTableName) =>
+            {
+                SizeTableInfo = _sizeTableService.GetSizeTableInfo(curTableName);
+            }
+        );
+        DialogPage = new RequestTableName(dialogVM);
     }
 
     [RelayCommand]
@@ -175,8 +183,7 @@ public partial class TableContentPageViewModel : ObservableObject
         if (SizeTableInfo is null)
             return;
         _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
-        if (SizeTableInfo.FilePath != null)
-            Process.Start(SizeTableInfo.FilePath);
+        Process.Start(SizeTableInfo.FilePath);
     }
 
     [RelayCommand]
@@ -188,7 +195,7 @@ public partial class TableContentPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SetNewTable()
+    private void UpdateTable()
     {
         if (SizeTableInfo is null)
             return;
@@ -201,9 +208,22 @@ public partial class TableContentPageViewModel : ObservableObject
     [RelayCommand]
     private void AddNewColumn()
     {
-        if (SizeTableInfo is null)
-            return;
-        OnAddNewColumn?.Invoke(SizeTableInfo);
+        var requestNewColumnVM = new SelectNewColumnViewModel(
+            this,
+            (parameters) =>
+            {
+                parameters
+                    .Where(fp => fp.IsSelected)
+                    .ForEach(fp => SizeTableInfo?.AddHeader(fp.FamilyParameter));
+
+                var tmp = SizeTableInfo;
+                SizeTableInfo = null;
+                SizeTableInfo = tmp;
+            },
+            _familiesService.GetFamilyParameters()
+        );
+
+        DialogPage = new SelectNewColumnPage(requestNewColumnVM);
     }
 
     #endregion
