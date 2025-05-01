@@ -8,6 +8,8 @@
         Title="Lookup table editor"
         Width="1000"
         Height="650"
+        MaxHeight="900"
+        MaxWidth="1600"
         MinWidth="600"
         MinHeight="450"
         d:Width="500"
@@ -86,7 +88,7 @@
                        Content="📝"
                        Style="{StaticResource iconButton}"
                        ToolTip="Экспортировать таблицу в CSV" />
-               <Button Command="{Binding SetNewTableCommand}"
+               <Button Command="{Binding UpdateTableCommand}"
                        Content="Применить"
                        Style="{StaticResource iconButton}"
                        IsEnabled="{Binding IsSizeTableInfoExist}" />
@@ -99,7 +101,7 @@
                          ColumnReordering="dg_Table_ColumnReordering"
                          ColumnReordered="dg_Table_ColumnReordered"
                          ColumnWidth="100"
-                         ItemsSource="{Binding Path=SizeTableInfo.Table}"
+                         ItemsSource="{Binding Path=SizeTableInfo.Table, UpdateSourceTrigger=PropertyChanged}"
                          MinColumnWidth="30"
                          SelectedCellsChanged="dg_Table_SelectedCellsChanged"
                          SelectionUnit="Cell">

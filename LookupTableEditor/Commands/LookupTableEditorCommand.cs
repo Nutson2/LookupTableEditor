@@ -23,7 +23,11 @@ class LookupTableEditorCommand : IExternalCommand
 
         var familiesService = new FamiliesService(doc, parameterTypesProvider);
         var sizeTableService = new SizeTableService(doc, uiApp.Application, parameterTypesProvider);
-        var mainVM = new TableContentViewModel(sizeTableService, parameterTypesProvider);
+        var mainVM = new TableContentViewModel(
+            sizeTableService,
+            parameterTypesProvider,
+            familiesService
+        );
         var mainView = new MainWindow(mainVM);
         mainView.ShowDialog();
 

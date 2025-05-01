@@ -13,7 +13,7 @@ public static class DictionaryExtensions
         return default;
     }
 
-    public static void TryAdd<TKey, TValue>(
+    public static bool TryAdd<TKey, TValue>(
         this Dictionary<TKey, TValue> dict,
         TKey key,
         TValue value
@@ -22,6 +22,8 @@ public static class DictionaryExtensions
         if (!dict.ContainsKey(key))
         {
             dict.Add(key, value);
+            return true;
         }
+        return false;
     }
 }

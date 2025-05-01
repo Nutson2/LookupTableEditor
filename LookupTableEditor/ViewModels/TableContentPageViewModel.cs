@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,6 +16,7 @@ namespace LookupTableEditor.ViewModels;
 public partial class TableContentViewModel : BaseViewModel
 {
     private readonly SizeTableService _sizeTableService;
+    private readonly FamiliesService _familiesService;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsTableNotExist))]
@@ -36,11 +38,12 @@ public partial class TableContentViewModel : BaseViewModel
 
     public TableContentViewModel(
         SizeTableService sizeTableService,
-        AbstractParameterTypesProvider parameterTypesProvider
+        AbstractParameterTypesProvider parameterTypesProvider,
+        FamiliesService familiesService
     )
     {
         _sizeTableService = sizeTableService;
-
+        _familiesService = familiesService;
         SelectedColumnType = parameterTypesProvider.Empty();
 
         SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
@@ -180,6 +183,7 @@ public partial class TableContentViewModel : BaseViewModel
         if (SizeTableInfo is null)
             return;
         _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
+        Process.Start(SizeTableInfo.FilePath);
     }
 
     [RelayCommand]
@@ -191,7 +195,7 @@ public partial class TableContentViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void SetNewTable()
+    private void UpdateTable()
     {
         if (SizeTableInfo is null)
             return;
@@ -204,9 +208,22 @@ public partial class TableContentViewModel : BaseViewModel
     [RelayCommand]
     private void AddNewColumn()
     {
-        if (SizeTableInfo is null)
-            return;
-        OnAddNewColumn?.Invoke(SizeTableInfo);
+        var requestNewColumnVM = new SelectNewColumnViewModel(
+            this,
+            (parameters) =>
+            {
+                parameters
+                    .Where(fp => fp.IsSelected)
+                    .ForEach(fp => SizeTableInfo?.AddHeader(fp.FamilyParameter));
+
+                var tmp = SizeTableInfo;
+                SizeTableInfo = null;
+                SizeTableInfo = tmp;
+            },
+            _familiesService.GetFamilyParameters()
+        );
+
+        DialogPage = new SelectNewColumnPage(requestNewColumnVM);
     }
 
     #endregion

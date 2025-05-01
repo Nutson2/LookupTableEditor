@@ -27,8 +27,8 @@
 
         <DataGrid
             AutoGenerateColumns="False"
-            Background="Transparent"
-            ItemsSource="{Binding CollectionViewSource.View}"
+                Background="{StaticResource baseBrush}"
+                ItemsSource="{Binding CollectionViewSource.View}"
             SelectionChanged="DataGrid_SelectionChanged"
             SelectionMode="Extended">
             <DataGrid.Resources>
@@ -42,6 +42,7 @@
                 <DataGridTextColumn Binding="{Binding Value, Mode=OneWay}" Header="Значение" />
                 <DataGridTextColumn Binding="{Binding Formula, Mode=OneWay}" Header="Формула" />
             </DataGrid.Columns>
+           
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
@@ -55,7 +56,8 @@
                                                     <TextBlock
                                                         FontSize="14"
                                                         FontWeight="Bold"
-                                                        Text="{Binding Path=Name}" />
+                                                  Background="#4CBDCBE2"
+                                                  Text="{Binding Path=Name}" />
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -77,7 +79,8 @@
                                     Margin="50,0,0,0"
                                     FontSize="14"
                                     FontStyle="Italic"
-                                    Text="{Binding Path=Name}" />
+                                   Background="#4CBDCBE2"
+                                   Text="{Binding Path=Name}" />
                             </DockPanel>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
