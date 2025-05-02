@@ -7,7 +7,7 @@ namespace LookupTableEditor.ViewModels;
 public abstract partial class BaseDialogVM<T> : ErrorsViewModel, INotifyDataErrorInfo
 {
     private BaseViewModel _ownerVM;
-    private readonly Action<T?> _action;
+    private readonly Action<T?>? _action;
 
     private T? requestVal;
     public T? RequestVal
@@ -24,7 +24,7 @@ public abstract partial class BaseDialogVM<T> : ErrorsViewModel, INotifyDataErro
 
     public abstract void ValidateRequestedProp(T? value);
 
-    public BaseDialogVM(BaseViewModel ownerVM, Action<T?> action)
+    public BaseDialogVM(BaseViewModel ownerVM, Action<T?>? action)
     {
         _ownerVM = ownerVM;
         _action = action;
@@ -36,7 +36,7 @@ public abstract partial class BaseDialogVM<T> : ErrorsViewModel, INotifyDataErro
     private void Ok()
     {
         _ownerVM.DialogPage = null;
-        _action.Invoke(RequestVal);
+        _action?.Invoke(RequestVal);
     }
 
     [RelayCommand]

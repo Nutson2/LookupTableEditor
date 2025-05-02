@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -17,12 +18,11 @@ public partial class TableContentViewModel : BaseViewModel
 {
     private readonly SizeTableService _sizeTableService;
     private readonly FamiliesService _familiesService;
+    private int _selectedColumnIndex;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsTableNotExist))]
     private string? _curTableName;
-
-    private int _selectedColumnIndex;
 
     [ObservableProperty]
     private string? _selectedColumnName;
@@ -33,28 +33,11 @@ public partial class TableContentViewModel : BaseViewModel
     [ObservableProperty]
     private SizeTableInfo? _sizeTableInfo;
 
-    [ObservableProperty]
-    private List<string> _sizeTableNames = new();
+    public ObservableCollection<string> SizeTableNames { get; private set; }
+    public List<AbstractParameterType> ParameterTypes { get; }
 
-    public TableContentViewModel(
-        SizeTableService sizeTableService,
-        AbstractParameterTypesProvider parameterTypesProvider,
-        FamiliesService familiesService
-    )
-    {
-        _sizeTableService = sizeTableService;
-        _familiesService = familiesService;
-        SelectedColumnType = parameterTypesProvider.Empty();
-
-        SizeTableNames = _sizeTableService.Manager.GetAllSizeTableNames().ToList();
-        CurTableName = SizeTableNames.FirstOrDefault();
-
-        ParameterTypes = _sizeTableService
-            .AbstractParameterTypes.Where(p => p.Label.IsValid())
-            .OrderBy(p => p.Label)
-            .ToList();
-    }
-
+    public event Action? OnColumnNameChanged;
+    public event Action<SizeTableInfo>? OnAddNewColumn;
     public int? SelectedRowIndex { get; set; }
     public bool IsTableNotExist =>
         CurTableName is not null && !SizeTableNames.Contains(CurTableName);
@@ -74,10 +57,24 @@ public partial class TableContentViewModel : BaseViewModel
         }
     }
 
-    public List<AbstractParameterType> ParameterTypes { get; }
+    public TableContentViewModel(
+        SizeTableService sizeTableService,
+        AbstractParameterTypesProvider parameterTypesProvider,
+        FamiliesService familiesService
+    )
+    {
+        _sizeTableService = sizeTableService;
+        _familiesService = familiesService;
+        SelectedColumnType = parameterTypesProvider.Empty();
 
-    public event Action? OnColumnNameChanged;
-    public event Action<SizeTableInfo>? OnAddNewColumn;
+        SizeTableNames = new(_sizeTableService.Manager.GetAllSizeTableNames().ToList());
+        CurTableName = SizeTableNames.FirstOrDefault();
+
+        ParameterTypes = _sizeTableService
+            .AbstractParameterTypes.Where(p => p.Label.IsValid())
+            .OrderBy(p => p.Label)
+            .ToList();
+    }
 
     private void AddRowOnTop(int index)
     {
@@ -109,7 +106,7 @@ public partial class TableContentViewModel : BaseViewModel
 
             try
             {
-                Type columnType = dataTable.Columns[cell.ColumnIndex].DataType;
+                Type columnType = dataTable.Columns[curColumnIndex].DataType;
                 dataTable.Rows[curRowIndex][curColumnIndex] =
                     columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
             }
@@ -129,14 +126,7 @@ public partial class TableContentViewModel : BaseViewModel
             return;
         }
 
-        if (SizeTableInfo is null || _sizeTableService.Manager.HasSizeTable(value))
-        {
-            SizeTableInfo = _sizeTableService.GetSizeTableInfo(value!);
-        }
-        else
-        {
-            SizeTableInfo.Name = value;
-        }
+        SizeTableInfo = _sizeTableService.GetSizeTableInfo(value!);
     }
 
     partial void OnSelectedColumnNameChanged(string? oldValue, string? newValue)
@@ -171,7 +161,10 @@ public partial class TableContentViewModel : BaseViewModel
             this,
             (curTableName) =>
             {
-                SizeTableInfo = _sizeTableService.GetSizeTableInfo(curTableName);
+                if (curTableName is null)
+                    return;
+                SizeTableNames.Add(curTableName);
+                CurTableName = curTableName;
             }
         );
         DialogPage = new RequestTableName(dialogVM);
@@ -197,17 +190,28 @@ public partial class TableContentViewModel : BaseViewModel
     [RelayCommand]
     private void UpdateTable()
     {
-        if (SizeTableInfo is null)
-            return;
-        _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
-        _sizeTableService.ImportSizeTable(SizeTableInfo);
-        if (CurTableName != null)
-            SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
+        string message = "Таблица выбора успешно загружена.";
+        try
+        {
+            if (SizeTableInfo is null)
+                return;
+            _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
+            _sizeTableService.ImportSizeTable(SizeTableInfo);
+            if (CurTableName != null)
+                SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
+        }
+        catch (Exception ex)
+        {
+            message = $"Возникла проблема:\n{ex.Message}";
+        }
+        var resultVM = new ResultVM(this, null, message);
+        DialogPage = new ResultDialog(resultVM);
     }
 
     [RelayCommand]
     private void AddNewColumn()
     {
+        var parameters = _familiesService.GetFamilyParameters();
         var requestNewColumnVM = new SelectNewColumnViewModel(
             this,
             (parameters) =>
@@ -220,7 +224,7 @@ public partial class TableContentViewModel : BaseViewModel
                 SizeTableInfo = null;
                 SizeTableInfo = tmp;
             },
-            _familiesService.GetFamilyParameters()
+            parameters
         );
 
         DialogPage = new SelectNewColumnPage(requestNewColumnVM);

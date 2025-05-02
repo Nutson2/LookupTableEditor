@@ -9,7 +9,11 @@
       <GradientStop Offset="1"
                     Color="#FFB99fff" />
    </LinearGradientBrush>
-
+   <SolidColorBrush x:Key="fontColor"
+                    Color="#FF8E0505" />
+   <SolidColorBrush x:Key="background"
+                    Color="#FFDCDFFB"/>
+   
    <Style x:Key="base"
           TargetType="FrameworkElement">
       <Setter Property="Margin"
@@ -18,7 +22,17 @@
               Value="Stretch" />
       <Setter Property="HorizontalAlignment"
               Value="Stretch" />
-
+   </Style>
+   
+   <Style TargetType="GroupBox">
+      <Setter Property="Background"
+              Value="{StaticResource baseBrush}" />
+      <Setter Property="BorderBrush"
+              Value="{StaticResource baseBrush}" />
+      <Setter Property="VerticalAlignment"
+              Value="Center" />
+      <Setter Property="HorizontalAlignment"
+              Value="Center" />
    </Style>
 
    <Style BasedOn="{StaticResource base}"
@@ -28,19 +42,20 @@
             <Setter Property="Padding"
                     Value="2" />
             <Setter Property="CornerRadius"
-                    Value="2" />
+                    Value="4" />
             <Setter Property="Background"
                     Value="#99F0F0F0" />
          </Style>
 
       </Style.Resources>
    </Style>
+   
    <Style x:Key="verticalButton"
           TargetType="Button">
       <Style.Resources>
          <Style TargetType="Border">
             <Setter Property="CornerRadius"
-                    Value="2" />
+                    Value="3" />
          </Style>
       </Style.Resources>
    </Style>
@@ -51,7 +66,7 @@
       <Setter Property="FontSize"
               Value="16" />
       <Setter Property="Foreground"
-              Value="#FF8E0505" />
+              Value="{StaticResource fontColor}" />
    </Style>
 
    <Style BasedOn="{StaticResource base}"
@@ -104,10 +119,19 @@
    </Style>
 
    <Style BasedOn="{StaticResource base}"
-          TargetType="TextBlock" />
-
-
+          TargetType="TextBlock">
+      <Setter Property="FontSize"
+              Value="14" />
+      <Setter Property="Foreground"
+              Value="{StaticResource fontColor}" />
+      <Setter Property="Background"
+                Value="#FFDCDFFB" />
+   </Style>
+   
    <Style BasedOn="{StaticResource base}"
-          TargetType="ComboBox" />
+          TargetType="ComboBox">
+      <Setter Property="Foreground"
+              Value="{StaticResource fontColor}" />
+   </Style>
 
 </ResourceDictionary>

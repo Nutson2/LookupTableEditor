@@ -12,5 +12,6 @@ public partial class RequestTableName : Page
     {
         InitializeComponent();
         DataContext = vm;
+        input.Focus();
     }
 }
