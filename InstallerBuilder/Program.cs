@@ -7,7 +7,7 @@ using File = WixSharp.File;
 internal class Program
 {
     private const string baseBundlePath =
-        @"C:\ProgramData\Autodesk\ApplicationPlugins\LookupTableEditor.bundle";
+        @"%AppData%\Autodesk\ApplicationPlugins\LookupTableEditor.bundle";
 
     private static void Main(string[] args)
     {

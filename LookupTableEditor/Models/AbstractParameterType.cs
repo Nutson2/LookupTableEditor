@@ -37,6 +37,12 @@ public class AbstractParameterType
 
     public override string ToString() => ParameterType?.TypeId.Split('-').First() ?? string.Empty;
 
+    public static bool operator ==(AbstractParameterType left, AbstractParameterType right) =>
+        left?.Equals(right) ?? false;
+
+    public static bool operator !=(AbstractParameterType left, AbstractParameterType right) =>
+        !left?.Equals(right) ?? false;
+
 #else
 
     public UnitType? UnitType { get; }
