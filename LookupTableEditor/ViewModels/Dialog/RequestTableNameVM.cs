@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using LookupTableEditor.Extentions;
 
-namespace LookupTableEditor.ViewModels;
+namespace LookupTableEditor.ViewModels.Dialog;
 
 public partial class RequestTableNameVM : BaseDialogVM<string>
 {

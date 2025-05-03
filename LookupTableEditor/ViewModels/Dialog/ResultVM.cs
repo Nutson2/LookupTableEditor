@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LookupTableEditor.ViewModels;
+namespace LookupTableEditor.ViewModels.Dialog;
 
 public partial class ResultVM : BaseDialogVM<string>
 {

@@ -18,7 +18,7 @@
         d:MinHeight="200"
         SizeToContent="WidthAndHeight"
         Topmost="True"
-        d:DataContext="{d:DesignInstance Type=viewmodels:TableContentViewModel}"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d">
 
    <Window.Background>

@@ -13,9 +13,9 @@ namespace LookupTableEditor.Views;
 public partial class MainWindow : Window
 {
     private BlurEffect _blurEffect = new BlurEffect() { Radius = 6 };
-    private readonly TableContentViewModel _viewModel;
+    private readonly MainViewModel _viewModel;
 
-    public MainWindow(TableContentViewModel viewModel)
+    public MainWindow(MainViewModel viewModel)
     {
         InitializeComponent();
         DataContext = viewModel;
