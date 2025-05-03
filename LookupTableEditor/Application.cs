@@ -10,19 +10,19 @@ namespace LookupTableEditor;
 
 public class Application : ExternalApplication
 {
-	private const string Name = nameof(LookupTableEditor);
+    private const string Name = nameof(LookupTableEditor);
 
-	public override void OnStartup()
-	{
-		CreateRibbon();
-	}
+    public override void OnStartup()
+    {
+        CreateRibbon();
+    }
 
-	private void CreateRibbon()
-	{
-		Application
-			.CreatePanel("Commands", Name)
-			.AddPushButton<LookupTableEditorCommand>(Name)
-			.SetImage($"/{Name};component/Resources/Icons/{Name}16.png")
-			.SetLargeImage($"/{Name};component/Resources/Icons/{Name}32.png");
-	}
+    private void CreateRibbon()
+    {
+        Application
+            .CreatePanel("Nutson")
+            .AddPushButton<LookupTableEditorCommand>(Name)
+            .SetImage($"/{Name};component/Resources/Icons/{Name}16.png")
+            .SetLargeImage($"/{Name};component/Resources/Icons/{Name}32.png");
+    }
 }

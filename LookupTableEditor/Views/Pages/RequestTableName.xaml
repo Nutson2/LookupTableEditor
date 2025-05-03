@@ -8,7 +8,7 @@
       d:DataContext="{d:DesignInstance Type=viewmodels:RequestTableNameVM}"
       mc:Ignorable="d"
       d:DesignHeight="60"
-      d:DesignWidth="450"
+      d:DesignWidth="550"
       Title="RequestTableName">
 
    <Page.Resources>
@@ -19,18 +19,14 @@
       </ResourceDictionary>
    </Page.Resources>
 
-   <GroupBox 
-             VerticalAlignment="Center"
-             HorizontalAlignment="Center"
-             Background="{StaticResource baseBrush}"
-             BorderBrush="{StaticResource baseBrush}">
+   <GroupBox>
       <GroupBox.Header>
-         <TextBlock Text="New size table name"
-                    Background="#4CB99FFF" /> 
+         <TextBlock Text="Введите имя новой таблицы"
+                     />
       </GroupBox.Header>
       <StackPanel Orientation="Horizontal">
 
-         <TextBox Text="{Binding TableName, Mode=TwoWay,
+         <TextBox x:Name="input" Text="{Binding RequestVal, Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}"
                   MinWidth="300" />
 
@@ -38,10 +34,11 @@
                     HorizontalAlignment="Right">
             <Button Style="{StaticResource iconButton}"
                     Command="{Binding CancelCommand}"
-                    Content="Cancel" />
+                    Content="Отмена" />
             <Button Style="{StaticResource iconButton}"
                     Command="{Binding OkCommand}"
-                    Content="OK" />
+                    Content="Подтвердить"
+                    IsDefault="True" />
          </WrapPanel>
       </StackPanel>
    </GroupBox>

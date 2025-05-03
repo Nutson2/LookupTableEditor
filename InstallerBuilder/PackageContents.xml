@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0"
+					AutodeskProduct="Revit"
+					ProductType="Application"
+					Name="LookupTableEditor"
+					AppVersion="1.0.0"
+					ProductCode="{530E7CB3-03C4-44D4-B223-C6E48010A2AC}">
+	<CompanyDetails Name="Nutson"/>
+	<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2020" SeriesMax="R2026" />
+	
+	<Components Description="Revit 2020">
+		<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2020" SeriesMax="R2020" />
+		<ComponentEntry AppName="LookupTableEditor"
+						ModuleName="./Contents/Release R20/LookupTableEditor.addin"/>
+	</Components>
+
+	<Components Description="Revit 2021">
+		<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2021" SeriesMax="R2021" />
+		<ComponentEntry AppName="LookupTableEditor"
+						ModuleName="./Contents/Release R21/LookupTableEditor.addin"/>
+	</Components>
+
+	<Components Description="Revit 2022">
+		<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2022" SeriesMax="R2022" />
+		<ComponentEntry AppName="LookupTableEditor"
+						ModuleName="./Contents/Release R22/LookupTableEditor.addin"/>
+	</Components>
+
+	<Components Description="Revit 2023">
+		<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2023" SeriesMax="R2023" />
+		<ComponentEntry AppName="LookupTableEditor"
+						ModuleName="./Contents/Release R23/LookupTableEditor.addin"/>
+	</Components>
+
+	<Components Description="Revit 2024">
+		<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2024" SeriesMax="R2024" />
+		<ComponentEntry AppName="LookupTableEditor"
+						ModuleName="./Contents/Release R24/LookupTableEditor.addin"/>
+	</Components>
+
+	<Components Description="Revit 2025">
+		<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2025" SeriesMax="R2025" />
+		<ComponentEntry AppName="LookupTableEditor"
+						ModuleName="./Contents/Release R25/LookupTableEditor.addin"/>
+	</Components>
+
+	<Components Description="Revit 2026">
+		<RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2026" SeriesMax="R2026" />
+		<ComponentEntry AppName="LookupTableEditor"
+						ModuleName="./Contents/Release R26/LookupTableEditor.addin"/>
+	</Components>
+</ApplicationPackage>

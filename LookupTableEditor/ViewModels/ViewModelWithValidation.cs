@@ -16,8 +16,13 @@ public class ErrorsViewModel : ObservableObject, INotifyDataErrorInfo
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
-    public IEnumerable? GetErrors(string propertyName) =>
-        _propertyErrors.GetOrDefault(propertyName) ?? Enumerable.Empty<string>();
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        if (propertyName is null)
+            Enumerable.Empty<string>();
+
+        return _propertyErrors.GetOrDefault(propertyName!) ?? Enumerable.Empty<string>();
+    }
 
     private void AddError(string propertyName, string errorMessage)
     {
