@@ -7,7 +7,7 @@ public static class FamilySizeTableColumnExtention
 {
 #if R22_OR_GREATER
     public static string GetUnitTypeString(this FamilySizeTableColumn column) =>
-        column.GetSpecTypeId().ToString();
+        column.GetSpecTypeId().ToString() ?? string.Empty;
 
     public static Type GetTypeForDataTable(this FamilySizeTableColumn column) =>
         column.GetSpecTypeId().TypeId.IsValid() ? typeof(double) : typeof(string);

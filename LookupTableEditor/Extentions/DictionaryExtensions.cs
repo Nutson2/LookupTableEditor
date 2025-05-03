@@ -5,6 +5,7 @@ namespace LookupTableEditor.Extentions;
 public static class DictionaryExtensions
 {
     public static TValue? GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
+        where TKey : notnull
     {
         if (dict.TryGetValue(key, out var res))
         {
@@ -18,6 +19,7 @@ public static class DictionaryExtensions
         TKey key,
         TValue value
     )
+        where TKey : notnull
     {
         if (!dict.ContainsKey(key))
         {
