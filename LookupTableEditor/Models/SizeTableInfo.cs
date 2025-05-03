@@ -68,7 +68,7 @@ public class SizeTableInfo
         AbstractParameterType? headerType
     )
     {
-        headerType = _abstractParameterTypes.FirstOrDefault(p => p == headerType);
+        headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
         if (headerType is null)
             return;
 
