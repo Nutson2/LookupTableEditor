@@ -4,7 +4,6 @@ using Autodesk.Revit.DB;
 using LookupTableEditor.Models;
 #if R22_OR_GREATER
 using LookupTableEditor.Extentions;
-using LookupTableEditor.Models;
 #else
 using System;
 #endif
