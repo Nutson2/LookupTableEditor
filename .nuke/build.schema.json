@@ -27,6 +27,7 @@
         "Clean",
         "Compile",
         "CopyAddInFiles",
+        "CreateMSI",
         "Restore"
       ]
     },
