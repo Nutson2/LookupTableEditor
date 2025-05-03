@@ -60,7 +60,7 @@ public class SizeTableService : IDisposable
         };
         using MemoryStream stream = new(parametersTypes);
         XmlSerializer xmlSerializer = new(typeof(List<DefinitionOfParameterType>));
-        return (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream);
+        return (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream)!;
     }
 
     private FamilySizeTableManager GetOrCreateSizeTableManager()
@@ -159,10 +159,9 @@ public class SizeTableService : IDisposable
 
         var tableName = $"\"{tableInfo.Name}\"";
         var columnName = parameter.Definition.Name;
-        var defaultValue = tableInfo
-            .Table.Rows[0][columnName.Replace(".", "_")]
-            .ToString()
-            .Replace("\"", "");
+        var defaultValue =
+            tableInfo.Table.Rows[0][columnName.Replace(".", "_")].ToString()?.Replace("\"", "")
+            ?? string.Empty;
 
         var keys = string.Join(", ", keyParameters.Select(x => x.Definition.Name));
 

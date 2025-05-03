@@ -54,7 +54,9 @@ public partial class MainWindow : Window
         if (dg_Table.CurrentColumn is null)
             return;
         DataColumnCollection? columns = _viewModel.SizeTableInfo?.Table.Columns;
-        int? indx = columns?.IndexOf(columns[dg_Table.CurrentColumn.Header.ToString()]);
+        int? indx = columns?.IndexOf(
+            columns[dg_Table.CurrentColumn.Header.ToString() ?? string.Empty]
+        );
 
         _viewModel.SelectedColumnIndex = indx ?? 0;
         _viewModel.SelectedRowIndex = SelectedRowIndex();
@@ -78,6 +80,8 @@ public partial class MainWindow : Window
             e.Column.DisplayIndex = newPosition;
         }
 
-        _viewModel.SizeTableInfo?.Table.Columns[e.Column.Header.ToString()].SetOrdinal(newPosition);
+        _viewModel
+            .SizeTableInfo?.Table.Columns[e.Column.Header.ToString() ?? string.Empty]
+            ?.SetOrdinal(newPosition);
     }
 }

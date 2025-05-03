@@ -37,7 +37,6 @@ public partial class TableContentViewModel : BaseViewModel
     public List<AbstractParameterType> ParameterTypes { get; }
 
     public event Action? OnColumnNameChanged;
-    public event Action<SizeTableInfo>? OnAddNewColumn;
     public int? SelectedRowIndex { get; set; }
     public bool IsTableNotExist =>
         CurTableName is not null && !SizeTableNames.Contains(CurTableName);
@@ -176,6 +175,8 @@ public partial class TableContentViewModel : BaseViewModel
         if (SizeTableInfo is null)
             return;
         _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
+        if (SizeTableInfo.FilePath is null)
+            return;
         Process.Start(SizeTableInfo.FilePath);
     }
 
@@ -217,7 +218,7 @@ public partial class TableContentViewModel : BaseViewModel
             (parameters) =>
             {
                 parameters
-                    .Where(fp => fp.IsSelected)
+                    ?.Where(fp => fp.IsSelected)
                     .ForEach(fp => SizeTableInfo?.AddHeader(fp.FamilyParameter));
 
                 var tmp = SizeTableInfo;

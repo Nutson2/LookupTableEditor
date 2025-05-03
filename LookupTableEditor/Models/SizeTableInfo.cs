@@ -68,7 +68,7 @@ public class SizeTableInfo
         AbstractParameterType? headerType
     )
     {
-        headerType = _abstractParameterTypes.FirstOrDefault(p => p.Equals(headerType));
+        headerType = _abstractParameterTypes.FirstOrDefault(p => p == headerType);
         if (headerType is null)
             return;
 
@@ -103,7 +103,7 @@ public class SizeTableInfo
                     _headerDelimiter,
                     Table
                         .Columns.Cast<DataColumn>()
-                        .Select(c => Validate(row[c].ToString(), c.DataType))
+                        .Select(c => Validate(row[c].ToString() ?? string.Empty, c.DataType))
                 )
             );
         }
