@@ -21,7 +21,8 @@ public partial class RequestTableNameVM : BaseDialogVM<string>
 				{
 					return "Не может быть пустым.";
 				}
-				var invalidChar = Path.GetInvalidFileNameChars().Where(c => value.Contains(c));
+				var invalidChar = Path.GetInvalidFileNameChars()
+					.Where(c => value?.Contains(c) == true);
 				if (invalidChar.Any())
 				{
 					return $"Наименование таблицы не может содержать символы: {string.Join(", ", invalidChar)}";
