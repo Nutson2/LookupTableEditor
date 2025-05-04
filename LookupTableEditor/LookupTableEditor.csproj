@@ -107,7 +107,8 @@
         <StartAction>Program</StartAction>
         <StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
         <StartArguments>/language ENG</StartArguments>
-        <OutputPath>bin\$(Configuration)\LookupTableEditor</OutputPath>
+		<OutputPath>bin\$(Configuration)\LookupTableEditor</OutputPath>
+		<!--<OutputPath>C:\Users\Nutson\AppData\Roaming\Autodesk\Revit\Addins\$(RevitVersion)\LookupTableEditor</OutputPath>-->
     </PropertyGroup>
 
 
