@@ -10,7 +10,7 @@
         Height="650"
         MaxHeight="900"
         MaxWidth="1600"
-        MinWidth="600"
+        MinWidth="500"
         MinHeight="450"
         d:Width="500"
         d:Height="200"
@@ -129,11 +129,18 @@
                     Content="💬"
                     Style="{StaticResource iconButton}"
                     ToolTip="Написать в Telegram" />
-            <Button Command="{Binding GoToYouTubeCommand}"
-                    Content="📺"
-                    Style="{StaticResource iconButton}"
-                    ToolTip="Посмотреть инструкцию на YouTube" />
          </WrapPanel>
+         
+         <WrapPanel Grid.Row="3"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center">
+            <Button Command="{Binding GoToVacationCommand}"
+                    Content="Нравится? Отблагодари :)"
+                    Style="{StaticResource iconButton}"
+                    />
+
+         </WrapPanel>
+
          <WrapPanel Grid.Row="3"
                     Grid.ColumnSpan="3" HorizontalAlignment="Right">
                <Button Command="{Binding UpdateTableCommand}"

@@ -157,7 +157,7 @@ public partial class MainViewModel : BaseViewModel
     private void GotoTelegram() => Process.Start(Settings.Default.TelegramUrl);
 
     [RelayCommand]
-    private void GoToYouTube() => Process.Start(Settings.Default.YouTubeChannelUrl);
+    private void GoToVacation() => Process.Start(Settings.Default.Vacation);
 
     #endregion
 }
