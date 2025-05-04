@@ -12,7 +12,7 @@ namespace LookupTableEditor {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,7 +25,7 @@ namespace LookupTableEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://t.me/Nutson2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://t.me/+FIZuGGbDcppkM2Ri")]
         public string TelegramUrl {
             get {
                 return ((string)(this["TelegramUrl"]));
@@ -37,13 +37,13 @@ namespace LookupTableEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.youtube.com/channel/UCcBEuUPtAW22nkZKueGD0VQ")]
-        public string YouTubeChannelUrl {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.tbank.ru/cf/8bHxqho7Wee")]
+        public string Vacation {
             get {
-                return ((string)(this["YouTubeChannelUrl"]));
+                return ((string)(this["Vacation"]));
             }
             set {
-                this["YouTubeChannelUrl"] = value;
+                this["Vacation"] = value;
             }
         }
     }

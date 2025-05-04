@@ -18,18 +18,33 @@ class LookupTableEditorCommand : IExternalCommand
 
         if (!doc.IsFamilyDocument)
             return Result.Cancelled;
-
-        var parameterTypesProvider = new AbstractParameterTypesProvider();
-
-        var familiesService = new FamiliesService(doc, parameterTypesProvider);
-        var sizeTableService = new SizeTableService(doc, uiApp.Application, parameterTypesProvider);
-        var mainVM = new TableContentViewModel(
-            sizeTableService,
-            parameterTypesProvider,
-            familiesService
-        );
-        var mainView = new MainWindow(mainVM);
-        mainView.ShowDialog();
+        MainWindow? mainView = default;
+#if REVIT2025_OR_GREATER
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+#endif
+        try
+        {
+            var parameterTypesProvider = new AbstractParameterTypesProvider();
+            var familiesService = new FamiliesService(doc, parameterTypesProvider);
+            var sizeTableService = new SizeTableService(
+                doc,
+                uiApp.Application,
+                parameterTypesProvider
+            );
+            var mainVM = new MainViewModel(
+                sizeTableService,
+                parameterTypesProvider,
+                familiesService
+            );
+            mainView = new MainWindow(mainVM);
+            mainView.ShowDialog();
+        }
+        catch (System.Exception ex)
+        {
+            mainView?.Close();
+            TaskDialog.Show("Error", ex.Message);
+            return Result.Failed;
+        }
 
         return Result.Succeeded;
     }

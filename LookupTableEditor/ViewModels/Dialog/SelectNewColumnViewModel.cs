@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using LookupTableEditor.Models;
 
-namespace LookupTableEditor.ViewModels;
+namespace LookupTableEditor.ViewModels.Dialog;
 
 public partial class SelectNewColumnViewModel : BaseDialogVM<IEnumerable<FamilyParameterModel>>
 {

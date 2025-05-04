@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 using LookupTableEditor.Models;
-using LookupTableEditor.ViewModels;
+using LookupTableEditor.ViewModels.Dialog;
 
 namespace LookupTableEditor.Views.Pages;
 

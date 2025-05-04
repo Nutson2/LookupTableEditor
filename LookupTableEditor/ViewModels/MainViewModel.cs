@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -10,11 +7,12 @@ using CommunityToolkit.Mvvm.Input;
 using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using LookupTableEditor.Services;
+using LookupTableEditor.ViewModels.Dialog;
 using LookupTableEditor.Views.Pages;
 
 namespace LookupTableEditor.ViewModels;
 
-public partial class TableContentViewModel : BaseViewModel
+public partial class MainViewModel : BaseViewModel
 {
     private readonly SizeTableService _sizeTableService;
     private readonly FamiliesService _familiesService;
@@ -25,23 +23,14 @@ public partial class TableContentViewModel : BaseViewModel
     private string? _curTableName;
 
     [ObservableProperty]
-    private string? _selectedColumnName;
-
-    [ObservableProperty]
-    private AbstractParameterType? _selectedColumnType;
-
-    [ObservableProperty]
     private SizeTableInfo? _sizeTableInfo;
 
     public ObservableCollection<string> SizeTableNames { get; private set; }
-    public List<AbstractParameterType> ParameterTypes { get; }
 
-    public event Action? OnColumnNameChanged;
-    public int? SelectedRowIndex { get; set; }
     public bool IsTableNotExist =>
         CurTableName is not null && !SizeTableNames.Contains(CurTableName);
-    public bool IsSizeTableInfoExist => SizeTableInfo is not null;
 
+    public int? SelectedRowIndex { get; set; }
     public int SelectedColumnIndex
     {
         get => _selectedColumnIndex;
@@ -50,13 +39,10 @@ public partial class TableContentViewModel : BaseViewModel
             if (SizeTableInfo is null)
                 return;
             _selectedColumnIndex = value;
-            SelectedColumnName = SizeTableInfo.Table.Columns[value].Caption;
-            SelectedColumnType = SizeTableInfo.GetColumnType(SelectedColumnName);
-            OnPropertyChanged(nameof(SelectedColumnType));
         }
     }
 
-    public TableContentViewModel(
+    public MainViewModel(
         SizeTableService sizeTableService,
         AbstractParameterTypesProvider parameterTypesProvider,
         FamiliesService familiesService
@@ -64,20 +50,9 @@ public partial class TableContentViewModel : BaseViewModel
     {
         _sizeTableService = sizeTableService;
         _familiesService = familiesService;
-        SelectedColumnType = parameterTypesProvider.Empty();
 
         SizeTableNames = new(_sizeTableService.Manager.GetAllSizeTableNames().ToList());
         CurTableName = SizeTableNames.FirstOrDefault();
-
-        ParameterTypes = _sizeTableService
-            .AbstractParameterTypes.Where(p => p.Label.IsValid())
-            .OrderBy(p => p.Label)
-            .ToList();
-    }
-
-    private void AddRowOnTop(int index)
-    {
-        SizeTableInfo?.Table.Rows.InsertAt(SizeTableInfo.Table.NewRow(), index);
     }
 
     public void PasteFromClipboard()
@@ -87,33 +62,8 @@ public partial class TableContentViewModel : BaseViewModel
 
         int rowIndex = SelectedRowIndex.Value;
         int columnIndex = SelectedColumnIndex;
-        DataTable dataTable = SizeTableInfo.Table;
 
-        string clipboardContent = Clipboard.GetText();
-
-        var cells = clipboardContent.ParseAsCells();
-
-        foreach (var cell in cells)
-        {
-            var curRowIndex = rowIndex + cell.RowIndex;
-            if (curRowIndex >= dataTable.Rows.Count)
-                dataTable.Rows.Add(dataTable.NewRow());
-
-            var curColumnIndex = columnIndex + cell.ColumnIndex;
-            if (curColumnIndex >= dataTable.Columns.Count)
-                continue;
-
-            try
-            {
-                Type columnType = dataTable.Columns[curColumnIndex].DataType;
-                dataTable.Rows[curRowIndex][curColumnIndex] =
-                    columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
-            }
-            catch
-            {
-                // ignored
-            }
-        }
+        SizeTableInfo.PasteFromClipboard(rowIndex, columnIndex);
     }
 
     #region Handlers
@@ -126,27 +76,6 @@ public partial class TableContentViewModel : BaseViewModel
         }
 
         SizeTableInfo = _sizeTableService.GetSizeTableInfo(value!);
-    }
-
-    partial void OnSelectedColumnNameChanged(string? oldValue, string? newValue)
-    {
-        if (!oldValue.IsValid() || !newValue.IsValid() || SelectedColumnType is null)
-            return;
-
-        SizeTableInfo?.ChangeColumnName(
-            SelectedColumnIndex,
-            oldValue!,
-            newValue!,
-            SelectedColumnType
-        );
-        OnColumnNameChanged?.Invoke();
-    }
-
-    partial void OnSelectedColumnTypeChanged(AbstractParameterType? value)
-    {
-        if (SelectedColumnName is null || value is null)
-            return;
-        SizeTableInfo?.ChangeColumnType(SelectedColumnName, value);
     }
 
     #endregion
@@ -177,7 +106,10 @@ public partial class TableContentViewModel : BaseViewModel
         _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
         if (SizeTableInfo.FilePath is null)
             return;
-        Process.Start(SizeTableInfo.FilePath);
+        new Process
+        {
+            StartInfo = new ProcessStartInfo(SizeTableInfo.FilePath) { UseShellExecute = true },
+        }.Start();
     }
 
     [RelayCommand]
@@ -185,26 +117,17 @@ public partial class TableContentViewModel : BaseViewModel
     {
         if (SelectedRowIndex is null)
             return;
-        AddRowOnTop(SelectedRowIndex.Value);
+        SizeTableInfo?.Table.Rows.InsertAt(SizeTableInfo.Table.NewRow(), SelectedRowIndex.Value);
     }
 
     [RelayCommand]
     private void UpdateTable()
     {
-        string message = "Таблица выбора успешно загружена.";
-        try
-        {
-            if (SizeTableInfo is null)
-                return;
-            _sizeTableService.SaveSizeTableOnTheDisk(SizeTableInfo);
-            _sizeTableService.ImportSizeTable(SizeTableInfo);
-            if (CurTableName != null)
-                SizeTableInfo = _sizeTableService.GetSizeTableInfo(CurTableName);
-        }
-        catch (Exception ex)
-        {
-            message = $"Возникла проблема:\n{ex.Message}";
-        }
+        var res = _sizeTableService.Update(SizeTableInfo!);
+        string message = res.Item2 is not null ? res.Item2 : "Таблица выбора успешно загружена.";
+        if (res.Item1 is not null)
+            SizeTableInfo = res.Item1;
+
         var resultVM = new ResultVM(this, null, message);
         DialogPage = new ResultDialog(resultVM);
     }
@@ -212,7 +135,6 @@ public partial class TableContentViewModel : BaseViewModel
     [RelayCommand]
     private void AddNewColumn()
     {
-        var parameters = _familiesService.GetFamilyParameters();
         var requestNewColumnVM = new SelectNewColumnViewModel(
             this,
             (parameters) =>
@@ -225,11 +147,17 @@ public partial class TableContentViewModel : BaseViewModel
                 SizeTableInfo = null;
                 SizeTableInfo = tmp;
             },
-            parameters
+            _familiesService.GetFamilyParameters()
         );
 
         DialogPage = new SelectNewColumnPage(requestNewColumnVM);
     }
+
+    [RelayCommand]
+    private void GotoTelegram() => Process.Start(Settings.Default.TelegramUrl);
+
+    [RelayCommand]
+    private void GoToVacation() => Process.Start(Settings.Default.Vacation);
 
     #endregion
 }

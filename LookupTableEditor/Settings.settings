@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="TelegramUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://t.me/Nutson2</Value>
+      <Value Profile="(Default)">https://t.me/+FIZuGGbDcppkM2Ri</Value>
     </Setting>
-    <Setting Name="YouTubeChannelUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://www.youtube.com/channel/UCcBEuUPtAW22nkZKueGD0VQ</Value>
+    <Setting Name="Vacation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.tbank.ru/cf/8bHxqho7Wee</Value>
     </Setting>
   </Settings>
 </SettingsFile>

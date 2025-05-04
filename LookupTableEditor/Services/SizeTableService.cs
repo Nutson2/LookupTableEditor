@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
 using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using RevitApplication = Autodesk.Revit.ApplicationServices.Application;
@@ -14,9 +13,13 @@ namespace LookupTableEditor.Services;
 
 public class SizeTableService : IDisposable
 {
+    static Encoding win1251 = Encoding.GetEncoding("Windows-1251");
+
     private readonly RevitApplication _app;
     private readonly Document _doc;
     private readonly AbstractParameterTypesProvider _parameterTypesProvider;
+    public FamilySizeTableManager Manager { get; }
+    public List<AbstractParameterType> AbstractParameterTypes { get; }
 
     public SizeTableService(
         Document doc,
@@ -38,9 +41,6 @@ public class SizeTableService : IDisposable
             _parameterTypesProvider.FromDefinitionOfParameterType(def)
         );
     }
-
-    public FamilySizeTableManager Manager { get; }
-    public List<AbstractParameterType> AbstractParameterTypes { get; }
 
     public void Dispose()
     {
@@ -110,7 +110,7 @@ public class SizeTableService : IDisposable
         return sizeTableInfo;
     }
 
-    public void ImportSizeTable(SizeTableInfo tableInfo)
+    public string? ImportSizeTable(SizeTableInfo tableInfo)
     {
         FamilySizeTableErrorInfo errorInfo = new();
 
@@ -125,17 +125,15 @@ public class SizeTableService : IDisposable
             }
         );
 
-        if (errorInfo.FamilySizeTableErrorType != FamilySizeTableErrorType.Undefined)
-            TaskDialog.Show(
-                "Проблема импорта таблицы",
-                errorInfo.FamilySizeTableErrorType
-                    + "\n"
-                    + errorInfo.InvalidHeaderText
-                    + "\n"
-                    + errorInfo.InvalidColumnIndex
-                    + "\n"
-                    + errorInfo.InvalidRowIndex
-            );
+        if (errorInfo.FamilySizeTableErrorType == FamilySizeTableErrorType.Undefined)
+        {
+            return null;
+        }
+        return $"Проблема импорта таблицы:\n"
+            + $"{errorInfo.FamilySizeTableErrorType}\n"
+            + $"{errorInfo.InvalidHeaderText}\n"
+            + $"{errorInfo.InvalidColumnIndex}\n"
+            + $"{errorInfo.InvalidRowIndex}";
     }
 
     public void SaveSizeTableOnTheDisk(SizeTableInfo tableInfo)
@@ -144,8 +142,25 @@ public class SizeTableService : IDisposable
 
         tableInfo.FilePath = Path.Combine(folderPath, tableInfo.Name + ".csv");
 
-        using StreamWriter sw = new(tableInfo.FilePath, false, Encoding.Default);
+        using StreamWriter sw = new(tableInfo.FilePath, false, win1251);
         sw.Write(tableInfo.ConvertToString());
+    }
+
+    public (SizeTableInfo?, string?) Update(SizeTableInfo tableInfo)
+    {
+        try
+        {
+            SaveSizeTableOnTheDisk(tableInfo);
+            var res = ImportSizeTable(tableInfo);
+            if (res is not null)
+                return (null, res);
+            tableInfo = GetSizeTableInfo(tableInfo.Name!);
+            return (tableInfo, null);
+        }
+        catch (Exception ex)
+        {
+            return (null, $"Возникла проблема:\n{ex.Message}");
+        }
     }
 
     public string CreateFormula(
