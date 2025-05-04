@@ -106,7 +106,7 @@
                                 ItemsSource="{TemplateBinding Validation.Errors}">
                      <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                           <TextBlock Foreground="#FFD00808"
+                           <TextBlock Foreground="#FFD00808" Background="{StaticResource background}"
                                                Text="{Binding ErrorContent,
                               UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
