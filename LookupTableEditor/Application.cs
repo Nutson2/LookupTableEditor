@@ -7,7 +7,6 @@ namespace LookupTableEditor;
 /// <summary>
 ///     Application entry point
 /// </summary>
-
 public class Application : ExternalApplication
 {
     private const string Name = nameof(LookupTableEditor);

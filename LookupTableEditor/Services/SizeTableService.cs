@@ -37,9 +37,9 @@ public class SizeTableService : IDisposable
 
         var defs = GetDefenitionsOfParameterType();
 
-        AbstractParameterTypes = defs.ConvertAll(def =>
-            _parameterTypesProvider.FromDefinitionOfParameterType(def)
-        );
+        AbstractParameterTypes =
+            defs?.ConvertAll(def => _parameterTypesProvider.FromDefinitionOfParameterType(def))
+            ?? new();
     }
 
     public void Dispose()
@@ -47,7 +47,7 @@ public class SizeTableService : IDisposable
         Manager.Dispose();
     }
 
-    private List<DefinitionOfParameterType> GetDefenitionsOfParameterType()
+    private List<DefinitionOfParameterType>? GetDefenitionsOfParameterType()
     {
         var parametersTypes = _app.VersionNumber.ToInt() switch
         {
@@ -60,7 +60,7 @@ public class SizeTableService : IDisposable
         };
         using MemoryStream stream = new(parametersTypes);
         XmlSerializer xmlSerializer = new(typeof(List<DefinitionOfParameterType>));
-        return (List<DefinitionOfParameterType>)xmlSerializer.Deserialize(stream)!;
+        return xmlSerializer.Deserialize(stream) as List<DefinitionOfParameterType>;
     }
 
     private FamilySizeTableManager GetOrCreateSizeTableManager()

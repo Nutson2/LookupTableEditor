@@ -1,178 +1,151 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <UseWPF>true</UseWPF>
-        <LangVersion>latest</LangVersion>
-        <PlatformTarget>x64</PlatformTarget>
-        <ImplicitUsings>disable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-		<Configurations>Debug R20;Debug R21;Debug R22;Debug R23;Debug R24;Debug R25;Debug R26</Configurations>
-		<Configurations>$(Configurations);Release R20;Release R21;Release R22;Release R23;Release R24;Release R25;Release R26</Configurations>
-	</PropertyGroup>
-	
-    <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-        <DebugType>full</DebugType>
-        <DebugSymbols>true</DebugSymbols>
-        <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    </PropertyGroup>
-    <PropertyGroup Condition="$(Configuration.Contains('Release'))">
-        <Optimize>true</Optimize>
-        <DebugType>none</DebugType>
-        <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
-    </PropertyGroup>
-
-	<PropertyGroup Condition="$(Configuration.Contains('R20'))">
-		<TargetFramework>net48</TargetFramework>
-		<RevitVersion>2020</RevitVersion>
-		<DefineConstants>$(DefineConstants);R20</DefineConstants>
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('R21'))">
-		<TargetFramework>net48</TargetFramework>
-
-		<RevitVersion>2021</RevitVersion>
-		<DefineConstants>$(DefineConstants);R21</DefineConstants>
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('R22'))">
-		<TargetFramework>net48</TargetFramework>
-		<RevitVersion>2022</RevitVersion>
-		<DefineConstants>$(DefineConstants);R22</DefineConstants>
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('R23'))">
-		<TargetFramework>net48</TargetFramework>
-
-		<RevitVersion>2023</RevitVersion>
-		<DefineConstants>$(DefineConstants);R23</DefineConstants>
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('R24'))">
-		<RevitVersion>2024</RevitVersion>
-		<TargetFramework>net48</TargetFramework>
-		<DefineConstants>$(DefineConstants);R24</DefineConstants>
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="$(Configuration.Contains('R25'))">
-		<RevitVersion>2025</RevitVersion>
-		<TargetFramework>net8.0-windows</TargetFramework>
-		<DefineConstants>$(DefineConstants);R25</DefineConstants>
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="$(Configuration.Contains('R26'))">
-		<TargetFramework>net8.0-windows</TargetFramework>
-		<RevitVersion>2026</RevitVersion>
-		<DefineConstants>$(DefineConstants);R26</DefineConstants>
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER;R26_OR_GREATER</DefineConstants>
-	</PropertyGroup>
-	
-    <PropertyGroup>
-        <Version>$(RevitVersion).1.0.1</Version>
-        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R20|AnyCPU'">
-      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R20</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R21|AnyCPU'">
-      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R21</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R22|AnyCPU'">
-      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R22</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R23|AnyCPU'">
-      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R23</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R24|AnyCPU'">
-      <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R24</DefineConstants>
-    </PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R25|AnyCPU'">
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER;R25</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R26|AnyCPU'">
-		<DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER;R26_OR_GREATER;R26</DefineConstants>
-	</PropertyGroup>	
-	
-    <PropertyGroup>
-        <StartAction>Program</StartAction>
-        <StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
-        <StartArguments>/language ENG</StartArguments>
-		<OutputPath>bin\$(Configuration)\LookupTableEditor</OutputPath>
-		<!--<OutputPath>C:\Users\Nutson\AppData\Roaming\Autodesk\Revit\Addins\$(RevitVersion)\LookupTableEditor</OutputPath>-->
-    </PropertyGroup>
-
-
-    <ItemGroup>
-      <Resource Include="Resources\ParametersTypes2020.xml" />
-      <Resource Include="Resources\ParametersTypes2021.xml" />
-      <Resource Include="Resources\ParametersTypes2022.xml" />
-      <Resource Include="Resources\ParametersTypes2023.xml" />
-      <Resource Include="Resources\ParametersTypes2024.xml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Resource Include="Resources\Icons\LookupTableEditor16.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
-      <Resource Include="Resources\Icons\LookupTableEditor32.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
-    </ItemGroup>
-
-	<PropertyGroup>
-		<IsRepackable>true</IsRepackable>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Nice3point.Revit.Build.Tasks" Version="3.0.1" />
-		<PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*" />
-        <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
-        <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
-        <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*-*" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
-		
-		<PackageReference Include="ILRepack" Version="2.0.41" />
-	</ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Resource.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resource.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Settings.Designer.cs">
-        <DesignTimeSharedInput>True</DesignTimeSharedInput>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Settings.settings</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="Resource.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resource.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-	
-	<ItemGroup>
-		<None Update="LookupTableEditor.addin">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-
-		<None Update="Settings.settings">
-        <Generator>SettingsSingleFileGenerator</Generator>
-        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-      </None>
-    </ItemGroup>
-
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug R20;Debug R21;Debug R22;Debug R23;Debug R24;Debug R25;Debug R26</Configurations>
+    <Configurations>$(Configurations);Release R20;Release R21;Release R22;Release R23;Release R24;Release R25;Release R26</Configurations>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('R20'))">
+    <TargetFramework>net48</TargetFramework>
+    <RevitVersion>2020</RevitVersion>
+    <DefineConstants>$(DefineConstants);R20</DefineConstants>
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('R21'))">
+    <TargetFramework>net48</TargetFramework>
+    <RevitVersion>2021</RevitVersion>
+    <DefineConstants>$(DefineConstants);R21</DefineConstants>
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('R22'))">
+    <TargetFramework>net48</TargetFramework>
+    <RevitVersion>2022</RevitVersion>
+    <DefineConstants>$(DefineConstants);R22</DefineConstants>
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('R23'))">
+    <TargetFramework>net48</TargetFramework>
+    <RevitVersion>2023</RevitVersion>
+    <DefineConstants>$(DefineConstants);R23</DefineConstants>
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('R24'))">
+    <RevitVersion>2024</RevitVersion>
+    <TargetFramework>net48</TargetFramework>
+    <DefineConstants>$(DefineConstants);R24</DefineConstants>
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('R25'))">
+    <RevitVersion>2025</RevitVersion>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <DefineConstants>$(DefineConstants);R25</DefineConstants>
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('R26'))">
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RevitVersion>2026</RevitVersion>
+    <DefineConstants>$(DefineConstants);R26</DefineConstants>
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER;R26_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Version>$(RevitVersion).1.0.1</Version>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R20|AnyCPU'">
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R20</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R21|AnyCPU'">
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R21</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R22|AnyCPU'">
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R22</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R23|AnyCPU'">
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R23</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R24|AnyCPU'">
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R24</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R25|AnyCPU'">
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER;R25</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug R26|AnyCPU'">
+    <DefineConstants>$(DefineConstants);R20_OR_GREATER;R21_OR_GREATER;R22_OR_GREATER;R23_OR_GREATER;R24_OR_GREATER;R25_OR_GREATER;R26_OR_GREATER;R26</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
+    <StartArguments>/language ENG</StartArguments>
+    <OutputPath>bin\$(Configuration)\LookupTableEditor</OutputPath>
+    <!--<OutputPath>C:\Users\Nutson\AppData\Roaming\Autodesk\Revit\Addins\$(RevitVersion)\LookupTableEditor</OutputPath>-->
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ParametersTypes2020.xml" />
+    <Resource Include="Resources\ParametersTypes2021.xml" />
+    <Resource Include="Resources\ParametersTypes2022.xml" />
+    <Resource Include="Resources\ParametersTypes2023.xml" />
+    <Resource Include="Resources\ParametersTypes2024.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\LookupTableEditor16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\LookupTableEditor32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <PropertyGroup>
+    <IsRepackable>true</IsRepackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="3.0.1" />
+    <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*" />
+    <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*-*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
+    <PackageReference Include="ILRepack" Version="2.0.41" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="LookupTableEditor.addin">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>
