@@ -31,18 +31,7 @@ public class AbstractParameterType
     public AbstractParameterType(ForgeTypeId? parameterType)
         : this(parameterType, string.Empty) { }
 
-    public override bool Equals(object? obj) => ToString() == obj?.ToString();
-
-    public override int GetHashCode() => ToString().GetHashCode();
-
     public override string ToString() => ParameterType?.TypeId.Split('-').First() ?? string.Empty;
-
-    public static bool operator ==(AbstractParameterType left, AbstractParameterType right) =>
-        left?.Equals(right) ?? false;
-
-    public static bool operator !=(AbstractParameterType left, AbstractParameterType right) =>
-        !left?.Equals(right) ?? false;
-
 #else
 
     public UnitType? UnitType { get; }
@@ -59,10 +48,15 @@ public class AbstractParameterType
     public string Label =>
         UnitType.HasValue ? LabelUtils.GetLabelFor((ParameterType)UnitType) : " - ";
 
-    public override string ToString()
-    {
-        return UnitType.HasValue ? UnitType.ToString() : string.Empty;
-    }
-
+    public override string ToString() => UnitType.HasValue ? UnitType.ToString() : string.Empty;
 #endif
+    public static bool operator ==(AbstractParameterType left, AbstractParameterType right) =>
+        left?.Equals(right) ?? false;
+
+    public static bool operator !=(AbstractParameterType left, AbstractParameterType right) =>
+        !left?.Equals(right) ?? false;
+
+    public override bool Equals(object? obj) => ToString() == obj?.ToString();
+
+    public override int GetHashCode() => ToString().GetHashCode();
 }
