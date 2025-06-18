@@ -6,39 +6,40 @@ namespace LookupTableEditor.ViewModels;
 
 public abstract partial class BaseDialogVM<T> : BaseViewModel, INotifyDataErrorInfo
 {
-	private BaseViewModel _ownerVM;
-	private readonly Action<T?>? _action;
+    private BaseViewModel _ownerVM;
+    private readonly Action<T>? _action;
 
-	private T? requestVal;
-	public T? RequestVal
-	{
-		get => requestVal;
-		set
-		{
-			requestVal = value;
-			ValidateRequestedProp(value);
-			OnPropertyChanged();
-			OkCommand.NotifyCanExecuteChanged();
-		}
-	}
+    private T requestVal = default!;
 
-	public abstract void ValidateRequestedProp(T? value);
+    public T RequestVal
+    {
+        get => requestVal;
+        set
+        {
+            requestVal = value;
+            ValidateRequestedProp(value);
+            OnPropertyChanged();
+            OkCommand.NotifyCanExecuteChanged();
+        }
+    }
 
-	public BaseDialogVM(BaseViewModel ownerVM, Action<T?>? action)
-	{
-		_ownerVM = ownerVM;
-		_action = action;
-	}
+    public abstract void ValidateRequestedProp(T value);
 
-	private bool CanExecuteOk() => !HasErrors;
+    public BaseDialogVM(BaseViewModel ownerVM, Action<T>? action)
+    {
+        _ownerVM = ownerVM;
+        _action = action;
+    }
 
-	[RelayCommand(CanExecute = nameof(CanExecuteOk))]
-	private void Ok()
-	{
-		_ownerVM.DialogPage = null;
-		_action?.Invoke(RequestVal);
-	}
+    private bool CanExecuteOk() => !HasErrors;
 
-	[RelayCommand]
-	private void Cancel() => _ownerVM.DialogPage = null;
+    [RelayCommand(CanExecute = nameof(CanExecuteOk))]
+    private void Ok()
+    {
+        _ownerVM.DialogPage = null;
+        _action?.Invoke(RequestVal);
+    }
+
+    [RelayCommand]
+    private void Cancel() => _ownerVM.DialogPage = null;
 }

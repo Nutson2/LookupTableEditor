@@ -9,6 +9,7 @@ namespace LookupTableEditor.Services;
 
 public class FamiliesService
 {
+    private const string createType = "Создание типоразмера";
     private readonly Document _doc;
     private readonly FamilyManager _familyManager;
     private readonly AbstractParameterTypesProvider _parameterTypesProvider;
@@ -29,28 +30,17 @@ public class FamiliesService
         if (!types.IsEmpty && currentType.Name != " ")
             return;
 
-        _doc.Run(
-            "Создание типоразмера",
-            () => _familyManager.CurrentType = _familyManager.NewType(_doc.Title)
-        );
+        _familyManager.CurrentType = _doc.Run(createType, () => _familyManager.NewType(_doc.Title));
     }
 
     public List<FamilyParameterModel> GetFamilyParameters()
     {
         var res = _doc
-            .FamilyManager.Parameters.Cast<FamilyParameter>()
-            .Select(fp => new FamilyParameterModel(
-                fp,
-                _parameterTypesProvider.FromFamilyParameter(fp)
-            ))
-            .ToList();
-
-        res.ForEach(m =>
-        {
-            var val = GetValueAsString(m.FamilyParameter);
-            m.Value = val;
-        });
-        return res;
+            .FamilyManager.Parameters.OfType<FamilyParameter>()
+            .Select(fp => (fp, type: _parameterTypesProvider.FromFamilyParameter(fp)))
+            .Select(pair => new FamilyParameterModel(pair.fp, pair.type))
+            .ForEach(m => m.Value = GetValueAsString(m.FamilyParameter));
+        return res.ToList();
     }
 
     private string GetValueAsString(FamilyParameter parameter)

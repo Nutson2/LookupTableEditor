@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Autodesk.Revit.DB;
+using CSharpFunctionalExtensions;
 using LookupTableEditor.Extentions;
 using LookupTableEditor.Models;
 using RevitApplication = Autodesk.Revit.ApplicationServices.Application;
@@ -42,10 +44,7 @@ public class SizeTableService : IDisposable
             ?? new();
     }
 
-    public void Dispose()
-    {
-        Manager.Dispose();
-    }
+    public void Dispose() => Manager.Dispose();
 
     private List<DefinitionOfParameterType>? GetDefenitionsOfParameterType()
     {
@@ -75,7 +74,7 @@ public class SizeTableService : IDisposable
             );
     }
 
-    public SizeTableInfo GetSizeTableInfo(string name)
+    public Result<SizeTableInfo> GetSizeTableInfo(string name)
     {
         SizeTableInfo sizeTableInfo = new(name, AbstractParameterTypes, _parameterTypesProvider);
         var familySizeTable = Manager.GetSizeTable(name);
@@ -85,11 +84,11 @@ public class SizeTableService : IDisposable
         if (familySizeTable == null)
             return sizeTableInfo;
 
-        for (var columnIndx = 1; columnIndx < familySizeTable.NumberOfColumns; columnIndx++)
-        {
-            var column = familySizeTable.GetColumnHeader(columnIndx);
-            sizeTableInfo.AddHeader(column);
-        }
+        Enumerable
+            .Range(1, familySizeTable.NumberOfColumns - 1)
+            .Select(i => familySizeTable.GetColumnHeader(i))
+            .ForEach(c => sizeTableInfo.AddHeader(c))
+            .ToList();
 
         for (var rowIndex = 0; rowIndex < familySizeTable.NumberOfRows; rowIndex++)
         {
@@ -110,7 +109,7 @@ public class SizeTableService : IDisposable
         return sizeTableInfo;
     }
 
-    public string? ImportSizeTable(SizeTableInfo tableInfo)
+    public Result ImportSizeTable(SizeTableInfo tableInfo)
     {
         FamilySizeTableErrorInfo errorInfo = new();
 
@@ -124,19 +123,21 @@ public class SizeTableService : IDisposable
                 Manager.ImportSizeTable(_doc, tableInfo.FilePath, errorInfo);
             }
         );
-
-        if (errorInfo.FamilySizeTableErrorType == FamilySizeTableErrorType.Undefined)
-        {
-            return null;
-        }
-        return $"Проблема импорта таблицы:\n"
-            + $"{errorInfo.FamilySizeTableErrorType}\n"
-            + $"{errorInfo.InvalidHeaderText}\n"
-            + $"{errorInfo.InvalidColumnIndex}\n"
-            + $"{errorInfo.InvalidRowIndex}";
+        return errorInfo.FamilySizeTableErrorType == FamilySizeTableErrorType.Undefined
+            ? Result.Success()
+            : Result.Failure(
+                $"Проблема импорта таблицы:\n"
+                    + $"{errorInfo.FamilySizeTableErrorType}\n"
+                    + $"{errorInfo.InvalidHeaderText}\n"
+                    + $"{errorInfo.InvalidColumnIndex}\n"
+                    + $"{errorInfo.InvalidRowIndex}"
+            );
     }
 
-    public void SaveSizeTableOnTheDisk(SizeTableInfo tableInfo)
+    public void SaveAndOpen(SizeTableInfo tableInfo) =>
+        SaveSizeTableOnTheDisk(tableInfo).Tap((path) => OpenFile(tableInfo.FilePath!));
+
+    private Result<string> SaveSizeTableOnTheDisk(SizeTableInfo tableInfo)
     {
         var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -144,23 +145,19 @@ public class SizeTableService : IDisposable
 
         using StreamWriter sw = new(tableInfo.FilePath, false, win1251);
         sw.Write(tableInfo.ConvertToString());
+        return tableInfo.FilePath;
     }
 
-    public (SizeTableInfo?, string?) Update(SizeTableInfo tableInfo)
+    private bool OpenFile(string path) =>
+        new Process { StartInfo = new ProcessStartInfo(path) { UseShellExecute = true } }.Start();
+
+    public Result<SizeTableInfo> Update(SizeTableInfo tableInfo)
     {
-        try
-        {
-            SaveSizeTableOnTheDisk(tableInfo);
-            var res = ImportSizeTable(tableInfo);
-            if (res is not null)
-                return (null, res);
-            tableInfo = GetSizeTableInfo(tableInfo.Name!);
-            return (tableInfo, null);
-        }
-        catch (Exception ex)
-        {
-            return (null, $"Возникла проблема:\n{ex.Message}");
-        }
+        return Result
+            .Success(tableInfo)
+            .Tap((tableinfo) => SaveSizeTableOnTheDisk(tableInfo))
+            .Tap((tableinfo) => ImportSizeTable(tableInfo))
+            .Bind((tableinfo) => GetSizeTableInfo(tableInfo.Name!));
     }
 
     public string CreateFormula(

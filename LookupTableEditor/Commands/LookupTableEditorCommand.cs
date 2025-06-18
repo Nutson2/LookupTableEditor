@@ -1,9 +1,12 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using CSharpFunctionalExtensions;
 using LookupTableEditor.Services;
 using LookupTableEditor.ViewModels;
 using LookupTableEditor.Views;
+using FResult = CSharpFunctionalExtensions.Result;
+using Result = Autodesk.Revit.UI.Result;
 
 namespace LookupTableEditor.Commands;
 
@@ -15,37 +18,38 @@ class LookupTableEditorCommand : IExternalCommand
     {
         UIApplication uiApp = commandData.Application;
         Document doc = commandData.Application.ActiveUIDocument.Document;
-
-        if (!doc.IsFamilyDocument)
-            return Result.Cancelled;
         MainWindow? mainView = default;
+
+        var res = FResult
+            .FailureIf(() => !doc.IsFamilyDocument, "Работает только в документе семейства")
+            .Tap(() => PrepaireEncoding())
+            .TapTry(() => mainView = ShowWindow(uiApp, doc), (ex) => ex.Message)
+            .TapError((msg) => OnFailure(msg, mainView));
+
+        return res.IsSuccess ? Result.Succeeded : Result.Cancelled;
+    }
+
+    private static void OnFailure(string msg, MainWindow? mainView)
+    {
+        mainView?.Close();
+        TaskDialog.Show("Error", msg);
+    }
+
+    private static MainWindow ShowWindow(UIApplication uiApp, Document doc)
+    {
+        var parameterTypesProvider = new AbstractParameterTypesProvider();
+        var familiesService = new FamiliesService(doc, parameterTypesProvider);
+        var sizeTableService = new SizeTableService(doc, uiApp.Application, parameterTypesProvider);
+        var mainVM = new MainViewModel(sizeTableService, parameterTypesProvider, familiesService);
+        var mainView = new MainWindow(mainVM);
+        mainView.ShowDialog();
+        return mainView;
+    }
+
+    private void PrepaireEncoding()
+    {
 #if REVIT2025_OR_GREATER
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 #endif
-        try
-        {
-            var parameterTypesProvider = new AbstractParameterTypesProvider();
-            var familiesService = new FamiliesService(doc, parameterTypesProvider);
-            var sizeTableService = new SizeTableService(
-                doc,
-                uiApp.Application,
-                parameterTypesProvider
-            );
-            var mainVM = new MainViewModel(
-                sizeTableService,
-                parameterTypesProvider,
-                familiesService
-            );
-            mainView = new MainWindow(mainVM);
-            mainView.ShowDialog();
-        }
-        catch (System.Exception ex)
-        {
-            mainView?.Close();
-            TaskDialog.Show("Error", ex.Message);
-            return Result.Failed;
-        }
-
-        return Result.Succeeded;
     }
 }

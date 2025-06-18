@@ -15,7 +15,7 @@ public partial class SelectNewColumnViewModel : BaseDialogVM<IEnumerable<FamilyP
 
     public SelectNewColumnViewModel(
         BaseViewModel ownerVM,
-        Action<IEnumerable<FamilyParameterModel>?> action,
+        Action<IEnumerable<FamilyParameterModel>> action,
         IEnumerable<FamilyParameterModel> parameters
     )
         : base(ownerVM, action)
