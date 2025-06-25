@@ -80,6 +80,28 @@ public class SizeTableInfo
 		}
 	}
 
+	public void AddRow(int? index)
+	{
+		if (index is null)
+			return;
+		Table.Rows.InsertAt(Table.NewRow(), index.Value);
+	}
+
+	public void RemoveColumn(int index)
+	{
+		if (index == 0)
+			return;
+		Table.Columns.RemoveAt(index);
+	}
+
+	public void RemoveRow(int? index)
+	{
+		if (index is null || Table.Rows.Count == index.Value)
+			return;
+
+		Table.Rows.RemoveAt(index.Value);
+	}
+
 	public string ConvertToString()
 	{
 		StringBuilder strBuilder = new();
@@ -131,10 +153,7 @@ public class SizeTableInfo
 	{
 		DataTable dataTable = Table;
 
-		string clipboardContent = Clipboard.GetText();
-
-		var cells = clipboardContent.ParseAsCells();
-
+		var cells = Clipboard.GetText().ParseAsCells().ToList();
 		foreach (var cell in cells)
 		{
 			var curRowIndex = rowIndex + cell.RowIndex;
@@ -149,6 +168,25 @@ public class SizeTableInfo
 			{
 				Type columnType = dataTable.Columns[curColumnIndex].DataType;
 				dataTable.Rows[curRowIndex][curColumnIndex] =
+					columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
+			}
+			catch
+			{
+				// ignored
+			}
+		}
+	}
+
+	public void FillTableCells(List<Cell> cells)
+	{
+		DataTable dataTable = Table;
+
+		foreach (var cell in cells)
+		{
+			try
+			{
+				Type columnType = dataTable.Columns[cell.ColumnIndex].DataType;
+				dataTable.Rows[cell.RowIndex][cell.ColumnIndex] =
 					columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
 			}
 			catch

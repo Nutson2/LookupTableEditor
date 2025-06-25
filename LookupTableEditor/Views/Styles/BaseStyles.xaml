@@ -46,7 +46,6 @@
             <Setter Property="Background"
                     Value="#99F0F0F0" />
          </Style>
-
       </Style.Resources>
    </Style>
    
@@ -65,6 +64,20 @@
           TargetType="Button">
       <Setter Property="FontSize"
               Value="16" />
+      <Setter Property="Foreground"
+              Value="{StaticResource fontColor}" />
+   </Style>
+   
+   <Style TargetType="TextBlock"
+          x:Key="bt">
+      <Setter Property="TextWrapping"
+              Value="Wrap" />
+      <Setter Property="Background"
+              Value="Transparent" />
+      <Setter Property="HorizontalAlignment"
+              Value="Stretch" />
+      <Setter Property="FontSize"
+              Value="14" />
       <Setter Property="Foreground"
               Value="{StaticResource fontColor}" />
    </Style>
