@@ -151,48 +151,41 @@ public class SizeTableInfo
 
 	public void PasteFromClipboard(int rowIndex, int columnIndex)
 	{
-		DataTable dataTable = Table;
-
 		var cells = Clipboard.GetText().ParseAsCells().ToList();
 		foreach (var cell in cells)
 		{
 			var curRowIndex = rowIndex + cell.RowIndex;
-			if (curRowIndex >= dataTable.Rows.Count)
-				dataTable.Rows.Add(dataTable.NewRow());
+			if (curRowIndex >= Table.Rows.Count)
+				Table.Rows.Add(Table.NewRow());
 
 			var curColumnIndex = columnIndex + cell.ColumnIndex;
-			if (curColumnIndex >= dataTable.Columns.Count)
+			if (curColumnIndex >= Table.Columns.Count)
 				continue;
 
-			try
-			{
-				Type columnType = dataTable.Columns[curColumnIndex].DataType;
-				dataTable.Rows[curRowIndex][curColumnIndex] =
-					columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
-			}
-			catch
-			{
-				// ignored
-			}
+			var curCell = cell.WithRowIndex(curRowIndex).WithColumnIndex(curColumnIndex);
+			SetCellValue(Table, curCell);
 		}
 	}
 
 	public void FillTableCells(List<Cell> cells)
 	{
-		DataTable dataTable = Table;
-
 		foreach (var cell in cells)
 		{
-			try
-			{
-				Type columnType = dataTable.Columns[cell.ColumnIndex].DataType;
-				dataTable.Rows[cell.RowIndex][cell.ColumnIndex] =
-					columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
-			}
-			catch
-			{
-				// ignored
-			}
+			SetCellValue(Table, cell);
+		}
+	}
+
+	private void SetCellValue(DataTable dataTable, Cell cell)
+	{
+		try
+		{
+			Type columnType = dataTable.Columns[cell.ColumnIndex].DataType;
+			dataTable.Rows[cell.RowIndex][cell.ColumnIndex] =
+				columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
+		}
+		catch
+		{
+			// ignored
 		}
 	}
 }
