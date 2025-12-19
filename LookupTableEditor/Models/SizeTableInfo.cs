@@ -80,6 +80,28 @@ public class SizeTableInfo
 		}
 	}
 
+	public void AddRow(int? index)
+	{
+		if (index is null)
+			return;
+		Table.Rows.InsertAt(Table.NewRow(), index.Value);
+	}
+
+	public void RemoveColumn(int index)
+	{
+		if (index == 0)
+			return;
+		Table.Columns.RemoveAt(index);
+	}
+
+	public void RemoveRow(int? index)
+	{
+		if (index is null || Table.Rows.Count == index.Value)
+			return;
+
+		Table.Rows.RemoveAt(index.Value);
+	}
+
 	public string ConvertToString()
 	{
 		StringBuilder strBuilder = new();
@@ -129,32 +151,41 @@ public class SizeTableInfo
 
 	public void PasteFromClipboard(int rowIndex, int columnIndex)
 	{
-		DataTable dataTable = Table;
-
-		string clipboardContent = Clipboard.GetText();
-
-		var cells = clipboardContent.ParseAsCells();
-
+		var cells = Clipboard.GetText().ParseAsCells().ToList();
 		foreach (var cell in cells)
 		{
 			var curRowIndex = rowIndex + cell.RowIndex;
-			if (curRowIndex >= dataTable.Rows.Count)
-				dataTable.Rows.Add(dataTable.NewRow());
+			if (curRowIndex >= Table.Rows.Count)
+				Table.Rows.Add(Table.NewRow());
 
 			var curColumnIndex = columnIndex + cell.ColumnIndex;
-			if (curColumnIndex >= dataTable.Columns.Count)
+			if (curColumnIndex >= Table.Columns.Count)
 				continue;
 
-			try
-			{
-				Type columnType = dataTable.Columns[curColumnIndex].DataType;
-				dataTable.Rows[curRowIndex][curColumnIndex] =
-					columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
-			}
-			catch
-			{
-				// ignored
-			}
+			var curCell = cell.WithRowIndex(curRowIndex).WithColumnIndex(curColumnIndex);
+			SetCellValue(Table, curCell);
+		}
+	}
+
+	public void FillTableCells(List<Cell> cells)
+	{
+		foreach (var cell in cells)
+		{
+			SetCellValue(Table, cell);
+		}
+	}
+
+	private void SetCellValue(DataTable dataTable, Cell cell)
+	{
+		try
+		{
+			Type columnType = dataTable.Columns[cell.ColumnIndex].DataType;
+			dataTable.Rows[cell.RowIndex][cell.ColumnIndex] =
+				columnType == typeof(string) ? cell.Text : cell.Text.ToDouble();
+		}
+		catch
+		{
+			// ignored
 		}
 	}
 }

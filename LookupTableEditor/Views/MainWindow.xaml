@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:LookupTableEditor.Views"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:viewmodels="clr-namespace:LookupTableEditor.ViewModels"
         Title="Lookup table editor"
         Width="1000"
@@ -35,20 +36,25 @@
       <ResourceDictionary>
          <ResourceDictionary.MergedDictionaries>
             <ResourceDictionary Source="Styles\BaseStyles.xaml" />
+            <ResourceDictionary>
+               <sys:Double x:Key="width">82</sys:Double>
+            </ResourceDictionary>
          </ResourceDictionary.MergedDictionaries>
       </ResourceDictionary>
    </Window.Resources>
 
    <Grid>
-      <Frame Content="{Binding Path=DialogPage}" Panel.ZIndex="99"
+      <Frame Content="{Binding Path=DialogPage}"
+             Panel.ZIndex="99"
              NavigationUIVisibility="Hidden" />
 
-      <Grid x:Name="MainBody" Panel.ZIndex="0" >
+      <Grid x:Name="MainBody"
+            Panel.ZIndex="0">
          <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="auto" />
          </Grid.RowDefinitions>
-         
+
          <Grid>
             <Grid.RowDefinitions>
                <RowDefinition Height="auto" />
@@ -56,7 +62,7 @@
                <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Grid >
+            <Grid>
                <Grid.ColumnDefinitions>
                   <ColumnDefinition />
                   <ColumnDefinition Width="80" />
@@ -64,8 +70,7 @@
                <ComboBox VerticalContentAlignment="Center"
                          Background="#99F0F0F0"
                          ItemsSource="{Binding Path=SizeTableNames}"
-                         SelectedValue="{Binding Path=CurTableName, Mode=TwoWay}"
-                         />
+                         SelectedValue="{Binding Path=CurTableName, Mode=TwoWay}" />
 
                <Button Grid.Row="1"
                        Grid.Column="1"
@@ -77,18 +82,45 @@
             <WrapPanel Grid.Row="1"
                        Grid.Column="1">
 
-               <Button Content="Добавить столбец"
-                       Command="{Binding AddNewColumnCommand}"
+               <Button Command="{Binding AddNewColumnCommand}"
                        Style="{StaticResource iconButton}"
-                       ToolTip="Добавить столбец в начало таблицы" />
+                       ToolTip="Добавить столбец"
+                       Width="{StaticResource width}">
+                  <TextBlock Text="Добавить столбец"
+                           Style="{StaticResource bt}" />
+               </Button>
+
+               <Button Command="{Binding RemoveColumnCommand}"
+                       Style="{StaticResource iconButton}"
+                       ToolTip="Удалить столбец"
+                       Width="{StaticResource width}">
+                  <TextBlock Text="Удалить столбец"
+                           Style="{StaticResource bt}" />
+               </Button>
+
                <Button Command="{Binding AddRowOnTopCommand}"
-                       Content="Добавить строку"
                        Style="{StaticResource iconButton}"
-                       ToolTip="Добавить строку" />
+                       ToolTip="Добавить строку"
+                       Width="{StaticResource width}">
+                  <TextBlock Text="Добавить строку"
+                           Style="{StaticResource bt}" />
+               </Button>
+
+               <Button Command="{Binding RemoveRowCommand}"
+                       Style="{StaticResource iconButton}"
+                       ToolTip="Удалить строку"
+                       Width="{StaticResource width}">
+                  <TextBlock Text="Удалить строку"
+                           Style="{StaticResource bt}" />
+               </Button>
+
                <Button Command="{Binding SaveSizeTableCommand}"
-                       Content="Сохранить как CSV"
                        Style="{StaticResource iconButton}"
-                       ToolTip="Экспортировать таблицу в CSV" />
+                       ToolTip="Экспортировать таблицу в CSV"
+                       Width="{StaticResource width}">
+                  <TextBlock Text="Сохранить как CSV"
+                           Style="{StaticResource bt}" />
+               </Button>
             </WrapPanel>
 
             <Grid Grid.Row="2">
@@ -117,8 +149,21 @@
                         </Setter>
                      </Style>
                   </DataGrid.ColumnHeaderStyle>
+                  <DataGrid.ContextMenu>
+                     <ContextMenu>
+                        <MenuItem Header="Добавить столбец"
+                                  Command="{Binding AddNewColumnCommand}" />
+                        <MenuItem Header="Удалить столбец"
+                                  Command="{Binding RemoveColumnCommand}" />
+                        <MenuItem Header="Добавить строку"
+                                  Command="{Binding AddRowOnTopCommand}" />
+                        <MenuItem Header="Удалить строку"
+                                  Command="{Binding RemoveRowCommand}" />
+                        <MenuItem Header="Экспортировать таблицу в CSV"
+                                  Command="{Binding SaveSizeTableCommand}" />
+                     </ContextMenu>
+                  </DataGrid.ContextMenu>
                </DataGrid>
-
             </Grid>
          </Grid>
 
@@ -130,23 +175,23 @@
                     Style="{StaticResource iconButton}"
                     ToolTip="Написать в Telegram" />
          </WrapPanel>
-         
+
          <WrapPanel Grid.Row="3"
                     Grid.ColumnSpan="3"
                     HorizontalAlignment="Center">
             <Button Command="{Binding GoToVacationCommand}"
                     Content="Нравится? Отблагодари :)"
-                    Style="{StaticResource iconButton}"
-                    />
+                    Style="{StaticResource iconButton}" />
 
          </WrapPanel>
 
          <WrapPanel Grid.Row="3"
-                    Grid.ColumnSpan="3" HorizontalAlignment="Right">
-               <Button Command="{Binding UpdateTableCommand}"
-                       Content="Применить"
-                       Style="{StaticResource iconButton}"
-                       IsEnabled="{Binding IsSizeTableInfoExist}" />
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Right">
+            <Button Command="{Binding UpdateTableCommand}"
+                    Content="Применить"
+                    Style="{StaticResource iconButton}"
+                    IsEnabled="{Binding IsSizeTableInfoExist}" />
 
          </WrapPanel>
       </Grid>
