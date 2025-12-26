@@ -7,6 +7,7 @@ namespace LookupTableEditor.Models;
 
 public class AbstractParameterType
 {
+
     public string SizeTablesTypeName { get; }
 
 #if R22_OR_GREATER
@@ -33,20 +34,27 @@ public class AbstractParameterType
 
     public override string ToString() => ParameterType?.TypeId.Split('-').First() ?? string.Empty;
 #else
+    private readonly ParameterType _parameterType;
 
     public UnitType? UnitType { get; }
 
-    public AbstractParameterType(UnitType? unitType, string sizeTablesTypeName)
+    public AbstractParameterType(UnitType? unitType, ParameterType parameterType, string sizeTablesTypeName)
     {
         SizeTablesTypeName = sizeTablesTypeName;
         UnitType = unitType;
+        _parameterType = parameterType;
     }
+    public AbstractParameterType(UnitType? unitType, string sizeTablesTypeName)
+        : this(unitType, ParameterType.Text, sizeTablesTypeName) { }
+
+
+    public AbstractParameterType(UnitType? unitType, ParameterType parameterType)
+        : this(unitType, parameterType, string.Empty) { }
 
     public AbstractParameterType(UnitType? unitType)
-        : this(unitType, string.Empty) { }
+        : this(unitType, ParameterType.Text, string.Empty) { }
 
-    public string Label =>
-        UnitType.HasValue ? LabelUtils.GetLabelFor((ParameterType)UnitType) : " - ";
+    public string Label => LabelUtils.GetLabelFor(_parameterType);
 
     public override string ToString() => UnitType.HasValue ? UnitType.ToString() : string.Empty;
 #endif

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.DB;
 using LookupTableEditor.Models;
+using System.Collections.Generic;
+using System.Linq;
 #if R22_OR_GREATER
 using LookupTableEditor.Extentions;
 #else
@@ -73,12 +73,12 @@ public class AbstractParameterTypesProvider
 
     public AbstractParameterType FromParameter(Parameter parameter)
     {
-        return new AbstractParameterType(parameter.Definition.UnitType);
+        return new AbstractParameterType(parameter.Definition.UnitType, parameter.Definition.ParameterType);
     }
 
     public AbstractParameterType FromFamilyParameter(FamilyParameter parameter)
     {
-        return new AbstractParameterType(parameter.Definition.UnitType);
+        return new AbstractParameterType(parameter.Definition.UnitType, parameter.Definition.ParameterType);
     }
 
 #endif
